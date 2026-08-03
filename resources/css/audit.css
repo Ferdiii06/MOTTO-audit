@@ -4,8 +4,8 @@
 @source '../js/audit.js';
 
 @theme {
-    --color-yazaki-red: #C8102E;
-    --color-yazaki-red-dark: #A00D24;
-    --color-yazaki-red-light: #FEF2F2;
+    --color-yazaki-red: #AF101A;
+    --color-yazaki-red-dark: #830C13;
+    --color-yazaki-red-light: #F7E7E8;
     --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
 }

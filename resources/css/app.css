@@ -1,11 +1,11 @@
 @import 'tailwindcss';
 
-@source '../views/audit/**/*.blade.php';
-@source '../js/audit.js';
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
 
 @theme {
-    --color-yazaki-red: #AF101A;
-    --color-yazaki-red-dark: #830C13;
-    --color-yazaki-red-light: #F7E7E8;
-    --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
+    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
 }
