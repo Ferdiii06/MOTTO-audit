@@ -94,9 +94,8 @@
                         <th scope="col" class="px-6 py-4">USER</th>
                         <th scope="col" class="px-6 py-4">AREA</th>
                         <th scope="col" class="px-6 py-4">PROCESS</th>
-                        <th scope="col" class="px-6 py-4">NO</th>
                         <th scope="col" class="px-6 py-4 text-center">KONDISI</th>
-                        <th scope="col" class="px-6 py-4 text-right"></th>
+                        <th scope="col" class="px-6 py-4 text-right">AKSI</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-100 bg-white">
@@ -106,7 +105,6 @@
                             <td class="px-6 py-4 text-xs font-bold text-gray-900 whitespace-nowrap">{{ $row['user'] }}</td>
                             <td class="px-6 py-4 text-xs text-gray-600 font-medium whitespace-nowrap">{{ $row['area'] }}</td>
                             <td class="px-6 py-4 text-xs font-bold text-red-800 uppercase tracking-wide font-mono whitespace-nowrap">{{ $row['process'] }}</td>
-                            <td class="px-6 py-4 text-xs text-gray-600 whitespace-nowrap">{{ $row['no'] }}</td>
                             <td class="px-6 py-4 text-center whitespace-nowrap">
                                 @if($row['kondisi'] === 'NG')
                                     <span class="inline-flex items-center px-3 py-1 rounded text-xs font-extrabold bg-red-800 text-white shadow-xs">
