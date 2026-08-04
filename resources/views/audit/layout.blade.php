@@ -20,7 +20,7 @@
             {{-- Navigation --}}
             <nav class="p-3 space-y-1">
                 @php
-                    $homeGroup = ['audit/dashboard', 'audit/5s-standard', 'audit/change-point-management', 'audit/license-system'];
+                    $homeGroup = ['audit/dashboard', 'audit/5s-standard*', 'audit/change-point-management*', 'audit/license-system*'];
                     $isHomeGroupActive = request()->is($homeGroup);
                 @endphp
 
@@ -46,20 +46,20 @@
                             [
                                 'label' => '5S Standard',
                                 'route' => '/audit/5s-standard',
-                                'path' => 'audit/5s-standard',
+                                'path' => 'audit/5s-standard*',
                                 'icon' => 'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4',
-                            ],
-                            [
-                                'label' => 'License System',
-                                'route' => '/audit/license-system',
-                                'path' => 'audit/license-system',
-                                'icon' => 'M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z',
                             ],
                             [
                                 'label' => 'Change Point',
                                 'route' => '/audit/change-point-management',
-                                'path' => 'audit/change-point-management',
+                                'path' => 'audit/change-point-management*',
                                 'icon' => 'M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15',
+                            ],
+                            [
+                                'label' => 'License System',
+                                'route' => '/audit/license-system',
+                                'path' => 'audit/license-system*',
+                                'icon' => 'M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z',
                             ],
                         ];
                     @endphp
