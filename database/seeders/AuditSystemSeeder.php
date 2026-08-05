@@ -1066,6 +1066,192 @@ class AuditSystemSeeder extends Seeder
             ],
         ];
 
+        $wireTwistData = [
+            1 => [
+                'checkpoint' => 'Dokumen seperti point kerja ditampilkan dan tidak rusak (tidak terkelupas, sobek atau tinta pudar, tidak dapat dibaca).',
+                'kriteria_judgement' => '-',
+            ],
+            2 => [
+                'checkpoint' => 'Lokasi barang-barang yang diperlukan ditunjukkan dan barang-barang ditempatkan sesuai dengan itu. *Barang-barang yang tidak berada di lokasi yang ditentukan NG',
+                'kriteria_judgement' => "1) Meskipun menggunakan kanban dan karet gelang penempatan sementara (Choioki) evaluasinya \"NG\"\n(2) Evaluasi akan dinyatakan \"OK\" apabila menaruh barang pribadi di tempat yang sudah ditentukan",
+            ],
+            3 => [
+                'checkpoint' => 'Terdapat indikasi proses "Before Proses" dan "After Proses" dan produk diklasifikasikan',
+                'kriteria_judgement' => '-',
+            ],
+            4 => [
+                'checkpoint' => 'Ujung wire yang diproses (twist wire dengan terminal) memiliki tutup/cap pelindung',
+                'kriteria_judgement' => "1) Terminal yang lebih kecil dari 2.3 II (090II), 6.3 (250), terminal relai dan wire yang terminal spesifiknya dicrimping dapat digunakan.\n2) \"OK\" jika cap pelindung terpasang, bundle wire tidak bersentuhan pada hanger dan wire terlindung dari debu.",
+            ],
+            5 => [
+                'checkpoint' => 'Ada aturan 5W1H yang terdokumentasi untuk membersihkan dan tidak kotor. *Frekuensi ditentukan oleh setiap pabrik',
+                'kriteria_judgement' => 'Konfirmasi frekuensi kebersihan, waktu, orang, dan metodenya sudah diterapkan apa belum',
+            ],
+        ];
+
+        $shieldWireData = [
+            1 => [
+                'checkpoint' => 'Dokumen seperti Point Kerja ditampilkan dan tidak rusak (tidak terkelupas, sobek atau tidak bisa dibaca)',
+                'kriteria_judgement' => '-',
+            ],
+            2 => [
+                'checkpoint' => 'Lokasi barang-barang yang diperlukan ditunjukkan dan barang-barang ditempatkan sesuai dengan itu. *Barang-barang yang tidak berada di lokasi yang ditentukan NG',
+                'kriteria_judgement' => "1) Meskipun menggunakan kanban dan karet gelang penempatan sementara (Choioki) evaluasinya \"NG\"\n(2) Evaluasi akan dinyatakan \"OK\" apabila menaruh barang pribadi di tempat yang sudah ditentukan",
+            ],
+            3 => [
+                'checkpoint' => 'Terdapat indikasi proses "Before Proses" dan "After Proses" dan produk diklasifikasikan',
+                'kriteria_judgement' => '-',
+            ],
+            4 => [
+                'checkpoint' => 'Ujung wire yang diproses (shield wire dengan terminal) memiliki tutup/cap pelindung.',
+                'kriteria_judgement' => "1) Terminal yang lebih kecil dari 2.3 II (090II), 6.3 (250), terminal relai dan wire yang terminal spesifiknya dicrimping dapat digunakan.\n2) \"OK\" jika cap pelindung terpasang, bundle wire tidak bersentuhan pada hanger dan wire terlindung dari debu.",
+            ],
+            5 => [
+                'checkpoint' => 'Ada aturan 5W1H yang terdokumentasi untuk membersihkan dan tidak kotor. *Frekuensi ditentukan oleh setiap pabrik',
+                'kriteria_judgement' => 'Konfirmasi frekuensi kebersihan, waktu, orang, dan metodenya sudah diterapkan apa belum',
+            ],
+        ];
+
+        $wireStoreData = [
+            1 => [
+                'checkpoint' => 'Jika wire dan terminal ada resiko bersentuhan dengan lantai, pasang gutter agar wire dan terminal tidak menyentuh lantai.',
+                'kriteria_judgement' => "(1) Produk tidak boleh menyentuh lantai\n(2) Jika tidak ada gutter, produk harus berada sekitar 20cm dari lantai\n(3) Jika tidak ada tray untuk mencegah wire menyentuh lantai,evaluasinya \"OK\" jika wire digulung untuk mecegahnya menyentuh lantai",
+            ],
+            2 => [
+                'checkpoint' => 'Ada aturan 5W1H yang terdokumentasi untuk membersihkan wire store dan tidak kotor. *Frekuensi ditentukan oleh tiap pabrik',
+                'kriteria_judgement' => 'Konfirmasi frekuensi kebersihan, waktu, orang, dan metodenya sudah diterapkan apa belum',
+            ],
+            3 => [
+                'checkpoint' => 'Tidak ada bundel wire yang bertumpuk. (Tidak lebih dari 4 tumpukan bundel terminal/wire)',
+                'kriteria_judgement' => "(1) Bundle wire ditumpuk hingga 3 tumpukan walaupun besar bundlenya tidak sama evaluasinya \"OK\"\n(2) Alasan menyetting hingga 4 tumpukan ➡ Menumpuk empat atau lebih tumpukan wire kecil dapat menyebabkan terjatuh, dan menyebabkan deformasi terminal atau kerusakan pada wire",
+            ],
+            4 => [
+                'checkpoint' => 'Setiap bundel wire memiliki kanban atau instruksi produksi.',
+                'kriteria_judgement' => '-',
+            ],
+            5 => [
+                'checkpoint' => 'Nomor assy (kode wire) ditunjukkan di lokasi penyimpanan dan cocok dengan actual produk (deskripsi wire) Identitasnya terletak di bagian atas, jika ingin ditampilkan di bagian bawah maka gunakan tanda panah sebagai penunjuknya, namun tanda panah tidak diperlukan jika tempat penyimpanan hanya satu tingkat',
+                'kriteria_judgement' => 'Kondisi item yang jarang digunakan, akan dinyatakan "NG" apabila tidak ada identitas di tempat penyimpanan sementara',
+            ],
+            6 => [
+                'checkpoint' => 'Ada aturan yang terdokumentasi untuk "First in dan First Out"',
+                'kriteria_judgement' => 'N/A jika penyimpanan dikelola oleh sistem manajemen (SAP, dll.)',
+            ],
+        ];
+
+        $storeShippingJunkanData = [
+            1 => [
+                'checkpoint' => 'Kapasitas pengisian harus di bawah metal frame (Atau di bawah 80% politainer)',
+                'kriteria_judgement' => '-',
+            ],
+            2 => [
+                'checkpoint' => 'Label menggunakan format tertentu yang melekat erat pada wadahnya (politainer) Contoh : Menggunakan holder kartu, taping 2 spot',
+                'kriteria_judgement' => 'Label hanya pada satu tempat, evaluasi "NG"',
+            ],
+            3 => [
+                'checkpoint' => 'Ketinggian tumpukan wadah (politainer) harus 120 cm atau kurang (hal yang sama berlaku untuk wadah kosong). EX: PT37 --- tidak lebih dari 6 politainer PT56/78 --- tidak lebih dari 5 politainer',
+                'kriteria_judgement' => "1) \"NG\" jika tinggi tumpukan lebih dari 120cm, terlepas dari aturan masing-masing pabrik\n2) \"OK\" jika tinggi tumpukan di bawah 120cm (tidak termasuk tinggi troli)\n3) \"OK\" jika tumpukan politainer kurang dari 120cm dan terakumulasi di troli.",
+            ],
+            4 => [
+                'checkpoint' => 'Wadah (politainer) dengan ukuran berbeda tidak ditumpuk menjadi satu.',
+                'kriteria_judgement' => '-',
+            ],
+            5 => [
+                'checkpoint' => 'Gunakan lembaran pelindung seperti plastic gusset, dan harus bersih dan tidak rusak.',
+                'kriteria_judgement' => '"NG" jika tidak ada aturan membersihkan atau membuang kantong kotor',
+            ],
+        ];
+
+        $subAssemblyData = [
+            1 => [
+                'checkpoint' => 'Nomor assy ditunjukkan pada pipa wire dan sesuai dengan actual produk (deskripsi wire) A: Feeding side: Kode wire dan warna wire B: Sisi operator: lokasi insert dan warna wire. Identitasnya terletak di bagian atas, jika ingin ditampilkan di bagian bawah gunakan tanda panah sebagai penunjuknya, namun tanda panah tidak diperlukan jika hanya satu tingkat',
+                'kriteria_judgement' => '-',
+            ],
+            2 => [
+                'checkpoint' => 'Ada aturan yang terdokumentasi untuk "First in dan First Out"',
+                'kriteria_judgement' => 'N/A jika penyimpanan dikelola oleh sistem manajemen (SAP, dll.)',
+            ],
+            3 => [
+                'checkpoint' => 'Nomor assy ditunjukkan di lokasi penyimpanan part box, dan cocok dengan nomor assy sebenarnya yang tertera di part box. Indikasinya terletak di bagian atas, jika ingin ditampilkan di bagian bawah maka digunakan tanda panah sebagai penunjuknya, namun tanda panah tidak diperlukan jika hanya satu tingkat',
+                'kriteria_judgement' => 'Jika part box sudah ditentukan, gunakan hanya satu identitas saja (Tidak perlu menampilkan identitas pada keduanya, part box dan tempat meletakkan part box)',
+            ],
+            4 => [
+                'checkpoint' => 'Part Box diisi dalam jumlah yang cukup untuk mencegahnya tumpah. *Pertimbangkan cara mengisi part box agar tidak terjatuh.',
+                'kriteria_judgement' => "1) Sekalipun ada indikasi garis (batas garis), evaluasi \"NG\" jika ada kemungkinan jatuh karena kondisi penyimpanan (misalnya ada kemiringan)\n2) Sekalipun tidak ada garis indikasi, evaluasinya \"OK\" jika ada sistem untuk mencegah tercampurnya part (misalnya, memasang penutup untuk menutup kotak, dll.)",
+            ],
+            5 => [
+                'checkpoint' => 'Part yang jatuh langsung ditempatkan di wadah part jatuh dan dihandle oleh supervisor.',
+                'kriteria_judgement' => "(1) Ada satu atau lebih tempat untuk handle part yang jatuh dan part yang jatuh langsung dimasukkan ke dalam kotak segera\n(2) Semua part (termasuk COT-Tube) jika tidak di handle di box part yang jatuh maka \"NG\"\n(3) Pembuangan part yang jatuh memiliki role dan diikuti\n(4) Evaluasi dinyatakan \"NG\" apabila SPV tidak menghandle item yang jatuh",
+            ],
+            6 => [
+                'checkpoint' => 'Dokumen seperti point kerja ditampilkan (pre insert drawing) tidak rusak (tidak terkelupas, sobek, atau tinta pudar)',
+                'kriteria_judgement' => 'Evaluasi kondisi layout seperti drawing, sub drawing, quality point dan instruksi',
+            ],
+            7 => [
+                'checkpoint' => 'Jika wire, terminal atau conector mungkin bersentuhan dengan lantai, pasang gutter. (Sama halnya dengan pipa wire)',
+                'kriteria_judgement' => "(1) Produk tidak boleh menyentuh lantai\n(2) Jika tidak ada gutter, produk harus berada sekitar 20cm dari lantai\n(3) Jika tidak ada tray untuk mencegah wire menyentuh lantai,evaluasinya \"OK\" jika wire digulung untuk mecegahnya menyentuh lantai",
+            ],
+            8 => [
+                'checkpoint' => 'Ada aturan 5W1H yang terdokumentasi untuk membersihkan tube, gutter, mating part, dan meja kerja agar tetap bersih. *Frekuensi ditentukan oleh masing-masing pabrik.',
+                'kriteria_judgement' => "(1) Cek apakah ada alat pembersih untuk pipa wire\n(2) Konfirmasi frekuensi kebersihan, waktu, orang, dan metodenya sudah diterapkan apa belum.",
+            ],
+        ];
+
+        $wireLayoutTapingData = [
+            1 => [
+                'checkpoint' => 'Dokumen seperti drawing Jig board, drawing post insert, work point sheet, dan lain-lain tidak rusak (tidak terkelupas, sobek, atau tintanya pudar)',
+                'kriteria_judgement' => '-',
+            ],
+            2 => [
+                'checkpoint' => 'No part box ditunjukkan di lokasi penyimpanan dan cocok dengan nomor sebenarnya yang tertera pada part box. Identitasnya terletak di bagian atas, jika ingin ditampilkan di bagian bawah gunakan tanda panah sebagai penunjuknya, namun tanda panah tidak diperlukan jika hanya satu tingkat',
+                'kriteria_judgement' => "(1) \"NG\" jika hanya nomor identitas pada part box (tidak ada part number)\n2) \"OK\" jika part dan lokasi pemasangan pada papan jig ditunjukkan dengan angka atau tanda.\n3) Untuk produk bervolume kecil, \"OK\" jika nomor part dan penyimpanan dicantumkan pada part box\n4) Jika part box sudah ditentukan, gunakan hanya satu identitas saja (Tidak perlu menampilkan identitas pada keduanya, part box dan tempat meletakkan part box)",
+            ],
+            3 => [
+                'checkpoint' => 'Box part diisi dalam jumlah yang cukup untuk mencegahnya tumpah. *Pertimbangkan cara mengisi part box agar tidak terjatuh.',
+                'kriteria_judgement' => "1) Sekalipun ada indikasi garis (batas garis), evaluasi \"NG\" jika ada kemungkinan jatuh karena kondisi penyimpanan (misalnya ada kemiringan)\n2) Sekalipun tidak ada garis indikasi, evaluasinya \"OK\" jika ada sistem untuk mencegah tercampurnya part (misalnya, memasang penutup untuk menutup kotak, dll.)",
+            ],
+            4 => [
+                'checkpoint' => 'Part yang terjatuh segera dimasukkan ke dalam wadah yang telah ditentukan dan dihandle oleh supervisor. *Untuk pengisian ulang (misalnya Wasurenbou, dll.), lakukan tindakan segera dengan memanggil line leader/atasan. Jika tidak ada part khusus untuk part yang jatuh. (diperlukan aturan yang terdokumentasi/tertulis). *Untuk spesifik part (misalnya COT, selotip, VS sheet, dll.) yang tidak mudah pecah, ternoda, atau salah assembly, operator dapat menilai sendiri apakah bagian tersebut masih dapat digunakan atau tidak (diperlukan aturan yang terdokumentasi/tertulis).',
+                'kriteria_judgement' => "1) Ada satu atau lebih tempat untuk handle part yang jatuh dan part yang jatuh langsung dimasukkan ke dalam kotak segera\n2) Semua part termasuk COT-tube, akan dievaluasi \"NG\" apabila belum di isolasi\n3) Untuk tape, tube/COT, dan sheet yang terjatuh dan dapat menimbulkan risiko damage, kotor, atau salah penggunaan, maka yang bersangkutan boleh memeriksa dan menilai part yang jatuh tersebut (sesuai dengan aturan yang ada).\n4) Evaluasi dinyatakan \"NG\" apabila SPV tidak menghandle item yang jatuh",
+            ],
+            5 => [
+                'checkpoint' => 'Lokasi penyimpanan jig tool dan material ditunjukkan dan item ditempatkan sesuai. (misalnya jig tool: Wasurenbou, COT Assembly jig, clip gun, dll. Material: tape termasuk tape yang sedang digunakan, sub assy)',
+                'kriteria_judgement' => 'Penempatan sementara (Choioki) untuk tool dan tape "NG" pada saat proses',
+            ],
+            6 => [
+                'checkpoint' => 'Area kerja konveyor ditunjukkan dan diikuti. *Posisi awal dan akhir ditunjukkan dengan jelas.',
+                'kriteria_judgement' => "1) \"OK\" jika area proses ditunjukkan proses di dalam area tersebut diamati (Proses yang belum selesai ➡ informasi abnormal).\n(2) Evaluasi dinyatakan \"OK\" apabila ada area overlap",
+            ],
+            7 => [
+                'checkpoint' => 'Perangkat peringatan abnormal dipasang dan berfungsi dengan baik. Peringatan harus divisualisasikan dan sebaiknya memiliki alarm yang memberi sinyal kelainan. (contoh: andon)',
+                'kriteria_judgement' => "(1) Selain perangkat, evaluasi akan \"OK\" jika ada abnormal yang divisualisasikan dengan bendera dll\n(2) Evaluasi akan \"NG\" apabila hanya dengan suara atau audio saja",
+            ],
+            8 => [
+                'checkpoint' => 'Part yang digunakan berbeda-beda tergantung pada nomor assy produksi yang ditunjukkan. Dan Penggunaan nya juga ditunjukkan.',
+                'kriteria_judgement' => '"OK" jika ada tampilan list penggunaan, tutup/cover, barcode dan LED navigasi dll.',
+            ],
+            9 => [
+                'checkpoint' => 'Ada aturan 5W1H yang terdokumentasi untuk membersihkan Assembly Jig board, gutter, dan conector holder, dan tidak kotor. *Frekuensi ditentukan oleh setiap pabrik',
+                'kriteria_judgement' => 'Konfirmasi frekuensi kebersihan, waktu, orang, dan metodenya sudah diterapkan apa belum',
+            ],
+            10 => [
+                'checkpoint' => 'Nomor assy ditunjukkan dan cocok dengan actual produk',
+                'kriteria_judgement' => "1) Jika ada kanban pada assembly jig evaluasinya \"OK\"\n2) Jika hanya memproduksi satu nomor part, evaluasinya \"OK\" jika ada identitas besar pada satu tempat\n3) Evaluasi \"OK\" jika indikasi nama digunakan sebagai no part produk, kecuali jika sudah terpasang di conveyor sejak awal",
+            ],
+            11 => [
+                'checkpoint' => 'Ada aturan yang terdokumentasi 5W1H untuk membersihkan bagian dalam konveyor dan tidak kotor. *Frekuensi ditentukan oleh tiap pabrik',
+                'kriteria_judgement' => 'Cek aturan yang terdokumentasi dan cek juga waktu implementasi pembersihan jika memungkinkan',
+            ],
+            12 => [
+                'checkpoint' => 'Rentang putaran/pergerakan konveyor bundar mempunyai tanda "Dilarang bekerja di area ini". Dan tidak ada proses yang dilakukan disana.',
+                'kriteria_judgement' => 'Pemasangan pagar di area larangan kerja dinilai "OK" meskipun tidak wajib.',
+            ],
+            13 => [
+                'checkpoint' => 'Penanggung jawab pembersihan dan inspeksi harian ditentukan untuk setiap equipment, dan ditampilkan pada setiap jig. *Target: jig board static',
+                'kriteria_judgement' => 'Konfirmasi frekuensi kebersihan, waktu, orang, dan metodenya sudah diterapkan apa belum',
+            ],
+        ];
+
         foreach ($areas5s as $index => $data) {
             $area = AuditArea::updateOrCreate(
                 ['slug' => $data['slug']],
@@ -1217,6 +1403,42 @@ class AuditSystemSeeder extends Seeder
                         if (isset($inspecPreAssyData[$num])) {
                             $cp = $inspecPreAssyData[$num]['checkpoint'];
                             $kj = $inspecPreAssyData[$num]['kriteria_judgement'];
+                        }
+                    } elseif (str_starts_with($pData['name'], 'Wire Twist Process ')) {
+                        $num = (int) str_replace('Wire Twist Process ', '', $pData['name']);
+                        if (isset($wireTwistData[$num])) {
+                            $cp = $wireTwistData[$num]['checkpoint'];
+                            $kj = $wireTwistData[$num]['kriteria_judgement'];
+                        }
+                    } elseif (str_starts_with($pData['name'], 'Shield Wire Process ')) {
+                        $num = (int) str_replace('Shield Wire Process ', '', $pData['name']);
+                        if (isset($shieldWireData[$num])) {
+                            $cp = $shieldWireData[$num]['checkpoint'];
+                            $kj = $shieldWireData[$num]['kriteria_judgement'];
+                        }
+                    } elseif (str_starts_with($pData['name'], 'Wire Store ( sebelum sub-Assembly ) ')) {
+                        $num = (int) str_replace('Wire Store ( sebelum sub-Assembly ) ', '', $pData['name']);
+                        if (isset($wireStoreData[$num])) {
+                            $cp = $wireStoreData[$num]['checkpoint'];
+                            $kj = $wireStoreData[$num]['kriteria_judgement'];
+                        }
+                    } elseif (str_starts_with($pData['name'], 'Store and Shipping Area for JUNKAN Product ')) {
+                        $num = (int) str_replace('Store and Shipping Area for JUNKAN Product ', '', $pData['name']);
+                        if (isset($storeShippingJunkanData[$num])) {
+                            $cp = $storeShippingJunkanData[$num]['checkpoint'];
+                            $kj = $storeShippingJunkanData[$num]['kriteria_judgement'];
+                        }
+                    } elseif (str_starts_with($pData['name'], 'Sub Assembly ')) {
+                        $num = (int) str_replace('Sub Assembly ', '', $pData['name']);
+                        if (isset($subAssemblyData[$num])) {
+                            $cp = $subAssemblyData[$num]['checkpoint'];
+                            $kj = $subAssemblyData[$num]['kriteria_judgement'];
+                        }
+                    } elseif (str_starts_with($pData['name'], 'Wire Layout / Taping ')) {
+                        $num = (int) str_replace('Wire Layout / Taping ', '', $pData['name']);
+                        if (isset($wireLayoutTapingData[$num])) {
+                            $cp = $wireLayoutTapingData[$num]['checkpoint'];
+                            $kj = $wireLayoutTapingData[$num]['kriteria_judgement'];
                         }
                     }
 
