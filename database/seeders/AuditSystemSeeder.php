@@ -188,6 +188,37 @@ class AuditSystemSeeder extends Seeder
             ],
         ];
 
+        $generalItemsData = [
+            1 => [
+                'checkpoint' => 'Ada pintu di tiap gerbang masuk. Pintu ke area produksi atau jendela tidak dibiarkan terbuka. (Untuk mencegah masuknya debu atau hewan). Gunakan pintu kasa saat pintu tetap terbuka. Berlaku untuk semua proses (dari warehouse hingga area shipping)',
+                'kriteria_judgement' => "(1) Jika pada saat audit jendela dalam keadaan tertutup, evaluasi \"OK\". Jika anda diberitahu bahwa jendela tidak akan dibuka meskipun tidak ada tirai.\n(2) Evaluasi akan \"OK\" jika tirai vinil, jaring, dll dipasang di area pengiriman untuk mencegah masuknya serangga",
+            ],
+            2 => [
+                'checkpoint' => 'Kabel, Pipa (termasuk kabel listrik sementara), stop kontak (outlet listrik) / sambungan listrik bebas dari kerusakan dan harus menggunakan cover sehingga tidak mengganggu jalur jalan untuk pekerja. (stop kontak/sambungan listrik dipasang di dinding/tiang)',
+                'kriteria_judgement' => "① Instalasi kabel tidak boleh terlihat di lorong.\n*Jika ada penutup (tie wrap/kabel tie), akan dinilai \"OK\"",
+            ],
+            3 => [
+                'checkpoint' => 'Menggunakan sepatu khusus saat berada di area produksi atau bersihkan sepatu pada keset saat masuk.',
+                'kriteria_judgement' => '(1) Evaluasi akan "OK" jika di tempat menaiki forklift atau truck (Terminal) supaya memakai sepatu, dan pada saat memulai proses gantilah dengan sepatu dan pakailah keset agar kotoran terjatuh.',
+            ],
+            4 => [
+                'checkpoint' => 'Nama line, proses dan mesin ditunjukkan dengan jelas',
+                'kriteria_judgement' => 'Dalam proses pre assy hanya indikasi mesin cutting yang ditampilkan (mesin cutting/mesin otomatis). Di Final assy, nama mobil, part number, nomor line ditampilkan pada Conveyor dan jika tidak ada nama proses yang didisplay pada SSC dan Checker maka NG',
+            ],
+            5 => [
+                'checkpoint' => 'Standar yang diperlukan (SWCT, OS/IS) disiapkan dan tersedia. Lokasi ditentukan dengan jelas sehingga dapat langsung diperiksa di lokasi produksi saat dibutuhkan',
+                'kriteria_judgement' => '"NG" jika tidak ada SWCT',
+            ],
+            6 => [
+                'checkpoint' => 'Area kerja dan jalur jalan diberi batas-batas dan cukup lebar untuk dilalui',
+                'kriteria_judgement' => "(1) \"No Work Area\" pada area putaran Conveyor\n(2) Jika perlu melakukan pekerjaan berulang di dekat lorong, sediakan ruang minimal 800mm yang diperlukan untuk pekerjaan tersebut agar proses tersebut tidak dilakukan persis di jalur hijau\n(3) Zona pejalan kaki harus mempunyai lebar 800 mm atau lebih (termasuk lebar marka jalur).",
+            ],
+            7 => [
+                'checkpoint' => 'Memastikan pencahayaan di area produksi sesuai dengan standar. (Produksi : 300Lux~, Inspection : 500Lux~, Warehouse : 75Lux~ ) ※Pastikan disesuaikan dengan peraturan khusus dari negara',
+                'kriteria_judgement' => 'Evaluasi dinyatakan "OK" apabila pencahayaan diukur dengan illuminance dan nilai di atas rata-rata',
+            ],
+        ];
+
         foreach ($areas5s as $index => $data) {
             $area = AuditArea::updateOrCreate(
                 ['slug' => $data['slug']],
@@ -202,10 +233,23 @@ class AuditSystemSeeder extends Seeder
 
             if (isset($data['processes'])) {
                 foreach ($data['processes'] as $pData) {
+                    $cp = $pData['checkpoint'] ?? null;
+                    $kj = $pData['kriteria_judgement'] ?? null;
+
+                    if (str_starts_with($pData['name'], 'General Items ')) {
+                        $num = (int) str_replace('General Items ', '', $pData['name']);
+                        if (isset($generalItemsData[$num])) {
+                            $cp = $generalItemsData[$num]['checkpoint'];
+                            $kj = $generalItemsData[$num]['kriteria_judgement'];
+                        }
+                    }
+
                     AuditProcess::updateOrCreate(
                         ['audit_area_id' => $area->id, 'name' => $pData['name']],
                         [
                             'description' => "Pemeriksaan {$pData['name']} pada area {$area->name}",
+                            'checkpoint' => $cp ?? "Checkpoint untuk {$pData['name']} - menyusul",
+                            'kriteria_judgement' => $kj ?? "Kriteria OK/NG untuk {$pData['name']} - menyusul",
                             'status' => 'Ready',
                             'sort_order' => $pData['sort_order'],
                         ]
@@ -214,10 +258,13 @@ class AuditSystemSeeder extends Seeder
             } else {
                 // Seed 3 dummy processes for remaining areas
                 for ($i = 1; $i <= 3; $i++) {
+                    $pName = "Process {$i}";
                     AuditProcess::updateOrCreate(
-                        ['audit_area_id' => $area->id, 'name' => "Process {$i}"],
+                        ['audit_area_id' => $area->id, 'name' => $pName],
                         [
                             'description' => "Inspeksi standar 5S Tahap {$i} pada area {$area->name}",
+                            'checkpoint' => "Checkpoint untuk {$pName} - menyusul",
+                            'kriteria_judgement' => "Kriteria OK/NG untuk {$pName} - menyusul",
                             'status' => 'Ready',
                             'sort_order' => $i,
                         ]
@@ -243,10 +290,13 @@ class AuditSystemSeeder extends Seeder
             ->delete();
 
         for ($i = 1; $i <= 12; $i++) {
+            $pName = "Cutting & Crimping {$i}";
             AuditProcess::updateOrCreate(
-                ['audit_area_id' => $changePointArea->id, 'name' => "Cutting & Crimping {$i}"],
+                ['audit_area_id' => $changePointArea->id, 'name' => $pName],
                 [
                     'description' => "Audit manajemen perubahan pada proses Cutting & Crimping {$i}",
+                    'checkpoint' => "Checkpoint untuk {$pName} - menyusul",
+                    'kriteria_judgement' => "Kriteria OK/NG untuk {$pName} - menyusul",
                     'status' => 'Ready',
                     'sort_order' => $i,
                 ]
@@ -254,10 +304,13 @@ class AuditSystemSeeder extends Seeder
         }
 
         for ($i = 1; $i <= 12; $i++) {
+            $pName = "Assembly Process {$i}";
             AuditProcess::updateOrCreate(
-                ['audit_area_id' => $changePointArea->id, 'name' => "Assembly Process {$i}"],
+                ['audit_area_id' => $changePointArea->id, 'name' => $pName],
                 [
                     'description' => "Audit manajemen perubahan pada proses Assembly Process {$i}",
+                    'checkpoint' => "Checkpoint untuk {$pName} - menyusul",
+                    'kriteria_judgement' => "Kriteria OK/NG untuk {$pName} - menyusul",
                     'status' => 'Ready',
                     'sort_order' => 12 + $i,
                 ]
@@ -279,14 +332,27 @@ class AuditSystemSeeder extends Seeder
         AuditProcess::where('audit_area_id', $licenseSystemArea->id)->where('name', 'All Process')->delete();
 
         for ($i = 1; $i <= 18; $i++) {
+            $pName = "All Process {$i}";
             AuditProcess::updateOrCreate(
-                ['audit_area_id' => $licenseSystemArea->id, 'name' => "All Process {$i}"],
+                ['audit_area_id' => $licenseSystemArea->id, 'name' => $pName],
                 [
                     'description' => "Pemeriksaan dan evaluasi lisensi sertifikasi operasional All Process {$i}",
+                    'checkpoint' => "Checkpoint untuk {$pName} - menyusul",
+                    'kriteria_judgement' => "Kriteria OK/NG untuk {$pName} - menyusul",
                     'status' => 'Ready',
                     'sort_order' => $i,
                 ]
             );
+        }
+
+        // Populate placeholder for all AuditProcess records missing checkpoint/kriteria_judgement
+        foreach (AuditProcess::all() as $proc) {
+            if (empty($proc->checkpoint) || empty($proc->kriteria_judgement)) {
+                $proc->update([
+                    'checkpoint' => $proc->checkpoint ?? "Checkpoint untuk {$proc->name} - menyusul",
+                    'kriteria_judgement' => $proc->kriteria_judgement ?? "Kriteria OK/NG untuk {$proc->name} - menyusul",
+                ]);
+            }
         }
 
         // 4. Seed Audit Records (Snapshot fields: area_name & auditor_name)

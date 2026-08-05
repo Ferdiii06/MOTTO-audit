@@ -18,6 +18,9 @@ class AuditRecord extends Model
         'auditor_name',
         'score',
         'status',
+        'judgement',
+        'foto_ng',
+        'catatan',
     ];
 
     public function area()
