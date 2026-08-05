@@ -10,10 +10,12 @@ class AuditUserSeeder extends Seeder
 {
     public function run(): void
     {
-        AuditUser::create([
-            'nik' => '12345',
-            'name' => 'Admin QA',
-            'password' => Hash::make('admin123'),
-        ]);
+        AuditUser::updateOrCreate(
+            ['nik' => '12345'],
+            [
+                'name' => 'Admin QA',
+                'password' => Hash::make('admin123'),
+            ]
+        );
     }
 }

@@ -38,7 +38,7 @@
     </div>
 
     {{-- Filters & Export Action Bar --}}
-    <div class="bg-white rounded-xl border border-gray-200 p-4 shadow-sm flex flex-wrap items-center justify-between gap-3">
+    <div class="bg-white rounded-xl border border-gray-200 p-4 shadow-sm flex flex-wrap items-center justify-between gap-3 relative z-30">
         <div class="flex flex-wrap items-center gap-3">
             {{-- Date Range --}}
             <div class="relative">
@@ -52,27 +52,59 @@
             </div>
 
             {{-- Filter Kategori --}}
-            <select class="px-3 py-2 border border-gray-200 rounded-lg text-xs font-medium text-gray-700 bg-gray-50 focus:bg-white focus:outline-none focus:ring-1 focus:ring-yazaki-red cursor-pointer">
-                <option value="">Semua Kategori</option>
-                <option value="5s_standard">5S Standard</option>
-                <option value="change_point">Change Point</option>
-                <option value="license_system">License System</option>
-            </select>
+            <div class="relative inline-block text-left">
+                <button type="button" id="kategori-filter-btn" 
+                        class="inline-flex items-center justify-between min-w-[130px] px-3 py-2 border border-gray-200 rounded-lg text-xs font-medium text-gray-700 bg-gray-50 hover:bg-white focus:outline-none focus:ring-1 focus:ring-yazaki-red cursor-pointer">
+                    <span id="selected-kategori-text">Semua Kategori</span>
+                    <svg class="w-4 h-4 ml-2 text-gray-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                    </svg>
+                </button>
+                <div id="kategori-filter-menu" 
+                     class="hidden absolute top-full left-0 mt-1 w-44 bg-white border border-gray-200 rounded-lg shadow-lg z-50 py-1 text-xs">
+                    <div class="px-3 py-2 font-semibold text-gray-800 cursor-pointer hover:bg-red-50 hover:text-yazaki-red" data-value="">Semua Kategori</div>
+                    <div class="px-3 py-2 text-gray-700 cursor-pointer hover:bg-red-50 hover:text-yazaki-red" data-value="5s_standard">5S Standard</div>
+                    <div class="px-3 py-2 text-gray-700 cursor-pointer hover:bg-red-50 hover:text-yazaki-red" data-value="change_point">Change Point</div>
+                    <div class="px-3 py-2 text-gray-700 cursor-pointer hover:bg-red-50 hover:text-yazaki-red" data-value="license_system">License System</div>
+                </div>
+            </div>
 
-            {{-- Filter Area --}}
-            <select class="px-3 py-2 border border-gray-200 rounded-lg text-xs font-medium text-gray-700 bg-gray-50 focus:bg-white focus:outline-none focus:ring-1 focus:ring-yazaki-red cursor-pointer">
-                <option value="">Semua Area</option>
-                @foreach($areas as $area)
-                    <option value="{{ $area->slug }}">{{ $area->name }}</option>
-                @endforeach
-            </select>
+            {{-- Filter Area (Guaranteed Downward Pop with Scrollbar) --}}
+            <div class="relative inline-block text-left">
+                <button type="button" id="area-filter-btn" 
+                        class="inline-flex items-center justify-between min-w-[160px] max-w-[220px] px-3 py-2 border border-gray-200 rounded-lg text-xs font-medium text-gray-700 bg-gray-50 hover:bg-white focus:outline-none focus:ring-1 focus:ring-yazaki-red cursor-pointer">
+                    <span id="selected-area-text" class="truncate">Semua Area</span>
+                    <svg class="w-4 h-4 ml-2 text-gray-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                    </svg>
+                </button>
+                <div id="area-filter-menu" 
+                     class="hidden absolute top-full left-0 mt-1 w-64 max-h-56 overflow-y-auto bg-white border border-gray-200 rounded-lg shadow-xl z-50 py-1 text-xs divide-y divide-gray-50">
+                    <div class="px-3 py-2 font-semibold text-gray-800 cursor-pointer hover:bg-red-50 hover:text-yazaki-red" data-value="">Semua Area</div>
+                    @foreach($areas as $area)
+                        <div class="px-3 py-2 text-gray-700 cursor-pointer hover:bg-red-50 hover:text-yazaki-red transition-colors" data-value="{{ $area->slug }}">
+                            {{ $area->name }}
+                        </div>
+                    @endforeach
+                </div>
+            </div>
 
             {{-- Filter Kondisi --}}
-            <select class="px-3 py-2 border border-gray-200 rounded-lg text-xs font-medium text-gray-700 bg-gray-50 focus:bg-white focus:outline-none focus:ring-1 focus:ring-yazaki-red cursor-pointer">
-                <option value="">Semua Kondisi</option>
-                <option value="OK">OK</option>
-                <option value="NG">NG</option>
-            </select>
+            <div class="relative inline-block text-left">
+                <button type="button" id="kondisi-filter-btn" 
+                        class="inline-flex items-center justify-between min-w-[120px] px-3 py-2 border border-gray-200 rounded-lg text-xs font-medium text-gray-700 bg-gray-50 hover:bg-white focus:outline-none focus:ring-1 focus:ring-yazaki-red cursor-pointer">
+                    <span id="selected-kondisi-text">Semua Kondisi</span>
+                    <svg class="w-4 h-4 ml-2 text-gray-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                    </svg>
+                </button>
+                <div id="kondisi-filter-menu" 
+                     class="hidden absolute top-full left-0 mt-1 w-36 bg-white border border-gray-200 rounded-lg shadow-lg z-50 py-1 text-xs">
+                    <div class="px-3 py-2 font-semibold text-gray-800 cursor-pointer hover:bg-red-50 hover:text-yazaki-red" data-value="">Semua Kondisi</div>
+                    <div class="px-3 py-2 text-gray-700 cursor-pointer hover:bg-red-50 hover:text-yazaki-red" data-value="OK">OK</div>
+                    <div class="px-3 py-2 text-gray-700 cursor-pointer hover:bg-red-50 hover:text-yazaki-red" data-value="NG">NG</div>
+                </div>
+            </div>
         </div>
 
         {{-- Export Button --}}
@@ -152,4 +184,38 @@
         </div>
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    function setupDropdown(btnId, menuId, textId) {
+        const btn = document.getElementById(btnId);
+        const menu = document.getElementById(menuId);
+        const text = document.getElementById(textId);
+        if (!btn || !menu) return;
+
+        btn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            document.querySelectorAll('[id$="-menu"]').forEach(m => {
+                if (m.id !== menuId) m.classList.add('hidden');
+            });
+            menu.classList.toggle('hidden');
+        });
+
+        menu.querySelectorAll('[data-value]').forEach(item => {
+            item.addEventListener('click', function() {
+                if (text) text.textContent = this.textContent.trim();
+                menu.classList.add('hidden');
+            });
+        });
+    }
+
+    setupDropdown('kategori-filter-btn', 'kategori-filter-menu', 'selected-kategori-text');
+    setupDropdown('area-filter-btn', 'area-filter-menu', 'selected-area-text');
+    setupDropdown('kondisi-filter-btn', 'kondisi-filter-menu', 'selected-kondisi-text');
+
+    document.addEventListener('click', function() {
+        document.querySelectorAll('[id$="-menu"]').forEach(m => m.classList.add('hidden'));
+    });
+});
+</script>
 @endsection

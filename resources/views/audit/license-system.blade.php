@@ -15,34 +15,32 @@
         <p class="text-sm text-gray-500 mt-1">Audit lisensi sertifikasi & kualifikasi operasional personel</p>
     </div>
 
-    {{-- Single Process Card ("All Process") --}}
-    <div class="max-w-md">
+    {{-- Process Grid --}}
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         @foreach($processes as $process)
-            <div class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+            <div class="bg-white rounded-xl border border-gray-200 p-5 shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
                 <div>
-                    <div class="flex items-center justify-between mb-4">
-                        <div class="w-10 h-10 rounded-lg bg-red-50 text-yazaki-red flex items-center justify-center">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
-                            </svg>
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="w-8 h-8 rounded-lg bg-red-50 text-yazaki-red flex items-center justify-center font-bold text-xs shrink-0">
+                            {{ str_pad($loop->iteration, 2, '0', STR_PAD_LEFT) }}
                         </div>
-                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800">
+                        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800">
                             {{ $process['status'] }}
                         </span>
                     </div>
 
-                    <h3 class="text-lg font-bold text-gray-900 mb-2">
+                    <h3 class="text-base font-bold text-gray-900 mb-1.5 line-clamp-2">
                         {{ $process['name'] }}
                     </h3>
-                    <p class="text-xs text-gray-500 leading-relaxed mb-6">
+                    <p class="text-xs text-gray-500 leading-relaxed mb-4 line-clamp-2">
                         {{ $process['desc'] }}
                     </p>
                 </div>
 
                 <a href="/audit/placeholder" 
-                   class="w-full inline-flex items-center justify-center space-x-2 px-4 py-2.5 rounded-lg text-sm font-semibold text-white bg-yazaki-red hover:bg-yazaki-red-dark transition-colors shadow-sm">
+                   class="w-full inline-flex items-center justify-center space-x-1.5 px-3 py-2 rounded-lg text-xs font-semibold text-white bg-yazaki-red hover:bg-yazaki-red-dark transition-colors shadow-sm">
                     <span>Proceed to Audit</span>
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
                     </svg>
                 </a>
