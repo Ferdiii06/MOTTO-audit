@@ -217,6 +217,46 @@ class AuditSystemSeeder extends Seeder
                 'checkpoint' => 'Memastikan pencahayaan di area produksi sesuai dengan standar. (Produksi : 300Lux~, Inspection : 500Lux~, Warehouse : 75Lux~ ) ※Pastikan disesuaikan dengan peraturan khusus dari negara',
                 'kriteria_judgement' => 'Evaluasi dinyatakan "OK" apabila pencahayaan diukur dengan illuminance dan nilai di atas rata-rata',
             ],
+            8 => [
+                'checkpoint' => 'Part dan product tidak terpapar langsung sinar matahari (Dihalangi kaca atau tirai)',
+                'kriteria_judgement' => 'Memeriksa seluruh proses dan jendela warehouse. Jika ada sinar matahari langsung masuk, namun jendelanya menggunakan pelindung/penutup untuk part dan material maka hasilnya OK',
+            ],
+            9 => [
+                'checkpoint' => 'Identifikasi kondisi abnormal dan beberapa orang yang dapat dihubungi bila terjadi. (cek contact person)',
+                'kriteria_judgement' => '-',
+            ],
+            10 => [
+                'checkpoint' => 'Letak dari barang-barang yang dapat didorong ditandai dengan layout dan nama produk. Barang bergerak (misalnya trolly/rak) memiliki indikasi produk.',
+                'kriteria_judgement' => "① Garis layout ditampilkan sedemikian rupa sehingga secara akurat menentukan posisinya, keempat sudut diberi nilai \"OK\" dan hanya bagian depan/C yang diberi nilai \"NG\"\n② Untuk barang bergerak atau barang yang akan dipindah/dibawa, evaluasi \"OK\" jika menggunakan garis layout dan nama produk\n③ Tidak perlu menampilkan tempat penempatan troli part kecuali pada posisi tetap, misalnya pada saat troli part sedang disuplai.",
+            ],
+            11 => [
+                'checkpoint' => 'Produk dan material yang jarang digunakan dan tidak digunakan selama satu bulan atau lebih, dipasang cover anti debu',
+                'kriteria_judgement' => "1) Jika part diletakkan di area atau ruangan terpisah tetapi dilindungi oleh penutup tahan debu, evaluasi \"OK\".\n2) Walaupun part tersebut termasuk \"non-flow product\" evaluasinya \"NG\" jika terdapat debu di area tersebut.",
+            ],
+            12 => [
+                'checkpoint' => 'Item yang tidak perlu untuk proses tidak ditinggalkan di area kerja kecuali di tempat yang ditentukan. Semua item ditempatkan di tempat yang ditentukan.',
+                'kriteria_judgement' => "① Jika meletakkan kanban atau karet gelang di tempat selain tempat penempatannya, maka akan dinilai sebagai x.\n② Jika ada item berlebih di bawah tempat inspeksi checker/tempat inspeksi visual, dll., evaluasinya NG\n③ Evaluasi dinyatakan \"OK\" apabila barang pribadi diletakkan di tempat yang ditentukan\n④ Hasil dari proses lain yang dievaluasi sebagai NG untuk item yang sama tidak tercermin dalam item criteria audit",
+            ],
+            13 => [
+                'checkpoint' => 'Setiap barang yang disimpan di luar pabrik memiliki petunjuk lokasi, due date, dan PIC. Untuk penyimpanan jangka panjang, jig board atau jig inspeksi harus ditutup dengan cover pelindung.',
+                'kriteria_judgement' => '-',
+            ],
+            14 => [
+                'checkpoint' => 'Part box, box plastik, dan box W/H TIDAK boleh diletakkan di lantai (diperlukan celah minimal 3 cm di antara kotak dan lantai)',
+                'kriteria_judgement' => "1) Jika box atau tas diletakkan langsung di lantai, maka evaluasinya \"NG\"\n2) Standarnya 3cm, namun tingginya tidak terlalu menjadi masalah asalkan polytainer tidak diletakkan langsung di lantai untuk mencegah bagian bawah dari debu.",
+            ],
+            15 => [
+                'checkpoint' => 'Untuk menghindari kerusakan akibat jatuh, PC dan peralatan sensitif lainnya dilindungi dengan tindakan pencegahan agar tidak jatuh.',
+                'kriteria_judgement' => '-',
+            ],
+            16 => [
+                'checkpoint' => 'Sampah dipisahkan menurut aturan pabrik. Wadah sampah tidak boleh meluap',
+                'kriteria_judgement' => "1) \"Pemilahan sampah\" dan \"tempat sampah tidak meluap\" diamati dan dievaluasi\n2) Jika pabrik tidak memerlukan pemilahan/pemisahan jenis sampah, maka akan dapat dilakukan audit jika ada tempat sampah dipasang.",
+            ],
+            17 => [
+                'checkpoint' => 'Adanya Patroli/Audit safety yang dilakukan secara berkala dan hasil inspeksi tersedia. Jika ada masalah, maka tetapkan due date dan ambil tindakan.',
+                'kriteria_judgement' => "Konfirmasi hasil inspeksi dari Safety comite yang dilakukan di setiap tempat produksi. Evaluasi dinyatakan \"OK\" apabila ada hasil inspeksi dan apabila ada masalah, pastikan ada tindakan dan lakukan konfirmasi ditempat. Evaluasi dinyatakan \"NG\" apabila tidak ada hasil inspeksi, Evaluasi dinyatakan \"NG\" apabila tidak ada tindakan.",
+            ],
         ];
 
         foreach ($areas5s as $index => $data) {
