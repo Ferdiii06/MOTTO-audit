@@ -149,7 +149,7 @@
                                 @endif
                             </td>
                             <td class="px-6 py-4 text-right whitespace-nowrap">
-                                <a href="{{ url('audit/placeholder') }}" 
+                                <a href="{{ route('audit.riwayat.detail', $row['id']) }}" 
                                    class="inline-flex items-center px-3 py-1.5 rounded-lg text-xs font-semibold text-yazaki-red border border-yazaki-red hover:bg-yazaki-red hover:text-white transition-colors">
                                     Lihat Detail
                                 </a>
