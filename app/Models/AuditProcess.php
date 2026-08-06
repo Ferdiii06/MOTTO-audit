@@ -13,6 +13,8 @@ class AuditProcess extends Model
         'audit_area_id',
         'name',
         'description',
+        'checkpoint',
+        'kriteria_judgement',
         'status',
         'sort_order',
     ];

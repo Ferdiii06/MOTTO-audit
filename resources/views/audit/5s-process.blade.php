@@ -33,6 +33,16 @@
         </div>
     </div>
 
+    {{-- Success Alert --}}
+    @if(session('success'))
+        <div class="p-4 bg-emerald-50 border border-emerald-200 rounded-xl text-xs text-emerald-800 font-semibold flex items-center space-x-2 shadow-sm">
+            <svg class="w-4 h-4 text-emerald-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+            </svg>
+            <span>{{ session('success') }}</span>
+        </div>
+    @endif
+
     {{-- Process Cards Grid --}}
     <div class="flex items-center justify-between mb-4">
         <h2 class="text-sm font-bold text-gray-700 uppercase tracking-wider">

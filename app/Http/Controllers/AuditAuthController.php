@@ -242,6 +242,75 @@ class AuditAuthController extends Controller
         return view('audit.pedoman');
     }
 
+    public function showAuditForm(AuditProcess $process)
+    {
+        $process->load('area');
+        $area = $process->area;
+        $auditorName = session('audit_user_name', 'Auditor QA');
+        $auditDate = date('d F Y');
+
+        return view('audit.form', compact('process', 'area', 'auditorName', 'auditDate'));
+    }
+
+    public function submitAuditForm(Request $request, AuditProcess $process)
+    {
+        $process->load('area');
+
+        $isNg = $request->input('judgement') === 'NG';
+
+        $rules = [
+            'judgement' => 'required|in:OK,NG',
+            'foto_ng' => $isNg ? 'required|image|mimes:jpeg,png,jpg,gif,webp|max:2048' : 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'catatan' => $isNg ? 'required|string' : 'nullable|string',
+        ];
+
+        $request->validate($rules, [
+            'judgement.required' => 'Penilaian OK / NG wajib dipilih.',
+            'foto_ng.required' => 'Foto temuan wajib diunggah jika penilaian NG.',
+            'foto_ng.image' => 'File yang diunggah harus berupa gambar (JPG, PNG, WEBP).',
+            'foto_ng.max' => 'Ukuran file foto maksimal 2 MB.',
+            'catatan.required' => 'Catatan temuan wajib diisi jika penilaian NG.',
+        ]);
+
+        $fotoPath = null;
+        if ($request->hasFile('foto_ng')) {
+            $fotoPath = $request->file('foto_ng')->store('audit_photos', 'public');
+        }
+
+        $userId = session('audit_user_id');
+        $auditorName = session('audit_user_name', 'Auditor QA');
+        $areaName = $process->area ? $process->area->name : 'Area Audit';
+        $judgement = $request->input('judgement');
+        $score = ($judgement === 'OK') ? 100.00 : 0.00;
+
+        AuditRecord::create([
+            'audit_area_id' => $process->audit_area_id,
+            'audit_process_id' => $process->id,
+            'audit_user_id' => $userId,
+            'audit_date' => now()->toDateString(),
+            'area_name' => $areaName,
+            'auditor_name' => $auditorName,
+            'score' => $score,
+            'status' => 'Selesai',
+            'judgement' => $judgement,
+            'foto_ng' => $fotoPath,
+            'catatan' => $request->input('catatan'),
+        ]);
+
+        $areaSlug = $process->area ? $process->area->slug : '';
+        $areaCategory = $process->area ? $process->area->category : '';
+
+        if ($areaCategory === 'change_point' || $areaSlug === 'change-point-management') {
+            $redirectUrl = '/audit/change-point-management';
+        } elseif ($areaCategory === 'license_system' || $areaSlug === 'license-system') {
+            $redirectUrl = '/audit/license-system';
+        } else {
+            $redirectUrl = "/audit/5s-standard/{$areaSlug}";
+        }
+
+        return redirect($redirectUrl)->with('success', "Form Audit untuk process '{$process->name}' berhasil disimpan dengan hasil {$judgement}!");
+    }
+
     public function logout(Request $request)
     {
         $request->session()->forget('audit_user_id');
