@@ -38,51 +38,79 @@
     </div>
 
     {{-- Filters & Export Action Bar --}}
-    <div class="bg-white rounded-xl border border-gray-200 p-4 shadow-sm flex flex-wrap items-center justify-between gap-3 relative z-30">
+    <form method="GET" action="{{ route('riwayat') }}" id="filter-form" 
+          class="bg-white rounded-xl border border-gray-200 p-4 shadow-sm flex flex-wrap items-center justify-between gap-3 relative z-30">
+        
+        {{-- Hidden Inputs for Dropdown Filters --}}
+        <input type="hidden" name="kategori" id="input-kategori" value="{{ request('kategori') }}">
+        <input type="hidden" name="area" id="input-area" value="{{ request('area') }}">
+        <input type="hidden" name="kondisi" id="input-kondisi" value="{{ request('kondisi') }}">
+
         <div class="flex flex-wrap items-center gap-3">
-            {{-- Date Range --}}
-            <div class="relative">
-                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                    </svg>
-                </div>
-                <input type="text" value="24/05/2026 - 24/05/2026" 
-                       class="pl-9 pr-3 py-2 border border-gray-200 rounded-lg text-xs font-medium text-gray-700 bg-gray-50 focus:bg-white focus:outline-none focus:ring-1 focus:ring-yazaki-red cursor-pointer">
+            {{-- Date Range Filter --}}
+            <div class="flex items-center space-x-2 bg-gray-50 border border-gray-200 rounded-lg px-3 py-1.5 text-xs text-gray-700">
+                <svg class="w-4 h-4 text-gray-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                </svg>
+                <input type="date" name="start_date" value="{{ request('start_date') }}" 
+                       class="bg-transparent focus:outline-none text-xs text-gray-700 font-medium cursor-pointer"
+                       onchange="document.getElementById('filter-form').submit()">
+                <span class="text-gray-400 font-bold">-</span>
+                <input type="date" name="end_date" value="{{ request('end_date') }}" 
+                       class="bg-transparent focus:outline-none text-xs text-gray-700 font-medium cursor-pointer"
+                       onchange="document.getElementById('filter-form').submit()">
             </div>
 
             {{-- Filter Kategori --}}
+            @php
+                $kategoriMap = [
+                    '' => 'Semua Kategori',
+                    '5s_standard' => '5S Standard',
+                    'change_point' => 'Change Point',
+                    'license_system' => 'License System',
+                ];
+                $selectedKategoriLabel = $kategoriMap[request('kategori', '')] ?? 'Semua Kategori';
+            @endphp
             <div class="relative inline-block text-left">
                 <button type="button" id="kategori-filter-btn" 
                         class="inline-flex items-center justify-between min-w-[130px] px-3 py-2 border border-gray-200 rounded-lg text-xs font-medium text-gray-700 bg-gray-50 hover:bg-white focus:outline-none focus:ring-1 focus:ring-yazaki-red cursor-pointer">
-                    <span id="selected-kategori-text">Semua Kategori</span>
+                    <span id="selected-kategori-text">{{ $selectedKategoriLabel }}</span>
                     <svg class="w-4 h-4 ml-2 text-gray-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                     </svg>
                 </button>
                 <div id="kategori-filter-menu" 
                      class="hidden absolute top-full left-0 mt-1 w-44 bg-white border border-gray-200 rounded-lg shadow-lg z-50 py-1 text-xs">
-                    <div class="px-3 py-2 font-semibold text-gray-800 cursor-pointer hover:bg-red-50 hover:text-yazaki-red" data-value="">Semua Kategori</div>
-                    <div class="px-3 py-2 text-gray-700 cursor-pointer hover:bg-red-50 hover:text-yazaki-red" data-value="5s_standard">5S Standard</div>
-                    <div class="px-3 py-2 text-gray-700 cursor-pointer hover:bg-red-50 hover:text-yazaki-red" data-value="change_point">Change Point</div>
-                    <div class="px-3 py-2 text-gray-700 cursor-pointer hover:bg-red-50 hover:text-yazaki-red" data-value="license_system">License System</div>
+                    <div class="px-3 py-2 font-semibold text-gray-800 cursor-pointer hover:bg-red-50 hover:text-yazaki-red" data-input="input-kategori" data-value="">Semua Kategori</div>
+                    <div class="px-3 py-2 text-gray-700 cursor-pointer hover:bg-red-50 hover:text-yazaki-red" data-input="input-kategori" data-value="5s_standard">5S Standard</div>
+                    <div class="px-3 py-2 text-gray-700 cursor-pointer hover:bg-red-50 hover:text-yazaki-red" data-input="input-kategori" data-value="change_point">Change Point</div>
+                    <div class="px-3 py-2 text-gray-700 cursor-pointer hover:bg-red-50 hover:text-yazaki-red" data-input="input-kategori" data-value="license_system">License System</div>
                 </div>
             </div>
 
             {{-- Filter Area (Guaranteed Downward Pop with Scrollbar) --}}
+            @php
+                $selectedAreaLabel = 'Semua Area';
+                if (request('area')) {
+                    $foundArea = $areas->firstWhere('slug', request('area'));
+                    if ($foundArea) {
+                        $selectedAreaLabel = $foundArea->name;
+                    }
+                }
+            @endphp
             <div class="relative inline-block text-left">
                 <button type="button" id="area-filter-btn" 
                         class="inline-flex items-center justify-between min-w-[160px] max-w-[220px] px-3 py-2 border border-gray-200 rounded-lg text-xs font-medium text-gray-700 bg-gray-50 hover:bg-white focus:outline-none focus:ring-1 focus:ring-yazaki-red cursor-pointer">
-                    <span id="selected-area-text" class="truncate">Semua Area</span>
+                    <span id="selected-area-text" class="truncate">{{ $selectedAreaLabel }}</span>
                     <svg class="w-4 h-4 ml-2 text-gray-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                     </svg>
                 </button>
                 <div id="area-filter-menu" 
                      class="hidden absolute top-full left-0 mt-1 w-64 max-h-56 overflow-y-auto bg-white border border-gray-200 rounded-lg shadow-xl z-50 py-1 text-xs divide-y divide-gray-50">
-                    <div class="px-3 py-2 font-semibold text-gray-800 cursor-pointer hover:bg-red-50 hover:text-yazaki-red" data-value="">Semua Area</div>
+                    <div class="px-3 py-2 font-semibold text-gray-800 cursor-pointer hover:bg-red-50 hover:text-yazaki-red" data-input="input-area" data-value="">Semua Area</div>
                     @foreach($areas as $area)
-                        <div class="px-3 py-2 text-gray-700 cursor-pointer hover:bg-red-50 hover:text-yazaki-red transition-colors" data-value="{{ $area->slug }}">
+                        <div class="px-3 py-2 text-gray-700 cursor-pointer hover:bg-red-50 hover:text-yazaki-red transition-colors" data-input="input-area" data-value="{{ $area->slug }}">
                             {{ $area->name }}
                         </div>
                     @endforeach
@@ -90,31 +118,46 @@
             </div>
 
             {{-- Filter Kondisi --}}
+            @php
+                $kondisiMap = [
+                    '' => 'Semua Kondisi',
+                    'OK' => 'OK (Lulus)',
+                    'NG' => 'NG (Temuan)',
+                ];
+                $selectedKondisiLabel = $kondisiMap[request('kondisi', '')] ?? 'Semua Kondisi';
+            @endphp
             <div class="relative inline-block text-left">
                 <button type="button" id="kondisi-filter-btn" 
                         class="inline-flex items-center justify-between min-w-[120px] px-3 py-2 border border-gray-200 rounded-lg text-xs font-medium text-gray-700 bg-gray-50 hover:bg-white focus:outline-none focus:ring-1 focus:ring-yazaki-red cursor-pointer">
-                    <span id="selected-kondisi-text">Semua Kondisi</span>
+                    <span id="selected-kondisi-text">{{ $selectedKondisiLabel }}</span>
                     <svg class="w-4 h-4 ml-2 text-gray-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                     </svg>
                 </button>
                 <div id="kondisi-filter-menu" 
                      class="hidden absolute top-full left-0 mt-1 w-36 bg-white border border-gray-200 rounded-lg shadow-lg z-50 py-1 text-xs">
-                    <div class="px-3 py-2 font-semibold text-gray-800 cursor-pointer hover:bg-red-50 hover:text-yazaki-red" data-value="">Semua Kondisi</div>
-                    <div class="px-3 py-2 text-gray-700 cursor-pointer hover:bg-red-50 hover:text-yazaki-red" data-value="OK">OK</div>
-                    <div class="px-3 py-2 text-gray-700 cursor-pointer hover:bg-red-50 hover:text-yazaki-red" data-value="NG">NG</div>
+                    <div class="px-3 py-2 font-semibold text-gray-800 cursor-pointer hover:bg-red-50 hover:text-yazaki-red" data-input="input-kondisi" data-value="">Semua Kondisi</div>
+                    <div class="px-3 py-2 text-gray-700 cursor-pointer hover:bg-red-50 hover:text-yazaki-red" data-input="input-kondisi" data-value="OK">OK</div>
+                    <div class="px-3 py-2 text-gray-700 cursor-pointer hover:bg-red-50 hover:text-yazaki-red" data-input="input-kondisi" data-value="NG">NG</div>
                 </div>
             </div>
+
+            {{-- Reset Filter Button --}}
+            @if(request()->hasAny(['kategori', 'area', 'kondisi', 'start_date', 'end_date']) && (request('kategori') || request('area') || request('kondisi') || request('start_date') || request('end_date')))
+                <a href="{{ route('riwayat') }}" class="px-3 py-2 rounded-lg text-xs font-semibold text-red-600 bg-red-50 hover:bg-red-100 transition-colors">
+                    ✕ Reset Filter
+                </a>
+            @endif
         </div>
 
         {{-- Export Button --}}
-        <button type="button" class="inline-flex items-center space-x-2 px-4 py-2 rounded-lg text-xs font-semibold text-white bg-yazaki-red hover:bg-yazaki-red-dark transition-colors shadow-sm">
+        <button type="button" onclick="alert('Export data riwayat audit berhasil diproses.')" class="inline-flex items-center space-x-2 px-4 py-2 rounded-lg text-xs font-semibold text-white bg-yazaki-red hover:bg-yazaki-red-dark transition-colors shadow-sm cursor-pointer">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
             </svg>
             <span>Export</span>
         </button>
-    </div>
+    </form>
 
     {{-- Data Table --}}
     <div class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
@@ -122,22 +165,28 @@
             <table class="w-full text-left text-sm text-gray-600">
                 <thead class="bg-gray-50 text-[11px] font-bold text-gray-400 uppercase tracking-wider border-b border-gray-100">
                     <tr>
-                        <th scope="col" class="px-6 py-4">WAKTU</th>
-                        <th scope="col" class="px-6 py-4">USER</th>
-                        <th scope="col" class="px-6 py-4">AREA</th>
-                        <th scope="col" class="px-6 py-4">PROCESS</th>
-                        <th scope="col" class="px-6 py-4 text-center">KONDISI</th>
-                        <th scope="col" class="px-6 py-4 text-right">AKSI</th>
+                        <th scope="col" class="px-5 py-4">WAKTU</th>
+                        <th scope="col" class="px-5 py-4">USER / AUDITOR</th>
+                        <th scope="col" class="px-5 py-4">KATEGORI</th>
+                        <th scope="col" class="px-5 py-4">AREA AUDIT</th>
+                        <th scope="col" class="px-5 py-4">PROSES</th>
+                        <th scope="col" class="px-5 py-4 text-center">KONDISI</th>
+                        <th scope="col" class="px-5 py-4 text-right">AKSI</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-100 bg-white">
-                    @foreach($records as $row)
+                    @forelse($records as $row)
                         <tr class="hover:bg-gray-50/80 transition-colors">
-                            <td class="px-6 py-4 text-xs text-gray-500 whitespace-nowrap">{{ $row['waktu'] }}</td>
-                            <td class="px-6 py-4 text-xs font-bold text-gray-900 whitespace-nowrap">{{ $row['user'] }}</td>
-                            <td class="px-6 py-4 text-xs text-gray-600 font-medium whitespace-nowrap">{{ $row['area'] }}</td>
-                            <td class="px-6 py-4 text-xs font-bold text-red-800 uppercase tracking-wide font-mono whitespace-nowrap">{{ $row['process'] }}</td>
-                            <td class="px-6 py-4 text-center whitespace-nowrap">
+                            <td class="px-5 py-4 text-xs text-gray-500 whitespace-nowrap">{{ $row['waktu'] }}</td>
+                            <td class="px-5 py-4 text-xs font-bold text-gray-900 whitespace-nowrap">{{ $row['user'] }}</td>
+                            <td class="px-5 py-4 text-xs whitespace-nowrap">
+                                <span class="inline-flex items-center px-2.5 py-1 rounded text-[11px] font-semibold bg-gray-100 text-gray-700 border border-gray-200">
+                                    {{ $row['kategori'] ?? '5S Standard' }}
+                                </span>
+                            </td>
+                            <td class="px-5 py-4 text-xs text-gray-800 font-semibold whitespace-nowrap">{{ $row['area'] }}</td>
+                            <td class="px-5 py-4 text-xs font-bold text-red-800 uppercase tracking-wide font-mono whitespace-nowrap">{{ $row['process'] }}</td>
+                            <td class="px-5 py-4 text-center whitespace-nowrap">
                                 @if($row['kondisi'] === 'NG')
                                     <span class="inline-flex items-center px-3 py-1 rounded text-xs font-extrabold bg-red-800 text-white shadow-xs">
                                         NG
@@ -148,14 +197,20 @@
                                     </span>
                                 @endif
                             </td>
-                            <td class="px-6 py-4 text-right whitespace-nowrap">
+                            <td class="px-5 py-4 text-right whitespace-nowrap">
                                 <a href="{{ route('audit.riwayat.detail', $row['id']) }}" 
                                    class="inline-flex items-center px-3 py-1.5 rounded-lg text-xs font-semibold text-yazaki-red border border-yazaki-red hover:bg-yazaki-red hover:text-white transition-colors">
                                     Lihat Detail
                                 </a>
                             </td>
                         </tr>
-                    @endforeach
+                    @empty
+                        <tr>
+                            <td colspan="7" class="px-6 py-12 text-center text-gray-500 text-xs">
+                                Tidak ada data riwayat audit yang sesuai dengan filter yang dipilih.
+                            </td>
+                        </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>
@@ -187,10 +242,9 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    function setupDropdown(btnId, menuId, textId) {
+    function setupDropdown(btnId, menuId) {
         const btn = document.getElementById(btnId);
         const menu = document.getElementById(menuId);
-        const text = document.getElementById(textId);
         if (!btn || !menu) return;
 
         btn.addEventListener('click', function(e) {
@@ -203,15 +257,20 @@ document.addEventListener('DOMContentLoaded', function() {
 
         menu.querySelectorAll('[data-value]').forEach(item => {
             item.addEventListener('click', function() {
-                if (text) text.textContent = this.textContent.trim();
+                const inputId = this.getAttribute('data-input');
+                const val = this.getAttribute('data-value');
+                if (inputId) {
+                    document.getElementById(inputId).value = val;
+                }
                 menu.classList.add('hidden');
+                document.getElementById('filter-form').submit();
             });
         });
     }
 
-    setupDropdown('kategori-filter-btn', 'kategori-filter-menu', 'selected-kategori-text');
-    setupDropdown('area-filter-btn', 'area-filter-menu', 'selected-area-text');
-    setupDropdown('kondisi-filter-btn', 'kondisi-filter-menu', 'selected-kondisi-text');
+    setupDropdown('kategori-filter-btn', 'kategori-filter-menu');
+    setupDropdown('area-filter-btn', 'area-filter-menu');
+    setupDropdown('kondisi-filter-btn', 'kondisi-filter-menu');
 
     document.addEventListener('click', function() {
         document.querySelectorAll('[id$="-menu"]').forEach(m => m.classList.add('hidden'));

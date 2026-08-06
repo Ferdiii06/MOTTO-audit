@@ -48,8 +48,10 @@ class AuditDashboardController extends Controller
             $temuanNg = 12;
             $kepatuhan = '90%';
         } else {
-            $lulusOk = AuditRecord::where('score', '>=', 90)->count();
-            $temuanNg = AuditRecord::where('score', '<', 90)->count();
+            $lulusOk = AuditRecord::where('score', '>=', 90)->orWhere('judgement', 'OK')->count();
+            $temuanNg = AuditRecord::where(function ($q) {
+                $q->where('score', '<', 90)->orWhere('judgement', 'NG');
+            })->count();
             $kepatuhan = number_format(($lulusOk / max(1, $totalAudit)) * 100, 0) . '%';
         }
 
@@ -60,33 +62,80 @@ class AuditDashboardController extends Controller
             'kepatuhan' => $kepatuhan,
         ];
 
-        $areas = AuditArea::where('category', '5s_standard')->orderBy('sort_order')->get();
+        // Fetch all areas for area filter dropdown
+        $areas = AuditArea::orderBy('category')->orderBy('sort_order')->get();
 
-        $dbRecords = AuditRecord::with(['area', 'process'])
-            ->orderBy('audit_date', 'desc')
-            ->orderBy('id', 'desc')
-            ->get();
+        // Build query for AuditRecords
+        $query = AuditRecord::with(['area', 'process']);
 
-        if ($dbRecords->isNotEmpty()) {
+        if ($request->filled('kategori')) {
+            $kategori = $request->input('kategori');
+            $query->whereHas('area', function ($q) use ($kategori) {
+                $q->where('category', $kategori);
+            });
+        }
+
+        if ($request->filled('area')) {
+            $areaSlug = $request->input('area');
+            $query->whereHas('area', function ($q) use ($areaSlug) {
+                $q->where('slug', $areaSlug)->orWhere('name', $areaSlug);
+            });
+        }
+
+        if ($request->filled('kondisi')) {
+            $kondisi = $request->input('kondisi');
+            if ($kondisi === 'OK') {
+                $query->where(function ($q) {
+                    $q->where('judgement', 'OK')->orWhere('score', '>=', 90);
+                });
+            } elseif ($kondisi === 'NG') {
+                $query->where(function ($q) {
+                    $q->where('judgement', 'NG')->orWhere('score', '<', 90);
+                });
+            }
+        }
+
+        if ($request->filled('start_date') && $request->filled('end_date')) {
+            $query->whereBetween('audit_date', [$request->input('start_date'), $request->input('end_date')]);
+        }
+
+        $dbRecords = $query->orderBy('audit_date', 'desc')->orderBy('id', 'desc')->get();
+
+        if (AuditRecord::count() > 0) {
             $records = $dbRecords->map(function ($record, $index) {
                 $formattedDate = is_string($record->audit_date) ? $record->audit_date . ' 16:45:21' : $record->audit_date->format('d F Y H:i:s');
+                
+                $categoryLabel = '5S Standard';
+                if ($record->area) {
+                    if ($record->area->category === 'change_point') {
+                        $categoryLabel = 'Change Point';
+                    } elseif ($record->area->category === 'license_system') {
+                        $categoryLabel = 'License System';
+                    }
+                }
+
                 return [
                     'id' => $record->id,
                     'waktu' => $formattedDate,
                     'user' => $record->auditor_name,
+                    'kategori' => $categoryLabel,
                     'area' => $record->area_name,
                     'process' => $record->process ? $record->process->name : 'Penyimpanan Terminal 1',
                     'no' => $index + 1,
-                    'kondisi' => $record->score >= 90 ? 'OK' : ($record->judgement ?? 'NG'),
+                    'kondisi' => ($record->judgement === 'OK' || $record->score >= 90) ? 'OK' : 'NG',
                 ];
             });
         } else {
-            $records = collect([
+            // Mock records filterable if DB is empty
+            $mockData = collect([
                 [
                     'id' => 1,
                     'waktu' => '26 Juni 2026 16:45:21',
                     'user' => 'Budi Santoso',
+                    'kategori' => '5S Standard',
+                    'kategori_code' => '5s_standard',
                     'area' => 'Warehouse',
+                    'area_slug' => 'warehouse',
                     'process' => 'Penyimpanan Terminal 1',
                     'no' => 1,
                     'kondisi' => 'NG',
@@ -95,8 +144,11 @@ class AuditDashboardController extends Controller
                     'id' => 2,
                     'waktu' => '26 Juni 2026 16:30:10',
                     'user' => 'Siti Nurhaliza',
-                    'area' => 'All Process',
-                    'process' => 'General Items 1',
+                    'kategori' => 'Change Point',
+                    'kategori_code' => 'change_point',
+                    'area' => 'Change Point Management',
+                    'area_slug' => 'change-point-management',
+                    'process' => 'Cutting & Crimping 1',
                     'no' => 2,
                     'kondisi' => 'OK',
                 ],
@@ -104,8 +156,11 @@ class AuditDashboardController extends Controller
                     'id' => 3,
                     'waktu' => '26 Juni 2026 16:15:32',
                     'user' => 'Ahmad Fauzi',
-                    'area' => 'Workers and Inspectors',
-                    'process' => 'Workers and Inspectors 1',
+                    'kategori' => 'License System',
+                    'kategori_code' => 'license_system',
+                    'area' => 'License System',
+                    'area_slug' => 'license-system',
+                    'process' => 'All Process 1',
                     'no' => 3,
                     'kondisi' => 'OK',
                 ],
@@ -113,12 +168,27 @@ class AuditDashboardController extends Controller
                     'id' => 4,
                     'waktu' => '26 Juni 2026 16:05:11',
                     'user' => 'Dewi Lestari',
+                    'kategori' => '5S Standard',
+                    'kategori_code' => '5s_standard',
                     'area' => 'Jalur Jalan',
+                    'area_slug' => 'jalur-jalan',
                     'process' => 'Jalur Jalan 1',
                     'no' => 4,
                     'kondisi' => 'NG',
                 ],
             ]);
+
+            if ($request->filled('kategori')) {
+                $mockData = $mockData->where('kategori_code', $request->input('kategori'));
+            }
+            if ($request->filled('area')) {
+                $mockData = $mockData->where('area_slug', $request->input('area'));
+            }
+            if ($request->filled('kondisi')) {
+                $mockData = $mockData->where('kondisi', $request->input('kondisi'));
+            }
+
+            $records = $mockData->values();
         }
 
         return view('audit.riwayat', compact('stats', 'areas', 'records'));
