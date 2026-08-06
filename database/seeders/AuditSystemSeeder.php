@@ -1483,6 +1483,108 @@ class AuditSystemSeeder extends Seeder
             ]
         );
 
+        $changePointCuttingData = [
+            1 => [
+                'checkpoint' => 'Untuk change point management yang dikeluarkan oleh departemen QA, metode pelatihan, inspeksi dan evaluasi proses diklarifikasi dalam 5W1H. ※Lihat materi tambahan',
+                'kriteria_judgement' => '"NG" jika 19 item change point hanya terdaftar dan ditampilkan tetapi tidak ada tindakan yang diambil',
+            ],
+            2 => [
+                'checkpoint' => 'Visualisasikan lokasi titik perubahan/change point dan posisi operator di papan visual.',
+                'kriteria_judgement' => 'Tidak perlu menampilkan semua change point 4M dalam satu board. Misalnya) menggunakan lembar alokasi kerja untuk perubahan Man power dan layout proses untukchange point lainnya',
+            ],
+            3 => [
+                'checkpoint' => '"Before" dan "After" 4M change divisualisasikan di papan VM.',
+                'kriteria_judgement' => '-',
+            ],
+            4 => [
+                'checkpoint' => 'Berdasarkan 1, item yang memerlukan pendidikan adalah menerapkan pendidikan.',
+                'kriteria_judgement' => '-',
+            ],
+            5 => [
+                'checkpoint' => 'Lot pertama diberikan tag 4M change.',
+                'kriteria_judgement' => '-',
+            ],
+            6 => [
+                'checkpoint' => 'Hasil pemeriksaan khusus dari lot pertama dicatat dan disimpan. (Periode penyimpanan sama dengan catatan inspeksi.)',
+                'kriteria_judgement' => 'Format tabel kontrol bersifat opsional, tetapi "NG" jika produk tidak dapat dilacak',
+            ],
+            7 => [
+                'checkpoint' => 'Ketika operator berubah proses (ex: AC81→Bonder),visualisasikan indikator ke operator dan proses dibawah pengawasan instruktur level 2. (Tidak berlaku ketika didivisi yang sama, perubahan nomor mesin, AC81→AC90 dll)',
+                'kriteria_judgement' => "1) Pergantian operator dalam area proses yang sama adalah N/A (misal: Dari AC81-1 ke AC81-2)\n2) \"OK\" jika mengindikasikan adanya perubahan pada posisi kerja seperti equipment atau stasiun kerja.\n3) \"OK\" jika ada aturan yang menunjukkan perubahan dan aturan tersebut diikuti\n4) Sekalipun perubahan ditunjukkan melalui operator (tutup, kartu, bibs, dl), \"NG\" jika tidak ditunjukkan di change point management board",
+            ],
+            8 => [
+                'checkpoint' => 'Ketika ditemukan defect di titik perubahan, maka proses harus distop dan langsung diambil tindakan.',
+                'kriteria_judgement' => '-',
+            ],
+            9 => [
+                'checkpoint' => 'Operator/staff perbantuan harus memiliki license proses.',
+                'kriteria_judgement' => "Cari operator di bawah change point management dan periksa status lisensi yang diperoleh di daftar operator.\n\"OK\" jika operator memiliki lisensi yang diperlukan untuk pekerjaan tersebut.",
+            ],
+            10 => [
+                'checkpoint' => 'Supervisor harus mengecheck operator perbantuan terkait 4M change minimal 2 kali sehari. ( jika SPV sibuk, bisa digantikan oleh Forman atau LL yang berkompeten)',
+                'kriteria_judgement' => "1) \"NG\" jika instruktur change point dan orang yang memeriksa status pekerjaan sama\n2) \"OK\" jika ada catatan bahwa supervisor mengkonfirmasi pekerjaan tersebut",
+            ],
+            11 => [
+                'checkpoint' => 'Manajer Area akan memverifikasi dan mengkonfirmasi apakah pengoperasian titik perubahan oleh operator telah diikuti seperti yang diinstruksikan.',
+                'kriteria_judgement' => '"OK" jika final check terhadapchange point dikonfirmasi oleh manajer',
+            ],
+            12 => [
+                'checkpoint' => 'Untuk mengamankan MP yang diperlukan, hari libur disesuaikan terlebih dahulu dan TANOKO dikembangkan.',
+                'kriteria_judgement' => "Perlu memiliki dokumentasi untuk menunjukkan hari libur disesuaikan terlebih dahulu dan pekerja multi-skill seperti lembar keterampilan atau daftar lisensi.\n1. Butuh rencana liburan/cuti berbayar dan hari libur\n2. Daftar Operator Multi Skill di line Produksi.\n3. Prosedur untuk menangani keadaan darurat, seperti operator secara tidak sengaja meninggalkan pekerjaan karena hal yang sangat penting tetapi tidak ada informasi.",
+            ],
+        ];
+
+        $changePointAssemblyData = [
+            1 => [
+                'checkpoint' => 'Untuk change point management yang dikeluarkan oleh Dept QA, proses dan metode training, inspection, dan evaluasi proses berdasarkan 5W1H ※Lihat lampiran',
+                'kriteria_judgement' => '"NG" jika 20 item change point hanya terdaftar dan ditampilkan tetapi tidak ada tindakan yang diambil',
+            ],
+            2 => [
+                'checkpoint' => 'Visualisasikan lokasi titik perubahan dan posisi operator di papan visual.',
+                'kriteria_judgement' => 'Layout proses diperlukan',
+            ],
+            3 => [
+                'checkpoint' => '"Before" dan "After" 4M change divisualisasikan di papan VM.',
+                'kriteria_judgement' => '-',
+            ],
+            4 => [
+                'checkpoint' => 'Sesuai dengan yang no 1, Operator perubahan mendapat training terkait proses. (operation check /3 kali dan inspection /3 product )',
+                'kriteria_judgement' => "1) \"OK\" jika melihat operator sedang diawasi setidaknya satu kali.\n2) Jika produksi non-massal kurang dari 3 pcs, evaluasi akan dilakukan dengan memeriksa volume produksi\n3) Evaluasi dianggap \"OK\" dengan memeriksa 3 produk apa pun pada jalur konveyor yang memproduksi berbagai produk",
+            ],
+            5 => [
+                'checkpoint' => '3 produk pertama diberi tag',
+                'kriteria_judgement' => "1) Jika role (metode tampilan) dapat dikonfirmasi dan diidentifikasi, evaluasi akan dilakukan \"NG\"\n2) Jika produksi tidak sampai 3 pcs per sehari, evaluasi sebagai \"OK\" dengan mengonfirmasi volume produksi.\n3) Evaluasi dianggap \"OK\" dengan memeriksa 3 produk apa pun pada jalur konveyor yang memproduksi berbagai produk",
+            ],
+            6 => [
+                'checkpoint' => 'Hasil pemeriksaan khusus dari 3 produk pertama dicatat dan disimpan. (Periode penyimpanan sama dengan catatan inspeksi.)',
+                'kriteria_judgement' => "1) Format tabel kontrol bersifat opsional, tetapi \"NG\" jika produk tidak dapat dilacak\n2) Jika produksi tidak sampai 3 pcs per sehari, evaluasi sebagai \"OK\" dengan mengonfirmasi volume produksi.\n3) Evaluasi dianggap \"OK\" dengan memeriksa 3 produk apa pun pada jalur konveyor yang memproduksi berbagai produk",
+            ],
+            7 => [
+                'checkpoint' => 'Selama proses, posisi, dan line berubah, titik perubahan/change point ditampilkan di papan visual dan operator bekerja dibawah pengawasan instruktur level 2.',
+                'kriteria_judgement' => "1) \"OK\" jika terdapat indikasi pada work position seperti equipment atau tempat work station\n2) \"OK\" jika ada aturan yang menunjukkan perubahan dan aturan tersebut dipatuhi",
+            ],
+            8 => [
+                'checkpoint' => 'Ketika ditemukan defect di titik perubahan, maka proses harus distop dan langsung diambil tindakan.',
+                'kriteria_judgement' => '-',
+            ],
+            9 => [
+                'checkpoint' => 'Operator/staff perbantuan harus memiliki license proses.',
+                'kriteria_judgement' => 'Cari operator di bawah vhange point management perubahan dan periksa status lisensi yang diperoleh di daftar operator. "OK" jika operator memiliki lisensi yang diperlukan untuk pekerjaan tersebut.',
+            ],
+            10 => [
+                'checkpoint' => 'Supervisor harus mengecheck operator perbantuan terkait 4M change minimal 2 kali sehari. ( jika SPV sibuk, bisa digantikan oleh Forman atau LL yang berkompeten.)',
+                'kriteria_judgement' => "1) \"NG\" jika instruktur change point dan orang yang memeriksa status pekerjaan adalah sama\n2) \"OK\" jika ada catatan bahwa supervisor mengkonfirmasi pekerjaan tersebut",
+            ],
+            11 => [
+                'checkpoint' => 'Manajer Area akan memverifikasi dan mengkonfirmasi apakah pengoperasian titik perubahan oleh operator telah diikuti seperti yang diinstruksikan.',
+                'kriteria_judgement' => '"OK" jika final check terhadapchange point dikonfirmasi oleh manajer.',
+            ],
+            12 => [
+                'checkpoint' => 'Untuk mengamankan MP yang diperlukan, hari libur disesuaikan terlebih dahulu dan TANOKO dikembangkan.',
+                'kriteria_judgement' => "Perlu memiliki dokumentasi untuk menunjukkan hari libur disesuaikan terlebih dahulu dan pekerja multi-skill seperti lembar keterampilan atau daftar lisensi.\n1. Butuh rencana liburan/cuti berbayar dan hari libur\n2. Daftar Operator Multi Skill di line Produksi.\n3. Prosedur untuk menangani keadaan darurat, seperti operator secara tidak sengaja meninggalkan pekerjaan karena hal yang sangat penting tetapi tidak ada informasi.",
+            ],
+        ];
+
         AuditProcess::where('audit_area_id', $changePointArea->id)
             ->whereIn('name', ['Cutting & Crimping', 'Assembly Process'])
             ->delete();
@@ -1493,8 +1595,8 @@ class AuditSystemSeeder extends Seeder
                 ['audit_area_id' => $changePointArea->id, 'name' => $pName],
                 [
                     'description' => "Audit manajemen perubahan pada proses Cutting & Crimping {$i}",
-                    'checkpoint' => "Checkpoint untuk {$pName} - menyusul",
-                    'kriteria_judgement' => "Kriteria OK/NG untuk {$pName} - menyusul",
+                    'checkpoint' => $changePointCuttingData[$i]['checkpoint'] ?? "Checkpoint untuk {$pName} - menyusul",
+                    'kriteria_judgement' => $changePointCuttingData[$i]['kriteria_judgement'] ?? "Kriteria OK/NG untuk {$pName} - menyusul",
                     'status' => 'Ready',
                     'sort_order' => $i,
                 ]
@@ -1507,8 +1609,8 @@ class AuditSystemSeeder extends Seeder
                 ['audit_area_id' => $changePointArea->id, 'name' => $pName],
                 [
                     'description' => "Audit manajemen perubahan pada proses Assembly Process {$i}",
-                    'checkpoint' => "Checkpoint untuk {$pName} - menyusul",
-                    'kriteria_judgement' => "Kriteria OK/NG untuk {$pName} - menyusul",
+                    'checkpoint' => $changePointAssemblyData[$i]['checkpoint'] ?? "Checkpoint untuk {$pName} - menyusul",
+                    'kriteria_judgement' => $changePointAssemblyData[$i]['kriteria_judgement'] ?? "Kriteria OK/NG untuk {$pName} - menyusul",
                     'status' => 'Ready',
                     'sort_order' => 12 + $i,
                 ]
