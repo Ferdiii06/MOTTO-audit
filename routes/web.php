@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuditAuthController;
+use App\Http\Controllers\AuditDashboardController;
+use App\Http\Controllers\AuditProcessController;
 
 // Redirect root langsung ke halaman login
 Route::get('/', function () {
@@ -14,17 +16,17 @@ Route::post('/audit/logout', [AuditAuthController::class, 'logout']);
 
 // Protected Routes
 Route::middleware('audit.auth')->group(function () {
-    Route::get('/audit/dashboard', [AuditAuthController::class, 'dashboard']);
-    Route::get('/audit/5s-standard', [AuditAuthController::class, 'standard5s']);
-    Route::get('/audit/5s-standard/{area}', [AuditAuthController::class, 'standard5sProcess']);
-    Route::get('/audit/change-point-management', [AuditAuthController::class, 'changePointManagement']);
-    Route::get('/audit/license-system', [AuditAuthController::class, 'licenseSystem']);
-    Route::get('/audit/riwayat', [AuditAuthController::class, 'riwayat']);
-    Route::get('/audit/pedoman', [AuditAuthController::class, 'pedoman']);
+    Route::get('/audit/dashboard', [AuditDashboardController::class, 'dashboard']);
+    Route::get('/audit/riwayat', [AuditDashboardController::class, 'riwayat']);
+    Route::get('/audit/pedoman', [AuditDashboardController::class, 'pedoman']);
+    Route::get('/audit/placeholder', [AuditDashboardController::class, 'placeholder']);
+
+    Route::get('/audit/5s-standard', [AuditProcessController::class, 'standard5s']);
+    Route::get('/audit/5s-standard/{area}', [AuditProcessController::class, 'standard5sProcess']);
+    Route::get('/audit/change-point-management', [AuditProcessController::class, 'changePointManagement']);
+    Route::get('/audit/license-system', [AuditProcessController::class, 'licenseSystem']);
     
     // Fitur Form Audit Process & Penilaian (OK / NG)
-    Route::get('/audit/process/{process}/form', [AuditAuthController::class, 'showAuditForm']);
-    Route::post('/audit/process/{process}/submit', [AuditAuthController::class, 'submitAuditForm']);
-    
-    Route::get('/audit/placeholder', [AuditAuthController::class, 'placeholder']);
+    Route::get('/audit/process/{process}/form', [AuditProcessController::class, 'showAuditForm']);
+    Route::post('/audit/process/{process}/submit', [AuditProcessController::class, 'submitAuditForm']);
 });
