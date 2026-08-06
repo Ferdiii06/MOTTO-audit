@@ -1455,6 +1455,111 @@ class AuditSystemSeeder extends Seeder
                 'checkpoint' => 'Jika ada kemungkinan produk menyentuh lantai, pasang gutter dan stopper agar produk tidak menyentuh lantai',
                 'kriteria_judgement' => 'Cek actual proses, "NG" jika produk menyentuh lantai',
             ],
+            3 => [
+                'checkpoint' => 'Dokumen seperti inspection point ditunjukan dan tidak rusak (tidak terkelupas, sobek atau tintanya pudar)',
+                'kriteria_judgement' => '-',
+            ],
+            4 => [
+                'checkpoint' => 'Ada aturan 5W1H yang terdokumentasi untuk membersihkan dan tidak kotor. * Frekuensi ditentukan oleh setiap pabrik',
+                'kriteria_judgement' => 'Konfirmasi frekuensi kebersihan, waktu, orang, dan metodenya sudah diterapkan apa belum.',
+            ],
+            5 => [
+                'checkpoint' => 'Perangkat peringatan abnormal dipasang dan berfungsi dengan baik. Peringatan harus divisualisasikan dan sebaiknya memiliki alarm yang memberi sinyal kelainan. (contoh: andon)',
+                'kriteria_judgement' => "(1) Selain perangkat, evaluasi akan \"OK\" jika kondisi abnormal divisualisasikan dengan bendera dll\n(2) Evaluasi akan \"NG\" apabila hanya dengan suara atau audio saja",
+            ],
+            6 => [
+                'checkpoint' => 'Terdapat tempat penyimpanan khusus untuk produk defect dan label defect terpasang.',
+                'kriteria_judgement' => "1) Ada tempat penyimpanan untuk produk defect dan label defect terpasang\n(2) \"NG\" apabila tidak ada tempat penyimpanan produk defect",
+            ],
+        ];
+
+        $boltTighteningData = [
+            1 => [
+                'checkpoint' => 'Terdapat papan tanda (indikasi) "Critical Process" dan tidak rusak (misalnya tidak terkelupas, sobek, dan sebagainya).',
+                'kriteria_judgement' => '-',
+            ],
+            2 => [
+                'checkpoint' => 'Operator yang ditunjuk untuk memproses ditentukan, divisualisasikan, dan operatornya harus sesuai.',
+                'kriteria_judgement' => '-',
+            ],
+            3 => [
+                'checkpoint' => 'Wadah untuk mur dan baut damage disediakan. (Baut damage : Mur dan baut dilepas setelah sekali digunakan) *Jangan gunakan wadah yang sama untuk komponen yang jatuh *Wadah khusus hanya untuk mur dan baut (Mur dan baut seperti J/B, F/B, R/B memerlukan judgment dari manager atau supervisor',
+                'kriteria_judgement' => '-',
+            ],
+            4 => [
+                'checkpoint' => 'Lokasi penyimpanan jig tool ( FL fuse insert palate, dll.) ditunjukkan dan item ditempatkan sesuai dengan itu.',
+                'kriteria_judgement' => 'Penempatan sementara (Choioki) "NG" meskipun dalam proses',
+            ],
+            5 => [
+                'checkpoint' => 'Terdapat identitas nomor assy di lokasi penyimpanan, yang sesuai dengan tampilan nomor assy pada part box. Identitas standar ada di atas. Jika ditampilkan di bawah, diperlukan tampilan panah. Namun, jika tempat penyimpanannya satu tingkat, tidak diperlukan panah.',
+                'kriteria_judgement' => '"NG" jika hanya nomor yang tertera pada kotak komponen (tidak ada nomor komponen) Jika part box sudah ditentukan satu identitas "OK" (Identitas untuk part box dan tempat penyimpanan tidak diperlukan)',
+            ],
+            6 => [
+                'checkpoint' => 'Ada aturan 5W1H yang terdokumentasi untuk membersihkan jig torsi, dan C/F agar tetap bersih. * Frekuensi ditentukan oleh tiap pabrik.',
+                'kriteria_judgement' => 'Penggunaan vacum celaning dinilai "OK" Menggunakan blower "NG"',
+            ],
+            7 => [
+                'checkpoint' => 'Tidak ada baut/mur di antara C/F.',
+                'kriteria_judgement' => '-',
+            ],
+            8 => [
+                'checkpoint' => 'Part jatuh diletakkan di kotak khusus dan diperiksa. Mengacu pada instruksi 5W1H.',
+                'kriteria_judgement' => "(1) Ada kotak untuk part yang jatuh di satu tempat atau lebih\n(2) SPV menentukan frekuensi untuk produk yang jatuh\n(3) Ada aturan tertulis yang diikuti dan produk yang jatuh segera dibuang",
+            ],
+            9 => [
+                'checkpoint' => 'Kotak penyimpanan untuk produk yang defect disediakan dan label defect dilampirkan pada produk yang defect.',
+                'kriteria_judgement' => 'Produk defect disimpan di tempat yang disediakan dan label defect dipasang',
+            ],
+            10 => [
+                'checkpoint' => 'Jika produk ada resiko menyentuh lantai, pasang gutter dan stopper agar produk tidak menyentuh lantai',
+                'kriteria_judgement' => '"NG" jika produk menyentuh lantai',
+            ],
+            11 => [
+                'checkpoint' => 'Tidak ada burri, sekrup seperti atau tonjolan dan celah lainnya di area yang bersentuhan langsung dengan produk atau kabel',
+                'kriteria_judgement' => '"NG" jika ujung bold menonjol di bagian yang disentuh dengan wire',
+            ],
+            12 => [
+                'checkpoint' => 'Barang apa pun yang memerlukan kalibrasi (misalnya torque wrench untuk inspection) ditunjukkan dengan tanggal kalibrasi dan valid.',
+                'kriteria_judgement' => 'Cek kalibrasi equipment, evaluasi "OK" jika belum kadaluarsa',
+            ],
+            13 => [
+                'checkpoint' => 'Dokumen seperti point ispection ditampilkan dan tidak rusak (tidak terkelupas, sobek, atau tintanya pudar)',
+                'kriteria_judgement' => '-',
+            ],
+        ];
+
+        $reworkProcessData = [
+            1 => [
+                'checkpoint' => 'Nama operator re-work yang ditunjuk ditentukan, divisualisasikan, dan harus sesuai dengan actual operator re-work',
+                'kriteria_judgement' => '-',
+            ],
+            2 => [
+                'checkpoint' => 'Disediakan papan jig re-work, fork, conector, dan clamp (klip) holder tidak kendor atau deform/berubah bentuk',
+                'kriteria_judgement' => '-',
+            ],
+            3 => [
+                'checkpoint' => 'Part yang dibongkar diletakkan ditempat yang ditentukan dan layout terpetunjuk.',
+                'kriteria_judgement' => 'Penempatan sementara (Choioki) "NG" meskipun dalam proses',
+            ],
+            4 => [
+                'checkpoint' => 'Lokasi penyimpanan re-work tool dan lembar catatan inspeksi ditunjukkan dan item ditempatkan sesuai dengan itu.',
+                'kriteria_judgement' => 'Penempatan sementara (Choioki) "NG" meskipun dalam proses',
+            ],
+            5 => [
+                'checkpoint' => 'Ada aturan 5W1H yang terdokumentasi untuk membersihkan dan tidak kotor. * Frekuensi ditentukan oleh setiap pabrik',
+                'kriteria_judgement' => 'Konfirmasi frekuensi kebersihan, waktu, orang, dan metodenya sudah diterapkan apa belum.',
+            ],
+            6 => [
+                'checkpoint' => 'Terdapat tempat penyimpanan khusus untuk produk defect dan label defect terpasang.',
+                'kriteria_judgement' => "1) Ada tempat penyimpanan untuk produk defect dan label defect terpasang\n(2) \"NG\" apabila tidak ada tempat penyimpanan produk defect",
+            ],
+        ];
+
+        $storageFinishedProductsData = [
+            1 => [
+                'checkpoint' => 'Nomor part di tempat penyimpanan sesuai dengan actual produk (Nomor identitas packing) Penunjuknya terletak di bagian atas, jika ingin ditampilkan di bagian bawah gunakan tanda panah, namun tanda panah tidak diperlukan jika hanya satu tingkat',
+                'kriteria_judgement' => "\"NG\" jika tidak ada indikasi penyimpanan sementara untu loading campuran produk volume kecil\n\"OK\" jika tempat penyimpanan sementara ada tampilan identitasnya.",
+            ],
         ];
 
         foreach ($areas5s as $index => $data) {
@@ -1686,6 +1791,24 @@ class AuditSystemSeeder extends Seeder
                         if (isset($fuseImageInspectionData[$num])) {
                             $cp = $fuseImageInspectionData[$num]['checkpoint'];
                             $kj = $fuseImageInspectionData[$num]['kriteria_judgement'];
+                        }
+                    } elseif (str_starts_with(strtolower($pData['name']), 'bolt tightening ')) {
+                        $num = (int) str_replace(['Bolt Tightening ', 'Bolt tightening '], '', $pData['name']);
+                        if (isset($boltTighteningData[$num])) {
+                            $cp = $boltTighteningData[$num]['checkpoint'];
+                            $kj = $boltTighteningData[$num]['kriteria_judgement'];
+                        }
+                    } elseif (str_starts_with(strtolower($pData['name']), 're-work process ')) {
+                        $num = (int) str_replace(['Re-work Process ', 'Re-work process '], '', $pData['name']);
+                        if (isset($reworkProcessData[$num])) {
+                            $cp = $reworkProcessData[$num]['checkpoint'];
+                            $kj = $reworkProcessData[$num]['kriteria_judgement'];
+                        }
+                    } elseif (str_starts_with(strtolower($pData['name']), 'storage of finished products ')) {
+                        $num = (int) str_replace(['Storage of Finished Products ', 'Storage of finished products '], '', $pData['name']);
+                        if (isset($storageFinishedProductsData[$num])) {
+                            $cp = $storageFinishedProductsData[$num]['checkpoint'];
+                            $kj = $storageFinishedProductsData[$num]['kriteria_judgement'];
                         }
                     }
 
