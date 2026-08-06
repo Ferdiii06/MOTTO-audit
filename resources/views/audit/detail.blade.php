@@ -166,7 +166,7 @@
 
                     @if($record->foto_ng)
                         <div class="relative group max-w-md bg-gray-100 rounded-xl overflow-hidden border border-gray-200 shadow-sm">
-                            <img src="{{ asset('storage/' . $record->foto_ng) }}" 
+                            <img src="{{ url('storage/' . $record->foto_ng) }}" 
                                  alt="Foto Temuan NG" 
                                  class="w-full h-64 object-cover cursor-pointer transition-transform duration-200 group-hover:scale-105"
                                  onclick="openImageModal(this.src)">
