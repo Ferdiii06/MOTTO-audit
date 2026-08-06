@@ -1370,6 +1370,91 @@ class AuditSystemSeeder extends Seeder
                 'checkpoint' => 'Part box diisi dalam jumlah yang cukup untuk mencegah komponen tumpah. *Pertimbangkan cara pengisian komponen agar komponen tidak jatuh',
                 'kriteria_judgement' => "1) Sekalipun ada indikasi garis (batas garis), evaluasi \"NG\" jika ada kemungkinan jatuh karena kondisi penyimpanan (misalnya ada kemiringan)\n2) Sekalipun tidak ada garis indikasi, evaluasinya \"OK\" jika ada sistem untuk mencegah tercampurnyapart (misalnya, memasang penutup untuk menutup kotak, dll.)",
             ],
+            4 => [
+                'checkpoint' => 'Ada aturan 5W1H yang terdokumentasi/bertulis untuk pembersihan dan tidak kotor. * Frekuensi ditentukan oleh tiap pabrik',
+                'kriteria_judgement' => 'Konfirmasi frekuensi kebersihan, waktu, orang, dan metodenya sudah diterapkan apa belum.',
+            ],
+            5 => [
+                'checkpoint' => 'Part yang jatuh langsung ditempatkan di wadah part jatuh dan dihandle oleh supervisor.',
+                'kriteria_judgement' => "1) Ada satu atau lebih tempat untuk handle part yang jatuh dan part yang jatuh langsung dimasukkan ke dalam kotak segera\n2) Semua part termasuk COT-tube, akan dievaluasi \"NG\" apabila belum di isolasi\n3) Untuk tape, tube/COT, dan sheet yang terjatuh dan dapat menimbulkan risiko damage, kotor, atau salah penggunaan, maka yang bersangkutan boleh memeriksa dan menilai part yang jatuh tersebut (sesuai dengan aturan yang ada).\n4) Evaluasi dinyatakan \"NG\" apabila SPV tidak menghandle item yang jatuh",
+            ],
+            6 => [
+                'checkpoint' => 'Jika produk ada resiko bersentuhan langsung dengan lantai, pasang gutter agar tidak menyentuh lantai',
+                'kriteria_judgement' => '"NG" jika produk menyentuh lantai',
+            ],
+            7 => [
+                'checkpoint' => 'Dokumen seperti point kerja ditampilkan dan tidak rusak (tidak terkelupas, sobek atau pudar)',
+                'kriteria_judgement' => '-',
+            ],
+        ];
+
+        $productWireHangerData = [
+            1 => [
+                'checkpoint' => 'Metode hanger produk ditentukan, ditunjukkan, dan diikuti. (Bagian toleransi dimensi khusus tidak bengkok)',
+                'kriteria_judgement' => '-',
+            ],
+            2 => [
+                'checkpoint' => 'Terdapat indikasi proses "Before" dan "after" dan produk diklasifikasikan dengan baik.',
+                'kriteria_judgement' => "(1) Before dan After insepction di klasifikasikan\n(2) Evaluasi dinyatakan \"NG\" apabila before dan after inspeksi tidak ada identitas",
+            ],
+            3 => [
+                'checkpoint' => 'Jumlah maksimum produk pada hanger ditunjukkan dan diikuti.',
+                'kriteria_judgement' => '-',
+            ],
+            4 => [
+                'checkpoint' => 'Bagian berat seperti J/B (junction block) dan R/B (blok relay) tidak digantung.',
+                'kriteria_judgement' => 'Evaluasi sebagai "NG" jika wire tipis pada produk besar seperti IP J/B, mesin rom R/B, dll menggantung atau mengalami tegangan.',
+            ],
+            5 => [
+                'checkpoint' => 'Jika produk ada resiko menyentuh lantai, pasang gutter dan stopper untuk mencegah wire menyentuh lantai',
+                'kriteria_judgement' => 'Cek actual proses, "NG" jika produk menyentuh lantai',
+            ],
+            6 => [
+                'checkpoint' => 'Ada aturan 5W1H yang terdokumentasi untuk membersihkan dan tidak kotor. * Frekuensi ditentukan oleh setiap pabrik',
+                'kriteria_judgement' => 'Konfirmasi frekuensi kebersihan, waktu, orang, dan metodenya sudah diterapkan apa belum.',
+            ],
+        ];
+
+        $visualInspectionData = [
+            1 => [
+                'checkpoint' => 'Tempat penyimpanan inspection Tool (alignment checking jig, fuse checking board), stempel approval, dan lembar pemeriksaan inspeksi ditunjukkan dan item ditempatkan sesuai dengan itu.',
+                'kriteria_judgement' => 'Penempatan sementara (Choioki) "NG" meskipun dalam proses',
+            ],
+            2 => [
+                'checkpoint' => 'Bahan pelindung (misalnya spons) digunakan untuk J/B (junction block) dan R/B (blok relay)',
+                'kriteria_judgement' => 'Meja inspeksi "NG" jika tidak ada penutup pelindung',
+            ],
+            8 => [
+                'checkpoint' => 'Label sampel ditampilkan pada sampel utama, gambar sampel, atau papan navigasi inspeksi visual. Tingkat perubahan desain sesuai dengan pactual produk. Sampel tidak rusak atau pecah.',
+                'kriteria_judgement' => '-',
+            ],
+            9 => [
+                'checkpoint' => 'Perangkat peringatan abnormal dipasang dan berfungsi dengan baik. Peringatan harus divisualisasikan dan sebaiknya memerikan tanda abnormal (misalnya andon)',
+                'kriteria_judgement' => "(1) Selain perangkat, evaluasi akan \"OK\" jika kondisi abnormal divisualisasikan dengan bendera dll\n(2) Evaluasi akan \"NG\" apabila hanya dengan suara atau audio saja",
+            ],
+            10 => [
+                'checkpoint' => 'Terdapat tempat penyimpanan khusus untuk produk defect dan label defect terpasang.',
+                'kriteria_judgement' => "1) Ada tempat penyimpanan untuk produk defect dan label defect terpasang\n(2) \"NG\" apabila tidak ada tempat penyimpanan produk defect",
+            ],
+            11 => [
+                'checkpoint' => 'Metode packing (jumlah packing, mode packing ) produk ditentukan dalam operation standar (spesifikasi packing) dan benar-benar diikuti. Produk di isi dibawah handle pegangan polibag',
+                'kriteria_judgement' => "(1) Mengikuti metode packing\n(2) \"NG\" apabila tidak menentukan metode packing produk (packing dan kapasitas)",
+            ],
+            12 => [
+                'checkpoint' => 'Saat menggunakan kembali plastic cover untuk mengemas part atau produk, pastikan tidak ada debu atau kotoran yang menempel pada plastic',
+                'kriteria_judgement' => 'Evaluasi dinyatakan "NG" apabila tidak ada aturan untuk membersihkan atau membuang tas/kantong yang kotor',
+            ],
+        ];
+
+        $fuseImageInspectionData = [
+            1 => [
+                'checkpoint' => 'Lokasi penyimpanan alat inspeksi (Fuse checking board), approval stempel, dan lembar pemeriksaan inspeksi ditentukan, ditunjukkan, dan barang ditempatkan sesuai dengan itu',
+                'kriteria_judgement' => 'Penempatan sementara (Choioki) "NG" meskipun dalam proses',
+            ],
+            2 => [
+                'checkpoint' => 'Jika ada kemungkinan produk menyentuh lantai, pasang gutter dan stopper agar produk tidak menyentuh lantai',
+                'kriteria_judgement' => 'Cek actual proses, "NG" jika produk menyentuh lantai',
+            ],
         ];
 
         foreach ($areas5s as $index => $data) {
@@ -1583,6 +1668,24 @@ class AuditSystemSeeder extends Seeder
                         if (isset($finishingOfflineClipData[$num])) {
                             $cp = $finishingOfflineClipData[$num]['checkpoint'];
                             $kj = $finishingOfflineClipData[$num]['kriteria_judgement'];
+                        }
+                    } elseif (str_starts_with(strtolower($pData['name']), 'product wire hanger ')) {
+                        $num = (int) str_replace(['Product Wire Hanger ', 'Product wire hanger '], '', $pData['name']);
+                        if (isset($productWireHangerData[$num])) {
+                            $cp = $productWireHangerData[$num]['checkpoint'];
+                            $kj = $productWireHangerData[$num]['kriteria_judgement'];
+                        }
+                    } elseif (str_starts_with(strtolower($pData['name']), 'visual inspection ')) {
+                        $num = (int) str_replace(['Visual Inspection ', 'Visual inspection '], '', $pData['name']);
+                        if (isset($visualInspectionData[$num])) {
+                            $cp = $visualInspectionData[$num]['checkpoint'];
+                            $kj = $visualInspectionData[$num]['kriteria_judgement'];
+                        }
+                    } elseif (str_starts_with(strtolower($pData['name']), 'fuse image inspection process ')) {
+                        $num = (int) str_replace(['Fuse Image Inspection Process ', 'Fuse image inspection process '], '', $pData['name']);
+                        if (isset($fuseImageInspectionData[$num])) {
+                            $cp = $fuseImageInspectionData[$num]['checkpoint'];
+                            $kj = $fuseImageInspectionData[$num]['kriteria_judgement'];
                         }
                     }
 
