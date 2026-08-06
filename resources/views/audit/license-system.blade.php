@@ -47,7 +47,7 @@
                     </p>
                 </div>
 
-                <a href="{{ url('audit/placeholder') }}" 
+                <a href="{{ url('audit/process/' . $process['id'] . '/form') }}" 
                    class="w-full inline-flex items-center justify-center space-x-1.5 px-3 py-2 rounded-lg text-xs font-semibold text-white bg-yazaki-red hover:bg-yazaki-red-dark transition-colors shadow-sm">
                     <span>Proceed to Audit</span>
                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

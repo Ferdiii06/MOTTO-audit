@@ -7,17 +7,17 @@
     {{-- Header & Breadcrumb --}}
     <div class="border-b border-gray-200 pb-5">
         <div class="flex items-center space-x-2 text-xs text-gray-500 mb-1">
-            <a href="/audit/dashboard" class="hover:text-gray-700">Home</a>
+            <a href="{{ url('audit/dashboard') }}" class="hover:text-gray-700">Home</a>
             <span>/</span>
             @if($area)
                 @if($area->category === 'change_point')
-                    <a href="/audit/change-point-management" class="hover:text-yazaki-red">Change Point</a>
+                    <a href="{{ url('audit/change-point-management') }}" class="hover:text-yazaki-red">Change Point</a>
                 @elseif($area->category === 'license_system')
-                    <a href="/audit/license-system" class="hover:text-yazaki-red">License System</a>
+                    <a href="{{ url('audit/license-system') }}" class="hover:text-yazaki-red">License System</a>
                 @else
-                    <a href="/audit/5s-standard" class="hover:text-yazaki-red">5S Standard</a>
+                    <a href="{{ url('audit/5s-standard') }}" class="hover:text-yazaki-red">5S Standard</a>
                     <span>/</span>
-                    <a href="/audit/5s-standard/{{ $area->slug }}" class="hover:text-yazaki-red">{{ $area->name }}</a>
+                    <a href="{{ url('audit/5s-standard/' . $area->slug) }}" class="hover:text-yazaki-red">{{ $area->name }}</a>
                 @endif
             @endif
             <span>/</span>
@@ -112,7 +112,7 @@
         </div>
 
         {{-- Form Section --}}
-        <form action="/audit/process/{{ $process->id }}/submit" 
+        <form action="{{ url('audit/process/' . $process->id . '/submit') }}" 
               method="POST" 
               enctype="multipart/form-data" 
               class="p-6 space-y-6">
