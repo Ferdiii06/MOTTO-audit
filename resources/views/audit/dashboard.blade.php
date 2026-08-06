@@ -87,7 +87,7 @@
                 <h2 class="text-base font-bold text-gray-900">Riwayat Terbaru</h2>
                 <p class="text-xs text-gray-500">5 aktivitas audit terakhir dalam sistem</p>
             </div>
-            <a href="/audit/riwayat" class="text-xs font-semibold text-yazaki-red hover:underline flex items-center space-x-1">
+            <a href="{{ url('audit/riwayat') }}" class="text-xs font-semibold text-yazaki-red hover:underline flex items-center space-x-1">
                 <span>Lihat Semua</span>
                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>

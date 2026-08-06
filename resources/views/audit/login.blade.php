@@ -29,7 +29,7 @@
                 <p class="text-sm text-yazaki-red mt-1">Sign in to access your dashboard</p>
             </div>
 
-            <form method="POST" action="/audit/login" class="space-y-5">
+            <form method="POST" action="{{ url('audit/login') }}" class="space-y-5">
                 @csrf
 
                 {{-- Error Alert --}}

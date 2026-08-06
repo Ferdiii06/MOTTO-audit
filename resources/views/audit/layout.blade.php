@@ -26,7 +26,7 @@
 
                 {{-- Home Header / Main Item --}}
                 <div class="flex items-center justify-between rounded-lg transition-all {{ request()->is('audit/dashboard') ? 'bg-white text-yazaki-red shadow-sm font-bold' : 'text-white/90 hover:bg-white/10 hover:text-white' }}">
-                    <a href="/audit/dashboard" class="flex-1 flex items-center space-x-3 px-3 py-2.5 text-sm font-semibold">
+                    <a href="{{ url('audit/dashboard') }}" class="flex-1 flex items-center space-x-3 px-3 py-2.5 text-sm font-semibold">
                         <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
                         </svg>
@@ -64,7 +64,7 @@
                         ];
                     @endphp
                     @foreach($subItems as $sub)
-                        <a href="{{ $sub['route'] }}"
+                        <a href="{{ url(ltrim($sub['route'], '/')) }}"
                             class="flex items-center space-x-3 px-3 py-2 rounded-lg text-sm font-semibold transition-all
                             {{ request()->is($sub['path']) ? 'bg-white text-yazaki-red shadow-sm font-bold' : 'text-white/80 hover:bg-white/10 hover:text-white' }}">
                             <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -76,7 +76,7 @@
                 </div>
 
                 {{-- Riwayat --}}
-                <a href="/audit/riwayat"
+                <a href="{{ url('audit/riwayat') }}"
                     class="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-semibold transition-all
                     {{ request()->is('audit/riwayat') ? 'bg-white text-yazaki-red shadow-sm font-bold' : 'text-white/90 hover:bg-white/10 hover:text-white' }}">
                     <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -86,7 +86,7 @@
                 </a>
 
                 {{-- Pedoman --}}
-                <a href="/audit/pedoman"
+                <a href="{{ url('audit/pedoman') }}"
                     class="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-semibold transition-all
                     {{ request()->is('audit/pedoman') ? 'bg-white text-yazaki-red shadow-sm font-bold' : 'text-white/90 hover:bg-white/10 hover:text-white' }}">
                     <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -99,7 +99,7 @@
 
         {{-- Logout --}}
         <div class="p-3 border-t border-white/20">
-            <form method="POST" action="/audit/logout">
+            <form method="POST" action="{{ url('audit/logout') }}">
                 @csrf
                 <button type="submit" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-semibold text-white/90 hover:bg-white/10 hover:text-white transition-all">
                     <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -4,10 +4,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuditAuthController;
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('login');
 });
 
-Route::get('/audit/login', [AuditAuthController::class, 'showLogin']);
+Route::get('/audit/login', [AuditAuthController::class, 'showLogin'])->name('login');
 Route::post('/audit/login', [AuditAuthController::class, 'login']);
 Route::post('/audit/logout', [AuditAuthController::class, 'logout']);
 

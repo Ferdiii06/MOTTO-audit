@@ -149,7 +149,7 @@
                                 @endif
                             </td>
                             <td class="px-6 py-4 text-right whitespace-nowrap">
-                                <a href="/audit/placeholder" 
+                                <a href="{{ url('audit/placeholder') }}" 
                                    class="inline-flex items-center px-3 py-1.5 rounded-lg text-xs font-semibold text-yazaki-red border border-yazaki-red hover:bg-yazaki-red hover:text-white transition-colors">
                                     Lihat Detail
                                 </a>

@@ -7,9 +7,9 @@
     {{-- Header & Breadcrumb --}}
     <div class="border-b border-gray-200 pb-5">
         <div class="flex items-center space-x-2 text-xs text-gray-500 mb-1">
-            <a href="/audit/dashboard" class="hover:text-gray-700">Home</a>
+            <a href="{{ url('audit/dashboard') }}" class="hover:text-gray-700">Home</a>
             <span>/</span>
-            <a href="/audit/5s-standard" class="hover:text-yazaki-red">5S Standard</a>
+            <a href="{{ url('audit/5s-standard') }}" class="hover:text-yazaki-red">5S Standard</a>
             <span>/</span>
             <span class="font-semibold text-yazaki-red">{{ $area['name'] }}</span>
         </div>
@@ -24,7 +24,7 @@
                 </p>
             </div>
 
-            <a href="/audit/5s-standard" class="inline-flex items-center space-x-2 text-xs font-semibold text-gray-600 bg-white border border-gray-300 hover:bg-gray-50 px-3.5 py-2 rounded-lg transition-colors shrink-0 shadow-sm">
+            <a href="{{ url('audit/5s-standard') }}" class="inline-flex items-center space-x-2 text-xs font-semibold text-gray-600 bg-white border border-gray-300 hover:bg-gray-50 px-3.5 py-2 rounded-lg transition-colors shrink-0 shadow-sm">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
                 </svg>
@@ -61,7 +61,7 @@
                     </p>
                 </div>
 
-                <a href="/audit/placeholder" 
+                <a href="{{ url('audit/placeholder') }}" 
                    class="w-full inline-flex items-center justify-center space-x-1.5 px-3 py-2 rounded-lg text-xs font-semibold text-white bg-yazaki-red hover:bg-yazaki-red-dark transition-colors shadow-sm">
                     <span>Proceed to Audit</span>
                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

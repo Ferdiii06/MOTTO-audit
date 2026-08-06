@@ -7,7 +7,7 @@
     {{-- Header --}}
     <div class="border-b border-gray-200 pb-5">
         <div class="flex items-center space-x-2 text-xs text-gray-500 mb-1">
-            <a href="/audit/dashboard" class="hover:text-gray-700">Home</a>
+            <a href="{{ url('audit/dashboard') }}" class="hover:text-gray-700">Home</a>
             <span>/</span>
             <span class="font-semibold text-yazaki-red">Change Point Management</span>
         </div>
@@ -37,7 +37,7 @@
                     </p>
                 </div>
 
-                <a href="/audit/placeholder" 
+                <a href="{{ url('audit/placeholder') }}" 
                    class="w-full inline-flex items-center justify-center space-x-1.5 px-3 py-2 rounded-lg text-xs font-semibold text-white bg-yazaki-red hover:bg-yazaki-red-dark transition-colors shadow-sm">
                     <span>Proceed to Audit</span>
                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
