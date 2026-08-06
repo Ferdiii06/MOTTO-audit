@@ -7,7 +7,7 @@
     {{-- Page Header --}}
     <div class="border-b border-gray-200 pb-5">
         <div class="flex items-center space-x-2 text-xs text-gray-500 mb-1">
-            <a href="{{ route('dashboard') }}" class="hover:text-gray-700">Home</a>
+            <a href="{{ url('audit/dashboard') }}" class="hover:text-gray-700">Home</a>
             <span>/</span>
             <span class="font-semibold text-yazaki-red">5S Standard</span>
         </div>

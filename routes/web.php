@@ -16,7 +16,7 @@ Route::post('/audit/logout', [AuditAuthController::class, 'logout']);
 
 // Protected Routes
 Route::middleware('audit.auth')->group(function () {
-    Route::get('/audit/dashboard', [AuditDashboardController::class, 'dashboard']);
+    Route::get('/audit/dashboard', [AuditDashboardController::class, 'dashboard'])->name('dashboard');
     Route::get('/audit/riwayat', [AuditDashboardController::class, 'riwayat']);
     Route::get('/audit/pedoman', [AuditDashboardController::class, 'pedoman']);
     Route::get('/audit/placeholder', [AuditDashboardController::class, 'placeholder']);
