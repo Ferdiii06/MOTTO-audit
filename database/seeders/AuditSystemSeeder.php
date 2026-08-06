@@ -1629,6 +1629,81 @@ class AuditSystemSeeder extends Seeder
             ]
         );
 
+        $licenseSystemData = [
+            1 => [
+                'checkpoint' => 'Ada promotor Operation Licence System di pabrik.',
+                'kriteria_judgement' => '"OK" jika terdapat setidaknya satu operator yang ditunjuk',
+            ],
+            2 => [
+                'checkpoint' => 'Terdapat cukup instruktur level 1 di setiap pabrik yang mampu mengontrol lisensi sistem (contoh : Kontrol plan tahunan; data management; memperbarui lisensi; mengidentifikasi masalah dengan metode dan materi pelatihan, membuat proposal kaizen; menerbitkan lisensi, dll)',
+                'kriteria_judgement' => '-',
+            ],
+            3 => [
+                'checkpoint' => 'Instruktur level 2 memahami 9 item metode pelatihan (langkah mengajar). *Konfirmasi hasil lembar evaluasi lisensi Instruktur level 2 atau konfirmasi dengan melakukan wawancara dengan instruktur level 2',
+                'kriteria_judgement' => '"OK" jika DB (Database) atau daftar evaluasi penilaian lisensi dikonfirmasi dan isinya dipahami oleh instruktur level 2 berdasarkan wawancara.',
+            ],
+            4 => [
+                'checkpoint' => 'SWCT atau Operation Analisi form untuk training disiapkan oleh instruktur level 2',
+                'kriteria_judgement' => "(1) Operator analisis form diperlukan, karena hanya dengan SWCT dan kualitas teknis saja tidak cukup. Table rincian kerja diperlukan.\n(2) Operator analisis form actual diperlukan di ruang training",
+            ],
+            5 => [
+                'checkpoint' => 'Terdapat cukup banyak instruktur level 2 dengan lisensi yang diperlukan, yang memberikan training dan mengawasi pekerjaan operator dengan temporary lisensi.',
+                'kriteria_judgement' => 'Satu instruktur wajib memiliki maksimal lima peserta pelatihan baru untuk training lisensi resmi',
+            ],
+            6 => [
+                'checkpoint' => 'Ada Ruang training (training teori dan training praktek) untuk izin temporary lisensi',
+                'kriteria_judgement' => 'Ruang meeting atau kantin juga dapat digunakan sebagai area seminar atau training',
+            ],
+            7 => [
+                'checkpoint' => 'Equipment, jig tool dan hal lain yang diperlukan untuk training temporary lisensi disiapkan oleh departemen training. (Lihat PMD-B00-MOT-LC-001-P02) Siapkan sampel training khusus (disarankan sekitar 30 circuit)',
+                'kriteria_judgement' => '"OK" jika ada item persyaratan minimum (lihat PMD-A00-MOT-LC-001-P02)',
+            ],
+            8 => [
+                'checkpoint' => 'Departemen yang bertanggung jawab atas pelatihan temporary lisensi menyiapkan kurikulum training',
+                'kriteria_judgement' => '"NG" jika kurikulum untuk temporary dan lisensi resmi tidak ada',
+            ],
+            9 => [
+                'checkpoint' => "Dokumen pendukung untuk training temporary lisensi telah disiapkan oleh departemen training (Lihat pedoman OLS di hal 9)\n1.Standar dokumen\n2.Text Book\n3.Sampel\n4.Ujian\n5.Lembar penilaian",
+                'kriteria_judgement' => '"OK" jika semua item yang diperlukan sudah disiapkan (lih. Halaman.9 pedoman OLS )',
+            ],
+            10 => [
+                'checkpoint' => 'Melakukan evaluasi untuk memperoleh temporary lisensi dan hasilnya dicatat (ujian tertulis, tes praktik).',
+                'kriteria_judgement' => "1) Berlaku untuk semua proses (harus menyimpan hasil lisensi sementara sampai lisensi resmi diterbitkan)\n2) Hasil lisensi sementara diperlukan apabila ada operator yang mempunyai lisensi sementara. (\"NG\" jika tidak memiliki tes tertulis dan praktik)\n3) Tidak sebatas menyimpan hasil setelah mendapat izin resmi (\"OK\" jika hasil untuk lisensi sementara dikonfirmasi)",
+            ],
+            11 => [
+                'checkpoint' => 'Operator yang telah di training dan dievaluasi menunjukan kartu temporary lisensi (Lisensi harus valid)',
+                'kriteria_judgement' => "1) Tidak ada format yang ditentukan untuk lisensi sementara jika informasi yang diperlukan disebutkan maka evaluasinya \"OK\"\n2) Jika tidak ada orang yang applicable untuk di konfirmasi pada saat audit, evaluasi \"OK\" selama peraturan untuk indikasi lisensi ditentukan dan dipatuhi. (misalnya, menunjukan lisensi dengan menempelkannya pada topi, seragam, dll.)\n3) \"NG\" jika tidak ada catatan pelatihan dan tidak ada lembar evaluasi meskipun memiliki temporary lisensi",
+            ],
+            12 => [
+                'checkpoint' => 'Operator temporary lisensi bekerja di bawah pengawasan instruktur level 2',
+                'kriteria_judgement' => 'Jika tidak ada operator dengan lisensi sementara selama audit, tanyakan lokasi instruktur level-2. "OK" jika dia berada di tempat dimana dia dapat kembali berproduksi kapan saja.',
+            ],
+            13 => [
+                'checkpoint' => 'Evaluasi untuk lisensi reguler diimplementasikan dan hasilnya disimpan (tes praktik)',
+                'kriteria_judgement' => "1) Berlaku untuk semua proses.\n2) \"OK\" jika hasil evaluasi lisensi proses disimpan atau bisa dikonfirmasi didisplay board\n3) \"NG\" jika tidak ada ujian praktik.",
+            ],
+            14 => [
+                'checkpoint' => 'Pekerjaan operator pemilik lisensi di observasi minimal sebulan sekali oleh instruktur level 2 dan hasilnya dicatat.',
+                'kriteria_judgement' => "1) Berlaku untuk semua proses.\n2) \"OK\" jika ada catatan proses pekerjaan yang dilakukan sesuai SWCT dan memiliki kualitas kinerja yang baik (Jangan hanya fokus pada hasil regular lisensi.)",
+            ],
+            15 => [
+                'checkpoint' => 'Data skill untuk operator reguler disiapkan',
+                'kriteria_judgement' => "1) Berlaku untuk semua proses. (Pahami hasil evaluasi operator dalam proses sendiri)\n2) Terdapat data skill untuk operator reguler.",
+            ],
+            16 => [
+                'checkpoint' => "Status perolehan lisensi yang diperlukan semua operator dan inspector terkonfirmasi di database.\nIzin lisensi dan proses actual yang dilakukan harus sesuai.",
+                'kriteria_judgement' => "1) Berlaku untuk semua proses (Hasil evaluasi untuk self-proses harus diketahui.)\n2) Periksa apakah operator mempunyai lisensi sebagaimana tercantum pada data status lisensi\n3) \"NG\" apabila operator tetap tidak mempunyai lisensi atas pekerjaan yang dilakukannya.",
+            ],
+            17 => [
+                'checkpoint' => "License renewal plan tersedia.\nDan renual serta evaluasi harus dilakukan sebelum tanggal expired. (NG jika expired)",
+                'kriteria_judgement' => "1) Berlaku untuk semua proses (Plan update lisensi untuk self-proses harus diketahui.)\n2) \"OK\" jika ada rencana pembaruan lisensi dan jika evaluasi keterampilan dilakukan\n3) \"NG\" apabila tidak dilakukan evaluasi untuk memperbaharui seluruh lisensi yang diperoleh operator terkait.",
+            ],
+            18 => [
+                'checkpoint' => 'Ketika proses berpindah divisi dari Pre-assembly / Assembly / Inspection, operator mulai lagi dari training temporary license.',
+                'kriteria_judgement' => "Melakukan wawancara untuk mengecek peraturan dan status pada saat pergantian pekerjaan di luar divisi.\n·Dalam kategori yang sama, tidak diperlukan temporary education\nContoh 1) Final Assy → Final Assy : Tidak diperlukan revisi\nContoh 2) Final assy → Pre assy: Diperlukan akuisisi ulang",
+            ],
+        ];
+
         AuditProcess::where('audit_area_id', $licenseSystemArea->id)->where('name', 'All Process')->delete();
 
         for ($i = 1; $i <= 18; $i++) {
@@ -1637,8 +1712,8 @@ class AuditSystemSeeder extends Seeder
                 ['audit_area_id' => $licenseSystemArea->id, 'name' => $pName],
                 [
                     'description' => "Pemeriksaan dan evaluasi lisensi sertifikasi operasional All Process {$i}",
-                    'checkpoint' => "Checkpoint untuk {$pName} - menyusul",
-                    'kriteria_judgement' => "Kriteria OK/NG untuk {$pName} - menyusul",
+                    'checkpoint' => $licenseSystemData[$i]['checkpoint'] ?? "Checkpoint untuk {$pName} - menyusul",
+                    'kriteria_judgement' => $licenseSystemData[$i]['kriteria_judgement'] ?? "Kriteria OK/NG untuk {$pName} - menyusul",
                     'status' => 'Ready',
                     'sort_order' => $i,
                 ]
