@@ -1560,6 +1560,65 @@ class AuditSystemSeeder extends Seeder
                 'checkpoint' => 'Nomor part di tempat penyimpanan sesuai dengan actual produk (Nomor identitas packing) Penunjuknya terletak di bagian atas, jika ingin ditampilkan di bagian bawah gunakan tanda panah, namun tanda panah tidak diperlukan jika hanya satu tingkat',
                 'kriteria_judgement' => "\"NG\" jika tidak ada indikasi penyimpanan sementara untu loading campuran produk volume kecil\n\"OK\" jika tempat penyimpanan sementara ada tampilan identitasnya.",
             ],
+            2 => [
+                'checkpoint' => 'Label pengiriman yang ditempelkan pada politener ditampilkan pada posisi yang terlihat oleh operator. (Sejajarkan arah tampilan nomor produk)',
+                'kriteria_judgement' => 'Orientasi pengiriman pada containers pengiriman mengikuti instruksi costumer',
+            ],
+            3 => [
+                'checkpoint' => 'Produk design change terpetunjuk. Produk dipisahkan menjadi "sebelum perubahan" dan "setelah perubahan".',
+                'kriteria_judgement' => 'Pengecekan dengan hearing/bertanya apabila tidak ada design change',
+            ],
+            4 => [
+                'checkpoint' => 'Jumlah maksimum kontainer terlihat jelas di store dan aturan dipatuhi. (Ini hanya berlaku untuk store).',
+                'kriteria_judgement' => 'Penyimpanan sementara produk jadi tidak berlaku (FG store dikontrol oleh Kanban)',
+            ],
+            5 => [
+                'checkpoint' => 'Ada aturan tertulis untuk "First in dan First out" dan dipatuhi.',
+                'kriteria_judgement' => 'N/A jika penyimpanan dikelola oleh sistem manajemen (SAP, dll.)',
+            ],
+            6 => [
+                'checkpoint' => 'Ketinggian tumpukan politener sebaiknya di bawah 120cm. EX: PT37 --- tidak lebih dari 6 politainer PT56/78 --- tidak lebih dari 5 politainer',
+                'kriteria_judgement' => "1) \"NG\" jika tinggi tumpukan lebih dari 120cm, terlepas dari aturan masing-masing pabrik\n2) \"OK\" jika tinggi tumpukan di bawah 120cm (tidak termasuk tinggi troli)\n3) \"OK\" jika tumpukan politener kurang dari 120cm dan terakumulasi di troli",
+            ],
+            7 => [
+                'checkpoint' => 'Politener dengan ukuran yang berbeda tidak di tumpuk bersama',
+                'kriteria_judgement' => '-',
+            ],
+            8 => [
+                'checkpoint' => 'Produk tidak menonjol dari politener',
+                'kriteria_judgement' => '-',
+            ],
+        ];
+
+        $productsShippingAreaData = [
+            1 => [
+                'checkpoint' => 'Spesifikasi untuk memuat politener pada palet telah ditentukan dan harus diikuti',
+                'kriteria_judgement' => '-',
+            ],
+            2 => [
+                'checkpoint' => 'Label pengiriman/shipping label yang ditempelkan pada wadah pengiriman (politainer, dll) ditunjukkan pada posisi yang terlihat oleh operator (Sejajarkan posisi identitas nomor assy)',
+                'kriteria_judgement' => 'Orientasi pengiriman pada containers pengiriman mengikuti instruksi costumer',
+            ],
+            3 => [
+                'checkpoint' => 'Politener diikat erat dengan plastic wrap atau tali packing/band sesuai yang diinstruksikan dalam spesifikasi.',
+                'kriteria_judgement' => 'Cek setiap kondisi meskipun dilakukan diluar pabrik, dan tanyakan kepada operator apakah mereka mengikuti peraturan.',
+            ],
+            4 => [
+                'checkpoint' => 'Jika area pengiriman/shipping berada di luar, maka politainer harus ditutup dengan cover.',
+                'kriteria_judgement' => '"NG" jika tidak ada penutup/atap di luar ruangan Outdoor artinya tempat yang udara luarnya tidak dapat dihalangi oleh pintu',
+            ],
+            5 => [
+                'checkpoint' => 'Produk tidak keluar dari politener',
+                'kriteria_judgement' => '-',
+            ],
+            6 => [
+                'checkpoint' => 'Politener dengan ukuran berbeda tidak ditumpuk menjadi satu',
+                'kriteria_judgement' => '-',
+            ],
+            7 => [
+                'checkpoint' => 'Metode untuk menumpuk palet saat pengiriman telah ditentukan dan aturannya diikuti (untuk palet bertingkat, perlu perlindungan anti debu untuk palate bagian atas).',
+                'kriteria_judgement' => '-',
+            ],
         ];
 
         foreach ($areas5s as $index => $data) {
@@ -1809,6 +1868,12 @@ class AuditSystemSeeder extends Seeder
                         if (isset($storageFinishedProductsData[$num])) {
                             $cp = $storageFinishedProductsData[$num]['checkpoint'];
                             $kj = $storageFinishedProductsData[$num]['kriteria_judgement'];
+                        }
+                    } elseif (str_starts_with(strtolower($pData['name']), 'products shipping area ')) {
+                        $num = (int) str_replace(['Products Shipping Area ', 'Products shipping area '], '', $pData['name']);
+                        if (isset($productsShippingAreaData[$num])) {
+                            $cp = $productsShippingAreaData[$num]['checkpoint'];
+                            $kj = $productsShippingAreaData[$num]['kriteria_judgement'];
                         }
                     }
 
