@@ -1252,6 +1252,126 @@ class AuditSystemSeeder extends Seeder
             ],
         ];
 
+        $pemasanganGrommetData = [
+            5 => [
+                'checkpoint' => 'Part Box diisi dalam jumlah yang cukup untuk mencegah tumpah *Pertimbangkan cara meingisinya agar tidak terjatuh.',
+                'kriteria_judgement' => "1) Sekalipun ada indikasi garis (batas garis), evaluasi \"NG\" jika ada kemungkinan jatuh karena kondisi penyimpanan (misalnya ada kemiringan)\n2) Sekalipun tidak ada garis indikasi, evaluasinya \"OK\" jika ada sistem untuk mencegah tercampurnyapart (misalnya, memasang penutup untuk menutup kotak, dll.)",
+            ],
+            6 => [
+                'checkpoint' => 'Titik perbedaan antara similar part harus ditunjukkan dengan jelas.',
+                'kriteria_judgement' => "(1) Cek conector dan clip yang memiliki similar part\n(2) Jika part di supply dalam kotak atau plastic ke produksi, sampel identitas tidak diperlukan\n(\"NG\" jika part tidak diperiksa berdasarkan nomor part (barcode, QR Code) dan jika bagian similar tidak ada identitas apapun maka evaluasinya \"NG\")",
+            ],
+        ];
+
+        $waterproofGrommetData = [
+            1 => [
+                'checkpoint' => 'Dokumen seperti inspection point ditampilkan tidak rusak (tidak terkelupas, sobek, pudar)',
+                'kriteria_judgement' => '-',
+            ],
+            2 => [
+                'checkpoint' => 'Lokasi barang yang diperlukan ditunjukkan dan ditempatkan sesuai dengan itu. *Barang-barang yang tidak berada di lokasi yang ditentukan NG',
+                'kriteria_judgement' => "1) Meskipun menggunakan kanban dan karet gelang penempatan sementara (Choioki) evaluasinya \"NG\"\n(2) Evaluasi akan dinyatakan \"OK\" apabila menaruh barang pribadi di tempat yang sudah di tentukan",
+            ],
+            3 => [
+                'checkpoint' => 'Terdapat indikasi proses "Before" dan "after" dan produk diklasifikasikan dengan baik.',
+                'kriteria_judgement' => "(1) Before dan After insepction di klasifikasikan\n(2) Evaluasi dinyatakan \"NG\" apabila before dan after inspeksi tidak ada identitas",
+            ],
+            4 => [
+                'checkpoint' => 'Penerangan disediakan secukupnya pada proses inspeksi (lebih dari 500 lux) *Mematuhi peraturan masing-masing negara.',
+                'kriteria_judgement' => 'Evaluasi dinyatakan "OK" apabila pencahayaan diukur dengan iluminance dan nilai di atas rata-rata',
+            ],
+            5 => [
+                'checkpoint' => 'Ada aturan 5W1H yang terdokumentasi untuk pembersihan dan tidak kotor. *Frekuensi ditentukan oleh masing-masing pabrik',
+                'kriteria_judgement' => 'Konfirmasi frekuensi kebersihan, waktu, orang, dan metodenya sudah diterapkan apa belum',
+            ],
+        ];
+
+        $electricalInspectionData = [
+            1 => [
+                'checkpoint' => 'Ada aturan 5W1H yang terdokumentasi untuk mating conector, conector holder, dan insepction board, dan semuanya tidak kotor. *Frekuensi ditentukan oleh masing-masing pabrik.',
+                'kriteria_judgement' => 'Pembersihan dengan menggunakan Vacum Cleaning "OK" jika menggunakan blower "NG"',
+            ],
+            2 => [
+                'checkpoint' => 'Alignment check jig disiapkan untuk mating conector dan tipe HLC C/F dan alightment/penyajaran nya dikonfrimasi',
+                'kriteria_judgement' => "(1) Alighment jig harus disediakan untuk semua mating conector yang disediakan\n(2)Jig alighment dapat diganti dengan conector, namun dianjurkan agar dapat digunakan sebaik mungkin (Untuk conector terminal 2.3II, kami merekomendasikan penggunaan resin pengisi lubang di bagian pengunci.)",
+            ],
+            3 => [
+                'checkpoint' => 'Dokumen seperti inspection point ditampilkan dan tidak rusak (tidak ada tinta yang terkelupas, sobek, pudar)',
+                'kriteria_judgement' => 'Evaluasi "NG" apabila tidak memahami isinya',
+            ],
+            4 => [
+                'checkpoint' => 'Nomor part ditunjukkan di lokasi penyimpanan dan sesuai dengan nomor part actual yang tertera pada part box. Identitas terletak di bagian atas, jika ingin ditampilkan di bagian bawah gunakan tanda panah sebagai penunjuknya, namun tanda panah tidak diperlukan jika hanya mempunyai satu tingkat',
+                'kriteria_judgement' => '"NG" jika hanya nomor yang tertera pada part box (tidak ada nomor part) Jika box part sudah ditentukan, satu identitas pun evaluasinya OK (Indikasi untuk keduanya part box dan penyimpanan tidak diperlukan)',
+            ],
+            5 => [
+                'checkpoint' => 'Tempat penyimpanan inspection tool (alignment check jig), fuse supply palate, dll. ditunjukkan (termasuk electric part) dan barang-barang ditempatkan sesuai.',
+                'kriteria_judgement' => 'Penempatan sementara (Choioki) adalah "NG" bahkan selama proses.',
+            ],
+            6 => [
+                'checkpoint' => 'Tempat penyimpanan dokumen seperti lembar catatan inspeksi ditunjukkan dan item ditempatkan sesuai.',
+                'kriteria_judgement' => 'Penempatan sementara (Choioki) adalah "NG" bahkan selama proses.',
+            ],
+            7 => [
+                'checkpoint' => 'Tidak ada bagian assembly yang terjatuh antara C/F (chekec fixture) dan conector holder.',
+                'kriteria_judgement' => '-',
+            ],
+            8 => [
+                'checkpoint' => 'Meja inspeksi dilapisi penutup anti debu pada akhir kerja dan setelah shift.',
+                'kriteria_judgement' => '-',
+            ],
+            9 => [
+                'checkpoint' => 'Ada tempat insert khusus untuk produk defect dan label defect serta informasi yang diperlukan terlampir.',
+                'kriteria_judgement' => "1) Ada tempat penyimpanan untuk produk defect dan label defect terpasang\n(2) \"NG\" apabila tidak ada tempat penyimpanan produk defect",
+            ],
+            10 => [
+                'checkpoint' => 'Part yang jatuh segera dimasukkan ke dalam wadah yang telah ditentukan dan dihandle oleh supervisor',
+                'kriteria_judgement' => "(1) Ada kotak untuk part yang jatuh di satu tempat atau lebih\n(2) SPV menentukan frekuensi untuk produk yang jatuh\n(3) Ada aturan tertulis yang diikuti dan produk yang jatuh segera dibuang",
+            ],
+            11 => [
+                'checkpoint' => 'Perangkat peringatan abnormal dipasang dan berfungsi dengan baik. Peringatan harus divisualisasikan dan sebaiknya memiliki alarm yang menandakan kondisi abnormal (misalnya andon)',
+                'kriteria_judgement' => "(1) Selain perangkat, evaluasi \"OK\" jika abnormal divisualisasikan dengan bendera dll\n(2) Evaluasi akan \"NG\" apabila hanya dengan suara atau audio saja",
+            ],
+            12 => [
+                'checkpoint' => 'Item apa pun yang memerlukan kalibrasi (misalnya inspeksi wrench torsi) ditunjukkan dengan tanggal kalibrasi dan valid.',
+                'kriteria_judgement' => '-',
+            ],
+            13 => [
+                'checkpoint' => 'Bahan pelindung (misalnya spons) digunakan untuk J/B (junction block/block sambungan) dan R/B (relay block).',
+                'kriteria_judgement' => 'Meja inspeksi "NG" jika tidak ada penutup pelindung',
+            ],
+            14 => [
+                'checkpoint' => 'Jika ada kemungkinan produk menyentuh lantai, pasang gutter dan stopper agar produk tidak menyentuh lantai',
+                'kriteria_judgement' => 'Produk tidak boleh menyentuh lantai, meskipun selama proses',
+            ],
+            15 => [
+                'checkpoint' => 'Penerangan disediakan secukupnya pada proses inspeksi (lebih dari 500 lux) *Mematuhi peraturan masing-masing negara.',
+                'kriteria_judgement' => 'Evaluasi dinyatakan "OK" apabila pencahayaan diukur dengan iluminance dan nilai di atas rata-rata',
+            ],
+            16 => [
+                'checkpoint' => 'Part Box diisi dalam jumlah yang cukup untuk mencegahnya tumpah. *Pertimbangkan cara mengisi part box agar tidak terjatuh.',
+                'kriteria_judgement' => "1) Sekalipun ada indikasi garis (batas garis), evaluasi \"NG\" jika ada kemungkinan jatuh karena kondisi penyimpanan (misalnya ada kemiringan)\n2) Sekalipun tidak ada garis indikasi, evaluasinya \"OK\" jika ada sistem untuk mencegah tercampurnyapart (misalnya, memasang penutup untuk menutup kotak, dll.)",
+            ],
+            17 => [
+                'checkpoint' => 'Nomor assy produksi ditunjukkan',
+                'kriteria_judgement' => "1) Jika ada kanban pada assembly jig evaluasinya \"OK\"\n2) Jika hanya memproduksi satu nomor part, evaluasinya \"OK\" jika ada identitas besar pada satu tempat\n3) Evaluasi \"OK\" jika indikasi nama digunakan sebagai no part produk, kecuali jika sudah terpasang di conveyor sejak awal",
+            ],
+        ];
+
+        $finishingOfflineClipData = [
+            1 => [
+                'checkpoint' => 'Tempat penyimpanan tape (termasuk tape yang sedang digunakan) jig tool (band gun, dll) ditunjukkan di meja dan barang-barang ditempatkan sesuai dengan itu.',
+                'kriteria_judgement' => 'Penempatan sementara (Choioki) "NG" meskipun dalam proses',
+            ],
+            2 => [
+                'checkpoint' => 'Nomor assy ditunjukkan di tempat penyimpanan dan cocok dengan nomor assy actual yang tertera pada part box. Identitasnya terletak di bagian atas, jika ingin ditampilkan di bagian bawah maka digunakan tanda panah sebagai penunjuknya, namun tanda panah tidak diperlukan jika hanya satu tingkat',
+                'kriteria_judgement' => '"NG" jika hanya nomor yang tertera pada kotak komponen (tidak ada nomor komponen) Jika part box sudah ditentukan satu identitas "OK" (Identitas untuk part box dan tempat penyimpanan tidak diperlukan)',
+            ],
+            3 => [
+                'checkpoint' => 'Part box diisi dalam jumlah yang cukup untuk mencegah komponen tumpah. *Pertimbangkan cara pengisian komponen agar komponen tidak jatuh',
+                'kriteria_judgement' => "1) Sekalipun ada indikasi garis (batas garis), evaluasi \"NG\" jika ada kemungkinan jatuh karena kondisi penyimpanan (misalnya ada kemiringan)\n2) Sekalipun tidak ada garis indikasi, evaluasinya \"OK\" jika ada sistem untuk mencegah tercampurnyapart (misalnya, memasang penutup untuk menutup kotak, dll.)",
+            ],
+        ];
+
         foreach ($areas5s as $index => $data) {
             $area = AuditArea::updateOrCreate(
                 ['slug' => $data['slug']],
@@ -1439,6 +1559,30 @@ class AuditSystemSeeder extends Seeder
                         if (isset($wireLayoutTapingData[$num])) {
                             $cp = $wireLayoutTapingData[$num]['checkpoint'];
                             $kj = $wireLayoutTapingData[$num]['kriteria_judgement'];
+                        }
+                    } elseif (str_starts_with($pData['name'], 'Pemasangan Grommet ')) {
+                        $num = (int) str_replace('Pemasangan Grommet ', '', $pData['name']);
+                        if (isset($pemasanganGrommetData[$num])) {
+                            $cp = $pemasanganGrommetData[$num]['checkpoint'];
+                            $kj = $pemasanganGrommetData[$num]['kriteria_judgement'];
+                        }
+                    } elseif (str_starts_with(strtolower($pData['name']), 'waterproof inspection of grommet ')) {
+                        $num = (int) str_replace(['Waterproof Inspection of Grommet ', 'Waterproof inspection of Grommet '], '', $pData['name']);
+                        if (isset($waterproofGrommetData[$num])) {
+                            $cp = $waterproofGrommetData[$num]['checkpoint'];
+                            $kj = $waterproofGrommetData[$num]['kriteria_judgement'];
+                        }
+                    } elseif (str_starts_with(strtolower($pData['name']), 'electrical inspection ')) {
+                        $num = (int) str_replace(['Electrical Inspection ', 'Electrical inspection '], '', $pData['name']);
+                        if (isset($electricalInspectionData[$num])) {
+                            $cp = $electricalInspectionData[$num]['checkpoint'];
+                            $kj = $electricalInspectionData[$num]['kriteria_judgement'];
+                        }
+                    } elseif (str_starts_with(strtolower($pData['name']), 'finishing / offline clip ')) {
+                        $num = (int) str_replace(['Finishing / Offline Clip ', 'Finishing / offline clip '], '', $pData['name']);
+                        if (isset($finishingOfflineClipData[$num])) {
+                            $cp = $finishingOfflineClipData[$num]['checkpoint'];
+                            $kj = $finishingOfflineClipData[$num]['kriteria_judgement'];
                         }
                     }
 
