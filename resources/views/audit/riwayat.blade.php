@@ -151,12 +151,12 @@
         </div>
 
         {{-- Export Button --}}
-        <button type="button" onclick="alert('Export data riwayat audit berhasil diproses.')" class="inline-flex items-center space-x-2 px-4 py-2 rounded-lg text-xs font-semibold text-white bg-yazaki-red hover:bg-yazaki-red-dark transition-colors shadow-sm cursor-pointer">
+        <a href="#" id="export-btn" class="inline-flex items-center space-x-2 px-4 py-2 rounded-lg text-xs font-semibold text-white bg-yazaki-red hover:bg-yazaki-red-dark transition-colors shadow-sm cursor-pointer no-underline">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
             </svg>
-            <span>Export</span>
-        </button>
+            <span>Export Excel</span>
+        </a>
     </form>
 
     {{-- Data Table --}}
@@ -216,27 +216,51 @@
         </div>
 
         {{-- Table Pagination --}}
-        <div class="px-6 py-4 border-t border-gray-100 flex items-center justify-center sm:justify-end space-x-1">
-            <button class="w-8 h-8 rounded-lg border border-gray-200 flex items-center justify-center text-gray-500 hover:bg-gray-50 transition-colors text-xs font-semibold">
-                &lt;
-            </button>
-            <button class="w-8 h-8 rounded-lg bg-yazaki-red text-white flex items-center justify-center text-xs font-bold shadow-xs">
-                1
-            </button>
-            <button class="w-8 h-8 rounded-lg border border-gray-200 flex items-center justify-center text-gray-600 hover:bg-gray-50 transition-colors text-xs font-semibold">
-                2
-            </button>
-            <button class="w-8 h-8 rounded-lg border border-gray-200 flex items-center justify-center text-gray-600 hover:bg-gray-50 transition-colors text-xs font-semibold">
-                3
-            </button>
-            <span class="px-2 text-xs text-gray-400 font-semibold">...</span>
-            <button class="w-8 h-8 rounded-lg border border-gray-200 flex items-center justify-center text-gray-600 hover:bg-gray-50 transition-colors text-xs font-semibold">
-                12
-            </button>
-            <button class="w-8 h-8 rounded-lg border border-gray-200 flex items-center justify-center text-gray-500 hover:bg-gray-50 transition-colors text-xs font-semibold">
-                &gt;
-            </button>
+        @if($paginator && $paginator->hasPages())
+        <div class="px-6 py-4 border-t border-gray-100 flex items-center justify-between">
+            <span class="text-xs text-gray-500">
+                Menampilkan {{ $paginator->firstItem() }}–{{ $paginator->lastItem() }} dari {{ $paginator->total() }} data
+            </span>
+            <div class="flex items-center space-x-1">
+                {{-- Previous --}}
+                @if($paginator->onFirstPage())
+                    <span class="w-8 h-8 rounded-lg border border-gray-100 flex items-center justify-center text-gray-300 text-xs">&lt;</span>
+                @else
+                    <a href="{{ $paginator->previousPageUrl() }}" class="w-8 h-8 rounded-lg border border-gray-200 flex items-center justify-center text-gray-500 hover:bg-gray-50 transition-colors text-xs font-semibold">&lt;</a>
+                @endif
+
+                {{-- Page Numbers --}}
+                @php
+                    $last = $paginator->lastPage();
+                    $current = $paginator->currentPage();
+                    $pages = [];
+                    for ($i = max(1, $current - 1); $i <= min($last, $current + 1); $i++) {
+                        $pages[] = $i;
+                    }
+                    if ($pages[0] > 2) array_unshift($pages, 1, '...');
+                    elseif ($pages[0] == 2) array_unshift($pages, 1);
+                    if (end($pages) < $last - 1) { $pages[] = '...'; $pages[] = $last; }
+                    elseif (end($pages) == $last - 1) { $pages[] = $last; }
+                @endphp
+                @foreach($pages as $page)
+                    @if($page === '...')
+                        <span class="px-1 text-xs text-gray-400 font-semibold">…</span>
+                    @elseif($page == $current)
+                        <span class="w-8 h-8 rounded-lg bg-yazaki-red text-white flex items-center justify-center text-xs font-bold shadow-xs">{{ $page }}</span>
+                    @else
+                        <a href="{{ $paginator->url($page) }}" class="w-8 h-8 rounded-lg border border-gray-200 flex items-center justify-center text-gray-600 hover:bg-gray-50 transition-colors text-xs font-semibold">{{ $page }}</a>
+                    @endif
+                @endforeach
+
+                {{-- Next --}}
+                @if($paginator->hasMorePages())
+                    <a href="{{ $paginator->nextPageUrl() }}" class="w-8 h-8 rounded-lg border border-gray-200 flex items-center justify-center text-gray-500 hover:bg-gray-50 transition-colors text-xs font-semibold">&gt;</a>
+                @else
+                    <span class="w-8 h-8 rounded-lg border border-gray-100 flex items-center justify-center text-gray-300 text-xs">&gt;</span>
+                @endif
+            </div>
         </div>
+        @endif
     </div>
 </div>
 
@@ -275,6 +299,27 @@ document.addEventListener('DOMContentLoaded', function() {
     document.addEventListener('click', function() {
         document.querySelectorAll('[id$="-menu"]').forEach(m => m.classList.add('hidden'));
     });
+
+    // Export button: build URL with current filters
+    const exportBtn = document.getElementById('export-btn');
+    if (exportBtn) {
+        exportBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            const params = new URLSearchParams();
+            const kategori = document.getElementById('input-kategori').value;
+            const area = document.getElementById('input-area').value;
+            const kondisi = document.getElementById('input-kondisi').value;
+            const startDate = document.querySelector('input[name="start_date"]').value;
+            const endDate = document.querySelector('input[name="end_date"]').value;
+            if (kategori) params.set('kategori', kategori);
+            if (area) params.set('area', area);
+            if (kondisi) params.set('kondisi', kondisi);
+            if (startDate) params.set('start_date', startDate);
+            if (endDate) params.set('end_date', endDate);
+            const url = "{{ route('riwayat.export') }}" + (params.toString() ? '?' + params.toString() : '');
+            window.location.href = url;
+        });
+    }
 });
 </script>
 @endsection

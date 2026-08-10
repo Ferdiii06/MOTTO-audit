@@ -18,7 +18,10 @@ Route::post('/audit/logout', [AuditAuthController::class, 'logout']);
 Route::middleware('audit.auth')->group(function () {
     Route::get('/audit/dashboard', [AuditDashboardController::class, 'dashboard'])->name('dashboard');
     Route::get('/audit/riwayat', [AuditDashboardController::class, 'riwayat'])->name('riwayat');
+    Route::get('/audit/riwayat/export', [AuditDashboardController::class, 'exportRiwayat'])->name('riwayat.export');
     Route::get('/audit/riwayat/{id}', [AuditDashboardController::class, 'riwayatDetail'])->name('audit.riwayat.detail');
+    Route::get('/audit/riwayat/{id}/edit', [AuditDashboardController::class, 'riwayatEdit'])->name('audit.riwayat.edit');
+    Route::put('/audit/riwayat/{id}', [AuditDashboardController::class, 'riwayatUpdate'])->name('audit.riwayat.update');
     Route::get('/audit/pedoman', [AuditDashboardController::class, 'pedoman']);
     Route::get('/audit/placeholder', [AuditDashboardController::class, 'placeholder']);
 

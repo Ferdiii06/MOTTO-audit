@@ -4,6 +4,15 @@
 
 @section('content')
 <div class="space-y-6 pb-12">
+    @if(session('success'))
+        <div class="p-4 bg-emerald-50 border border-emerald-200 rounded-xl text-xs text-emerald-800 flex items-center space-x-2 shadow-xs">
+            <svg class="w-5 h-5 text-emerald-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+            </svg>
+            <span class="font-bold text-sm text-emerald-900">{{ session('success') }}</span>
+        </div>
+    @endif
+
     {{-- Breadcrumb Navigation --}}
     <div class="border-b border-gray-200 pb-5">
         <div class="flex items-center space-x-2 text-xs text-gray-500 mb-1">
@@ -27,35 +36,21 @@
                 </p>
             </div>
 
-            {{-- PROMINENT STATUS BADGE (OK / NG) --}}
-            <div class="flex items-center space-x-3">
-                @if(($record->judgement ?? ($record->score >= 90 ? 'OK' : 'NG')) === 'NG')
-                    <div class="px-5 py-2.5 rounded-xl bg-red-800 text-white shadow-md flex items-center space-x-3 border border-red-900">
-                        <div class="w-4 h-4 rounded-full bg-white flex items-center justify-center shrink-0">
-                            <span class="text-red-800 font-extrabold text-xs">✕</span>
-                        </div>
-                        <div>
-                            <span class="text-[10px] font-bold uppercase tracking-wider text-red-200 block leading-tight">HASIL AUDIT</span>
-                            <span class="text-xl font-extrabold tracking-wide">TEMUAN (NG)</span>
-                        </div>
-                    </div>
-                @else
-                    <div class="px-5 py-2.5 rounded-xl bg-emerald-600 text-white shadow-md flex items-center space-x-3 border border-emerald-700">
-                        <div class="w-4 h-4 rounded-full bg-white flex items-center justify-center shrink-0">
-                            <span class="text-emerald-600 font-extrabold text-xs">✓</span>
-                        </div>
-                        <div>
-                            <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-100 block leading-tight">HASIL AUDIT</span>
-                            <span class="text-xl font-extrabold tracking-wide">LULUS (OK)</span>
-                        </div>
-                    </div>
-                @endif
-            </div>
+            {{-- EDIT BUTTON --}}
+            @if((int) session('audit_user_id') === (int) $record->audit_user_id)
+                <a href="{{ route('audit.riwayat.edit', $record->id) }}" 
+                   class="inline-flex items-center space-x-2 px-4 py-2.5 rounded-xl text-xs font-bold text-white bg-yazaki-red hover:bg-yazaki-red-dark transition-colors shadow-sm">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                    </svg>
+                    <span>Edit Audit</span>
+                </a>
+            @endif
         </div>
     </div>
 
     {{-- Info Cards Grid (Header Submission Metadata) --}}
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
         {{-- Card 1: Area Audit --}}
         <div class="bg-white rounded-xl p-5 border border-gray-200 shadow-sm flex flex-col justify-between">
             <span class="text-[11px] font-bold uppercase tracking-wider text-gray-400">AREA AUDIT</span>
@@ -95,6 +90,35 @@
                 <p class="text-xs text-gray-500 mt-0.5">Waktu Lengkap Audit</p>
             </div>
         </div>
+
+        {{-- Card 5: Hasil Audit (Solid Background) --}}
+        @if(($record->judgement ?? ($record->score >= 90 ? 'OK' : 'NG')) === 'NG')
+            <div class="bg-red-800 border border-red-900 rounded-xl p-5 shadow-sm flex flex-col justify-between text-white">
+                <span class="text-[11px] font-bold uppercase tracking-wider text-red-200">HASIL AUDIT</span>
+                <div class="mt-2">
+                    <div class="flex items-center space-x-2">
+                        <div class="w-5 h-5 rounded-full bg-white flex items-center justify-center shrink-0">
+                            <span class="text-red-800 font-extrabold text-xs">✕</span>
+                        </div>
+                        <span class="text-base font-extrabold tracking-wide text-white">TEMUAN (NG)</span>
+                    </div>
+                    <p class="text-xs text-red-100 mt-0.5 font-medium">Perlu tindakan koreksi</p>
+                </div>
+            </div>
+        @else
+            <div class="bg-emerald-600 border border-emerald-700 rounded-xl p-5 shadow-sm flex flex-col justify-between text-white">
+                <span class="text-[11px] font-bold uppercase tracking-wider text-emerald-100">HASIL AUDIT</span>
+                <div class="mt-2">
+                    <div class="flex items-center space-x-2">
+                        <div class="w-5 h-5 rounded-full bg-white flex items-center justify-center shrink-0">
+                            <span class="text-emerald-600 font-extrabold text-xs">✓</span>
+                        </div>
+                        <span class="text-base font-extrabold tracking-wide text-white">LULUS (OK)</span>
+                    </div>
+                    <p class="text-xs text-emerald-100 mt-0.5 font-medium">Sesuai standar operasional</p>
+                </div>
+            </div>
+        @endif
     </div>
 
     {{-- Detail Standard & Criteria Guidance --}}
