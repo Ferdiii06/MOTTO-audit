@@ -6,46 +6,33 @@ return [
     | Auditor Item Check Mapping
     |--------------------------------------------------------------------------
     |
-    | Mapping kode auditor ke array ID audit_processes
+    | Mapping 23 kode auditor ke array ID audit_processes (Name Matching Final)
     |
     */
 
     'mapping' => [
-        // 1. TWI: Penyimpanan Terminal, Wire, Part (Warehouse)
         'TWI'   => array_merge(range(37, 65), [402]),
-
-        // 2. EMU: Workers and Inspector, Jalur Jalan, 5S General Items
         'EMU'   => range(1, 32),
-
-        // 3. HMA: Inspeksi Penerimaan Material, Solder (Deep Solder), Soldering Iron, Bondering, Ultrasonic Welding, Heat Shrink Tube
-        'HMA'   => range(66, 112),
-
-        // 4. NUR: Manual Crimping, Penyimpanan Terminal, Penyimpanan Wire (Cutting & Crimping / Pre Assy)
+        'AYP'   => array_merge(range(1, 32), range(66, 78), range(83, 94)),
+        'MMR'   => array_merge(range(1, 32), range(66, 78), range(83, 94)),
+        'HMA'   => array_merge(range(66, 78), range(83, 112)),
+        'DAF'   => range(95, 159),
+        'JIKAS' => range(95, 147),
         'NUR'   => range(113, 147),
-
-        // 5. ABD: Penyimpanan APPL, Mesin Cutting & Crimping, LA Terminal Waterproof, Insert Rubber Plug, Wire Hanger (Pre Assy)
-        'ABD'   => array_merge(range(148, 193), [403]),
-
-        // 6. ISR: Inspect Pre Assy, Wire Twist, Shield Wire, Wire Store (sebelum Sub-Assembly)
+        'ABD'   => array_merge(range(148, 164), range(184, 193)),
+        'OVI'   => array_merge(range(148, 164), range(184, 212), range(234, 239)),
+        'FIR'   => array_merge(range(160, 164), range(184, 212), range(234, 266)),
         'ISR'   => array_merge(range(194, 212), range(234, 239)),
-
-        // Kode auditor lainnya
-        'AYP'   => range(4, 10),
-        'MMR'   => range(4, 10),
-        'DAF'   => range(11, 17),
-        'JIKAS' => range(11, 15),
-        'OVI'   => range(16, 24),
-        'FIR'   => range(18, 27),
-        'IAM'   => range(25, 27),
-        'SSI'   => range(25, 30),
-        'DIAN'  => range(28, 30),
-        'NAF'   => range(28, 35),
-        'WWI'   => range(31, 33),
-        'RWU'   => range(31, 36),
-        'AIN'   => range(34, 36),
-        'DHS'   => range(37, 39),
-        'WSU'   => range(37, 42),
-        'NIA'   => range(36, 42),
-        'LSE'   => range(40, 42),
+        'IAM'   => range(240, 266),
+        'SSI'   => range(240, 294),
+        'DIAN'  => range(267, 294),
+        'NAF'   => array_merge(range(33, 36), range(267, 325)),
+        'WWI'   => range(295, 319),
+        'RWU'   => array_merge(range(33, 36), range(295, 338)),
+        'AIN'   => array_merge(range(33, 36), range(320, 338)),
+        'DHS'   => range(339, 359),
+        'WSU'   => range(339, 401),
+        'NIA'   => range(326, 401),
+        'LSE'   => range(360, 401),
     ],
 ];
