@@ -33,10 +33,7 @@ class AuditProcessController extends Controller
                 if ($user && $user->isAdmin()) {
                     $count = $area->processes()->count();
                 } else {
-                    // Filter count for processes 1..42
-                    $count = $area->processes()->where(function ($q) use ($allowedIds) {
-                        $q->whereIn('id', $allowedIds ?? [])->orWhere('id', '>', 42);
-                    })->count();
+                    $count = $area->processes()->whereIn('id', $allowedIds ?? [])->count();
                 }
 
                 return [
@@ -74,9 +71,8 @@ class AuditProcessController extends Controller
 
         if ($user && ! $user->isAdmin()) {
             $allowedIds = $user->getAllowedProcessIds() ?? [];
-            // Filter only for 1..42 items; keep items > 42 unrestricted
             $processesQuery = $processesQuery->filter(function ($p) use ($allowedIds) {
-                return $p->id > 42 || in_array($p->id, $allowedIds);
+                return in_array($p->id, $allowedIds);
             });
         }
 
@@ -140,11 +136,9 @@ class AuditProcessController extends Controller
             abort(403, 'Admin QA hanya memiliki akses view-only dan tidak dapat menginput audit.');
         }
 
-        if ($process->id <= 42) {
-            $allowedIds = $user->getAllowedProcessIds() ?? [];
-            if (! in_array($process->id, $allowedIds)) {
-                abort(403, 'Anda tidak memiliki akses untuk mengaudit item check ini.');
-            }
+        $allowedIds = $user->getAllowedProcessIds() ?? [];
+        if (! in_array($process->id, $allowedIds)) {
+            abort(403, 'Anda tidak memiliki akses untuk mengaudit item check ini.');
         }
 
         $process->load('area');
@@ -167,11 +161,9 @@ class AuditProcessController extends Controller
             abort(403, 'Admin QA hanya memiliki akses view-only dan tidak dapat menginput audit.');
         }
 
-        if ($process->id <= 42) {
-            $allowedIds = $user->getAllowedProcessIds() ?? [];
-            if (! in_array($process->id, $allowedIds)) {
-                abort(403, 'Anda tidak memiliki akses untuk mengaudit item check ini.');
-            }
+        $allowedIds = $user->getAllowedProcessIds() ?? [];
+        if (! in_array($process->id, $allowedIds)) {
+            abort(403, 'Anda tidak memiliki akses untuk mengaudit item check ini.');
         }
 
         $process->load('area');
