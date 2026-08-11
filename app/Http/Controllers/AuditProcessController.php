@@ -5,24 +5,46 @@ namespace App\Http\Controllers;
 use App\Models\AuditArea;
 use App\Models\AuditProcess;
 use App\Models\AuditRecord;
+use App\Models\AuditUser;
 use Illuminate\Http\Request;
 
 class AuditProcessController extends Controller
 {
+    private function getAuthUser(): ?AuditUser
+    {
+        $userId = session('audit_user_id');
+        if (! $userId) {
+            return null;
+        }
+
+        return AuditUser::find($userId);
+    }
+
     public function standard5s()
     {
-        $areas = AuditArea::withCount('processes')
-            ->where('category', '5s_standard')
+        $user = $this->getAuthUser();
+        $allowedIds = $user ? $user->getAllowedProcessIds() : [];
+
+        $areas = AuditArea::where('category', '5s_standard')
             ->orderBy('sort_order')
             ->get()
             ->keyBy('slug')
-            ->map(function ($area) {
+            ->map(function ($area) use ($user, $allowedIds) {
+                if ($user && $user->isAdmin()) {
+                    $count = $area->processes()->count();
+                } else {
+                    // Filter count for processes 1..42
+                    $count = $area->processes()->where(function ($q) use ($allowedIds) {
+                        $q->whereIn('id', $allowedIds ?? [])->orWhere('id', '>', 42);
+                    })->count();
+                }
+
                 return [
                     'name' => $area->name,
                     'slug' => $area->slug,
                     'desc' => $area->description,
                     'icon' => $area->icon_svg,
-                    'process_count' => $area->processes_count,
+                    'process_count' => $count,
                 ];
             });
 
@@ -47,14 +69,25 @@ class AuditProcessController extends Controller
             'icon' => $areaModel->icon_svg,
         ];
 
-        $processes = $areaModel->processes->map(function ($p) {
+        $user = $this->getAuthUser();
+        $processesQuery = $areaModel->processes;
+
+        if ($user && ! $user->isAdmin()) {
+            $allowedIds = $user->getAllowedProcessIds() ?? [];
+            // Filter only for 1..42 items; keep items > 42 unrestricted
+            $processesQuery = $processesQuery->filter(function ($p) use ($allowedIds) {
+                return $p->id > 42 || in_array($p->id, $allowedIds);
+            });
+        }
+
+        $processes = $processesQuery->map(function ($p) {
             return [
                 'id' => $p->id,
                 'name' => $p->name,
                 'desc' => $p->description,
                 'status' => $p->status,
             ];
-        });
+        })->values();
 
         return view('audit.5s-process', compact('area', 'processes'));
     }
@@ -97,9 +130,26 @@ class AuditProcessController extends Controller
 
     public function showAuditForm(AuditProcess $process)
     {
+        $user = $this->getAuthUser();
+
+        if (! $user) {
+            abort(401, 'Silakan login terlebih dahulu.');
+        }
+
+        if ($user->isAdmin()) {
+            abort(403, 'Admin QA hanya memiliki akses view-only dan tidak dapat menginput audit.');
+        }
+
+        if ($process->id <= 42) {
+            $allowedIds = $user->getAllowedProcessIds() ?? [];
+            if (! in_array($process->id, $allowedIds)) {
+                abort(403, 'Anda tidak memiliki akses untuk mengaudit item check ini.');
+            }
+        }
+
         $process->load('area');
         $area = $process->area;
-        $auditorName = session('audit_user_name', 'Auditor QA');
+        $auditorName = session('audit_user_name', $user->name);
         $auditDate = date('d F Y');
 
         return view('audit.form', compact('process', 'area', 'auditorName', 'auditDate'));
@@ -107,6 +157,23 @@ class AuditProcessController extends Controller
 
     public function submitAuditForm(Request $request, AuditProcess $process)
     {
+        $user = $this->getAuthUser();
+
+        if (! $user) {
+            abort(401, 'Silakan login terlebih dahulu.');
+        }
+
+        if ($user->isAdmin()) {
+            abort(403, 'Admin QA hanya memiliki akses view-only dan tidak dapat menginput audit.');
+        }
+
+        if ($process->id <= 42) {
+            $allowedIds = $user->getAllowedProcessIds() ?? [];
+            if (! in_array($process->id, $allowedIds)) {
+                abort(403, 'Anda tidak memiliki akses untuk mengaudit item check ini.');
+            }
+        }
+
         $process->load('area');
 
         $isNg = $request->input('judgement') === 'NG';
@@ -131,7 +198,7 @@ class AuditProcessController extends Controller
         }
 
         $userId = session('audit_user_id');
-        $auditorName = session('audit_user_name', 'Auditor QA');
+        $auditorName = session('audit_user_name', $user->name);
         $areaName = $process->area ? $process->area->name : 'Area Audit';
         $judgement = $request->input('judgement');
         $score = ($judgement === 'OK') ? 100.00 : 0.00;

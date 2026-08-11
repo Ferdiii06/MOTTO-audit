@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\AuditArea;
 use App\Models\AuditRecord;
+use App\Models\AuditUser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -16,12 +17,31 @@ use PhpOffice\PhpSpreadsheet\Style\Border;
 
 class AuditDashboardController extends Controller
 {
+    private function getAuthUser(): ?AuditUser
+    {
+        $userId = session('audit_user_id');
+        if (! $userId) {
+            return null;
+        }
+
+        return AuditUser::find($userId);
+    }
+
     public function dashboard()
     {
-        $totalAudit = AuditRecord::count();
-        $completedAudit = AuditRecord::where('status', 'Selesai')->count();
-        $pendingAudit = AuditRecord::where('status', 'Pending')->count();
-        $avgScoreValue = AuditRecord::avg('score');
+        $user = $this->getAuthUser();
+        $isAuditor = $user && ! $user->isAdmin();
+        $userId = session('audit_user_id');
+
+        $baseQuery = AuditRecord::query();
+        if ($isAuditor) {
+            $baseQuery->where('audit_user_id', $userId);
+        }
+
+        $totalAudit = (clone $baseQuery)->count();
+        $completedAudit = (clone $baseQuery)->where('status', 'Selesai')->count();
+        $pendingAudit = (clone $baseQuery)->where('status', 'Pending')->count();
+        $avgScoreValue = (clone $baseQuery)->avg('score');
 
         $stats = [
             'total_audit' => $totalAudit,
@@ -30,7 +50,12 @@ class AuditDashboardController extends Controller
             'avg_score' => $avgScoreValue ? number_format($avgScoreValue, 1) . '%' : '0%',
         ];
 
-        $recentAudits = AuditRecord::orderBy('audit_date', 'desc')
+        $recentAuditsQuery = AuditRecord::query();
+        if ($isAuditor) {
+            $recentAuditsQuery->where('audit_user_id', $userId);
+        }
+
+        $recentAudits = $recentAuditsQuery->orderBy('audit_date', 'desc')
             ->orderBy('id', 'desc')
             ->take(5)
             ->get()
@@ -49,17 +74,31 @@ class AuditDashboardController extends Controller
 
     public function riwayat(Request $request)
     {
-        $totalAudit = AuditRecord::count();
-        if ($totalAudit == 0) {
+        $user = $this->getAuthUser();
+        $isAuditor = $user && ! $user->isAdmin();
+        $userId = session('audit_user_id');
+
+        $baseQuery = AuditRecord::query();
+        if ($isAuditor) {
+            $baseQuery->where('audit_user_id', $userId);
+        }
+
+        $totalAudit = (clone $baseQuery)->count();
+        if ($totalAudit == 0 && ! $isAuditor) {
+            // Mock default stats for admin if DB empty
             $totalAudit = 124;
             $lulusOk = 112;
             $temuanNg = 12;
             $kepatuhan = '90%';
         } else {
-            $lulusOk = AuditRecord::where('score', '>=', 90)->orWhere('judgement', 'OK')->count();
-            $temuanNg = AuditRecord::where(function ($q) {
+            $lulusOk = (clone $baseQuery)->where(function ($q) {
+                $q->where('score', '>=', 90)->orWhere('judgement', 'OK');
+            })->count();
+
+            $temuanNg = (clone $baseQuery)->where(function ($q) {
                 $q->where('score', '<', 90)->orWhere('judgement', 'NG');
             })->count();
+
             $kepatuhan = number_format(($lulusOk / max(1, $totalAudit)) * 100, 0) . '%';
         }
 
@@ -75,6 +114,10 @@ class AuditDashboardController extends Controller
 
         // Build query for AuditRecords
         $query = AuditRecord::with(['area', 'process']);
+
+        if ($isAuditor) {
+            $query->where('audit_user_id', $userId);
+        }
 
         if ($request->filled('kategori')) {
             $kategori = $request->input('kategori');
@@ -109,10 +152,12 @@ class AuditDashboardController extends Controller
 
         $paginator = $query->orderBy('audit_date', 'desc')->orderBy('id', 'desc')->paginate(10)->withQueryString();
 
-        if (AuditRecord::count() > 0) {
+        $realCount = $isAuditor ? AuditRecord::where('audit_user_id', $userId)->count() : AuditRecord::count();
+
+        if ($realCount > 0) {
             $records = collect($paginator->items())->map(function ($record, $index) use ($paginator) {
                 $formattedDate = is_string($record->audit_date) ? $record->audit_date . ' 16:45:21' : $record->audit_date->format('d F Y H:i:s');
-                
+
                 $categoryLabel = '5S Standard';
                 if ($record->area) {
                     if ($record->area->category === 'change_point') {
@@ -134,7 +179,7 @@ class AuditDashboardController extends Controller
                 ];
             });
         } else {
-            // Mock records filterable if DB is empty
+            // Mock records filterable if DB is empty for admin
             $mockData = collect([
                 [
                     'id' => 1,
@@ -196,7 +241,7 @@ class AuditDashboardController extends Controller
                 $mockData = $mockData->where('kondisi', $request->input('kondisi'));
             }
 
-            $records = $mockData->values();
+            $records = $isAuditor ? collect() : $mockData->values();
             $paginator = null;
         }
 
@@ -207,7 +252,7 @@ class AuditDashboardController extends Controller
     {
         $record = AuditRecord::with(['area', 'process', 'user'])->find($id);
 
-        if (!$record) {
+        if (! $record) {
             // Fallback object jika id mock diklik saat DB masih kosong
             $record = new AuditRecord([
                 'id' => $id,
@@ -237,8 +282,16 @@ class AuditDashboardController extends Controller
 
     public function exportRiwayat(Request $request)
     {
+        $user = $this->getAuthUser();
+        $isAuditor = $user && ! $user->isAdmin();
+        $userId = session('audit_user_id');
+
         // Build query with same filters as riwayat()
         $query = AuditRecord::with(['area', 'process']);
+
+        if ($isAuditor) {
+            $query->where('audit_user_id', $userId);
+        }
 
         if ($request->filled('kategori')) {
             $kategori = $request->input('kategori');
@@ -303,8 +356,11 @@ class AuditDashboardController extends Controller
         foreach ($records as $idx => $record) {
             $categoryLabel = '5S Standard';
             if ($record->area) {
-                if ($record->area->category === 'change_point') $categoryLabel = 'Change Point';
-                elseif ($record->area->category === 'license_system') $categoryLabel = 'License System';
+                if ($record->area->category === 'change_point') {
+                    $categoryLabel = 'Change Point';
+                } elseif ($record->area->category === 'license_system') {
+                    $categoryLabel = 'License System';
+                }
             }
             $kondisi = ($record->judgement === 'OK' || $record->score >= 90) ? 'OK' : 'NG';
             $dateStr = is_string($record->audit_date) ? $record->audit_date : $record->audit_date->format('Y-m-d');
