@@ -15,6 +15,7 @@ class AuditProcess extends Model
         'description',
         'checkpoint',
         'kriteria_judgement',
+        'pedoman_path',
         'status',
         'sort_order',
     ];

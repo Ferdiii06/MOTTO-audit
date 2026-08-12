@@ -7,6 +7,7 @@ use App\Models\AuditProcess;
 use App\Models\AuditRecord;
 use App\Models\AuditUser;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class AuditProcessController extends Controller
 {
@@ -221,5 +222,33 @@ class AuditProcessController extends Controller
         }
 
         return redirect($redirectUrl)->with('success', "Form Audit untuk process '{$process->name}' berhasil disimpan dengan hasil {$judgement}!");
+    }
+
+    public function uploadPedoman(Request $request, AuditProcess $process)
+    {
+        $user = AuditUser::find(session('audit_user_id'));
+        if (! $user || ! $user->isAdmin()) {
+            abort(403, 'Hanya super admin yang dapat mengunggah pedoman SOP.');
+        }
+
+        $request->validate([
+            'pedoman_file' => 'required|mimes:pdf|max:10240',
+        ], [
+            'pedoman_file.required' => 'File PDF pedoman wajib dipilih.',
+            'pedoman_file.mimes' => 'File pedoman harus berformat PDF.',
+            'pedoman_file.max' => 'Ukuran file PDF maksimal 10 MB.',
+        ]);
+
+        $newPath = $request->file('pedoman_file')->store('audit_pedoman', 'public');
+        $oldPath = $process->pedoman_path;
+
+        $process->pedoman_path = $newPath;
+        $process->save();
+
+        if ($oldPath) {
+            Storage::disk('public')->delete($oldPath);
+        }
+
+        return redirect()->back()->with('success', "File SOP Pedoman untuk '{$process->name}' berhasil diperbarui!");
     }
 }

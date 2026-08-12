@@ -22,7 +22,8 @@ Route::middleware('audit.auth')->group(function () {
     Route::get('/audit/riwayat/{id}', [AuditDashboardController::class, 'riwayatDetail'])->name('audit.riwayat.detail');
     Route::get('/audit/riwayat/{id}/edit', [AuditDashboardController::class, 'riwayatEdit'])->name('audit.riwayat.edit');
     Route::put('/audit/riwayat/{id}', [AuditDashboardController::class, 'riwayatUpdate'])->name('audit.riwayat.update');
-    Route::get('/audit/pedoman', [AuditDashboardController::class, 'pedoman']);
+    Route::get('/audit/pedoman', [AuditDashboardController::class, 'pedoman'])->name('audit.pedoman');
+    Route::post('/audit/pedoman/{process}/upload', [AuditProcessController::class, 'uploadPedoman'])->name('audit.pedoman.upload');
     Route::get('/audit/placeholder', [AuditDashboardController::class, 'placeholder']);
 
     Route::get('/audit/5s-standard', [AuditProcessController::class, 'standard5s']);

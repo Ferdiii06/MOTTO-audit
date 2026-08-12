@@ -431,7 +431,14 @@ class AuditDashboardController extends Controller
 
     public function pedoman()
     {
-        return view('audit.pedoman');
+        $areas = AuditArea::with(['processes' => function ($q) {
+            $q->orderBy('sort_order');
+        }])->orderBy('sort_order')->get();
+
+        $user = $this->getAuthUser();
+        $isAdmin = $user ? $user->isAdmin() : false;
+
+        return view('audit.pedoman', compact('areas', 'isAdmin'));
     }
 
     public function placeholder()
