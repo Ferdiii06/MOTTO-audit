@@ -94,6 +94,38 @@
                     </svg>
                     <span>Pedoman</span>
                 </a>
+
+                @if(session('audit_user_role') === 'admin')
+                    {{-- Jenis Audit (Admin Only) --}}
+                    <a href="{{ route('admin.jenis-audit.index') }}"
+                        class="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-semibold transition-all
+                        {{ request()->is('audit/admin/jenis-audit*') ? 'bg-white text-yazaki-red shadow-sm font-bold' : 'text-white/90 hover:bg-white/10 hover:text-white' }}">
+                        <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+                        </svg>
+                        <span>Jenis Audit</span>
+                    </a>
+
+                    {{-- Kelola Auditor (Admin Only) --}}
+                    <a href="{{ route('admin.auditor.index') }}"
+                        class="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-semibold transition-all
+                        {{ request()->is('audit/admin/auditor*') ? 'bg-white text-yazaki-red shadow-sm font-bold' : 'text-white/90 hover:bg-white/10 hover:text-white' }}">
+                        <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
+                        </svg>
+                        <span>Kelola Auditor</span>
+                    </a>
+
+                    {{-- Jadwal Audit (Admin Only) --}}
+                    <a href="{{ route('admin.jadwal.index') }}"
+                        class="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-semibold transition-all
+                        {{ request()->is('audit/admin/jadwal*') ? 'bg-white text-yazaki-red shadow-sm font-bold' : 'text-white/90 hover:bg-white/10 hover:text-white' }}">
+                        <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                        </svg>
+                        <span>Jadwal Audit</span>
+                    </a>
+                @endif
             </nav>
         </div>
 

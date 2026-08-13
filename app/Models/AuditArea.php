@@ -11,12 +11,18 @@ class AuditArea extends Model
 
     protected $fillable = [
         'category',
+        'audit_type_id',
         'slug',
         'name',
         'description',
         'icon_svg',
         'sort_order',
     ];
+
+    public function type()
+    {
+        return $this->belongsTo(AuditType::class, 'audit_type_id');
+    }
 
     public function processes()
     {
