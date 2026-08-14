@@ -29,7 +29,6 @@ class AuditProcessController extends Controller
         $areas = AuditArea::where('category', '5s_standard')
             ->orderBy('sort_order')
             ->get()
-            ->keyBy('slug')
             ->map(function ($area) use ($user, $allowedIds) {
                 if ($user && $user->isAdmin()) {
                     $count = $area->processes()->count();
@@ -44,7 +43,11 @@ class AuditProcessController extends Controller
                     'icon' => $area->icon_svg,
                     'process_count' => $count,
                 ];
-            });
+            })
+            ->when($user && ! $user->isAdmin(), function ($collection) {
+                return $collection->filter(fn ($area) => $area['process_count'] > 0);
+            })
+            ->keyBy('slug');
 
         return view('audit.5s-standard', compact('areas'));
     }
@@ -69,12 +72,14 @@ class AuditProcessController extends Controller
 
         $user = $this->getAuthUser();
         $processesQuery = $areaModel->processes;
+        $auditedProcessIds = [];
 
         if ($user && ! $user->isAdmin()) {
             $allowedIds = $user->getAllowedProcessIds() ?? [];
             $processesQuery = $processesQuery->filter(function ($p) use ($allowedIds) {
                 return in_array($p->id, $allowedIds);
             });
+            $auditedProcessIds = $user->getAuditedProcessIds();
         }
 
         $processes = $processesQuery->map(function ($p) {
@@ -86,7 +91,7 @@ class AuditProcessController extends Controller
             ];
         })->values();
 
-        return view('audit.5s-process', compact('area', 'processes'));
+        return view('audit.5s-process', compact('area', 'processes', 'auditedProcessIds'));
     }
 
     public function changePointManagement()
@@ -95,16 +100,29 @@ class AuditProcessController extends Controller
             ->where('slug', 'change-point-management')
             ->first();
 
-        $processes = $areaModel ? $areaModel->processes->map(function ($p) {
+        $user = $this->getAuthUser();
+        $auditedProcessIds = [];
+
+        $allProcesses = $areaModel ? $areaModel->processes : collect();
+
+        if ($user && ! $user->isAdmin()) {
+            $allowedIds = $user->getAllowedProcessIds() ?? [];
+            $allProcesses = $allProcesses->filter(function ($p) use ($allowedIds) {
+                return in_array($p->id, $allowedIds);
+            });
+            $auditedProcessIds = $user->getAuditedProcessIds();
+        }
+
+        $processes = $allProcesses->map(function ($p) {
             return [
                 'id' => $p->id,
                 'name' => $p->name,
                 'desc' => $p->description,
                 'status' => $p->status,
             ];
-        }) : collect();
+        })->values();
 
-        return view('audit.change-point-management', compact('processes'));
+        return view('audit.change-point-management', compact('processes', 'auditedProcessIds'));
     }
 
     public function licenseSystem()
@@ -113,16 +131,29 @@ class AuditProcessController extends Controller
             ->where('slug', 'license-system')
             ->first();
 
-        $processes = $areaModel ? $areaModel->processes->map(function ($p) {
+        $user = $this->getAuthUser();
+        $auditedProcessIds = [];
+
+        $allProcesses = $areaModel ? $areaModel->processes : collect();
+
+        if ($user && ! $user->isAdmin()) {
+            $allowedIds = $user->getAllowedProcessIds() ?? [];
+            $allProcesses = $allProcesses->filter(function ($p) use ($allowedIds) {
+                return in_array($p->id, $allowedIds);
+            });
+            $auditedProcessIds = $user->getAuditedProcessIds();
+        }
+
+        $processes = $allProcesses->map(function ($p) {
             return [
                 'id' => $p->id,
                 'name' => $p->name,
                 'desc' => $p->description,
                 'status' => $p->status,
             ];
-        }) : collect();
+        })->values();
 
-        return view('audit.license-system', compact('processes'));
+        return view('audit.license-system', compact('processes', 'auditedProcessIds'));
     }
 
     public function showAuditForm(AuditProcess $process)
@@ -140,6 +171,10 @@ class AuditProcessController extends Controller
         $allowedIds = $user->getAllowedProcessIds() ?? [];
         if (! in_array($process->id, $allowedIds)) {
             abort(403, 'Anda tidak memiliki akses untuk mengaudit item check ini.');
+        }
+
+        if (in_array($process->id, $user->getAuditedProcessIds())) {
+            return redirect()->back()->with('error', 'Proses ini sudah diaudit dalam jadwal aktif Anda.');
         }
 
         $process->load('area');
@@ -165,6 +200,10 @@ class AuditProcessController extends Controller
         $allowedIds = $user->getAllowedProcessIds() ?? [];
         if (! in_array($process->id, $allowedIds)) {
             abort(403, 'Anda tidak memiliki akses untuk mengaudit item check ini.');
+        }
+
+        if (in_array($process->id, $user->getAuditedProcessIds())) {
+            return redirect()->back()->with('error', 'Proses ini sudah diaudit dalam jadwal aktif Anda.');
         }
 
         $process->load('area');

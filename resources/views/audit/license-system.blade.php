@@ -47,13 +47,26 @@
                     </p>
                 </div>
 
-                <a href="{{ url('audit/process/' . $process['id'] . '/form') }}" 
-                   class="w-full inline-flex items-center justify-center space-x-1.5 px-3 py-2 rounded-lg text-xs font-semibold text-white bg-yazaki-red hover:bg-yazaki-red-dark transition-colors shadow-sm">
-                    <span>Proceed to Audit</span>
-                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
-                    </svg>
-                </a>
+                @if(session('audit_user_role') === 'admin')
+                    <button disabled class="w-full inline-flex items-center justify-center space-x-1.5 px-3 py-2 rounded-lg text-xs font-semibold text-gray-400 bg-gray-100 cursor-not-allowed border border-gray-200">
+                        <span>View Only (Admin)</span>
+                    </button>
+                @elseif(isset($auditedProcessIds) && in_array($process['id'], $auditedProcessIds))
+                    <button disabled class="w-full inline-flex items-center justify-center space-x-1.5 px-3 py-2 rounded-lg text-xs font-semibold text-gray-400 bg-gray-100 cursor-not-allowed border border-gray-200">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                        </svg>
+                        <span>Sudah Diaudit</span>
+                    </button>
+                @else
+                    <a href="{{ url('audit/process/' . $process['id'] . '/form') }}" 
+                       class="w-full inline-flex items-center justify-center space-x-1.5 px-3 py-2 rounded-lg text-xs font-semibold text-white bg-yazaki-red hover:bg-yazaki-red-dark transition-colors shadow-sm">
+                        <span>Proceed to Audit</span>
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                        </svg>
+                    </a>
+                @endif
             </div>
         @endforeach
     </div>

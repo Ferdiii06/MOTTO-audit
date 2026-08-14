@@ -65,7 +65,7 @@ class AuditTypeController extends Controller
     {
         $this->checkAdmin();
 
-        $type = AuditType::findOrFail($id);
+        $type = AuditType::with('areas.processes')->findOrFail($id);
 
         return view('admin.jenis-audit.edit', compact('type'));
     }

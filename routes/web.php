@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\AuditAreaController;
+use App\Http\Controllers\Admin\AuditProcessController as AdminAuditProcessController;
 use App\Http\Controllers\Admin\AuditScheduleController;
 use App\Http\Controllers\Admin\AuditTypeController;
 use App\Http\Controllers\Admin\AuditUserManagementController;
@@ -38,13 +40,18 @@ Route::middleware('audit.auth')->group(function () {
     Route::get('/audit/process/{process}/form', [AuditProcessController::class, 'showAuditForm']);
     Route::post('/audit/process/{process}/submit', [AuditProcessController::class, 'submitAuditForm']);
 
-    // Admin - Manajemen Jenis Audit
     Route::get('/audit/admin/jenis-audit', [AuditTypeController::class, 'index'])->name('admin.jenis-audit.index');
     Route::get('/audit/admin/jenis-audit/create', [AuditTypeController::class, 'create'])->name('admin.jenis-audit.create');
     Route::post('/audit/admin/jenis-audit', [AuditTypeController::class, 'store'])->name('admin.jenis-audit.store');
     Route::get('/audit/admin/jenis-audit/{id}/edit', [AuditTypeController::class, 'edit'])->name('admin.jenis-audit.edit');
     Route::put('/audit/admin/jenis-audit/{id}', [AuditTypeController::class, 'update'])->name('admin.jenis-audit.update');
     Route::delete('/audit/admin/jenis-audit/{id}', [AuditTypeController::class, 'destroy'])->name('admin.jenis-audit.destroy');
+    Route::post('/audit/admin/jenis-audit/{type}/area', [AuditAreaController::class, 'store'])->name('admin.area.store');
+    Route::put('/audit/admin/area/{area}', [AuditAreaController::class, 'update'])->name('admin.area.update');
+    Route::delete('/audit/admin/area/{area}', [AuditAreaController::class, 'destroy'])->name('admin.area.destroy');
+    Route::post('/audit/admin/area/{area}/process', [AdminAuditProcessController::class, 'store'])->name('admin.process.store');
+    Route::put('/audit/admin/process/{process}', [AdminAuditProcessController::class, 'update'])->name('admin.process.update');
+    Route::delete('/audit/admin/process/{process}', [AdminAuditProcessController::class, 'destroy'])->name('admin.process.destroy');
 
     // Admin - Kelola Akun Auditor
     Route::get('/audit/admin/auditor', [AuditUserManagementController::class, 'index'])->name('admin.auditor.index');
