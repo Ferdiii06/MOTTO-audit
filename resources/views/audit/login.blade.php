@@ -13,7 +13,7 @@
 
         {{-- JAI Logo --}}
         <div class="mb-8">
-            <img src="{{ asset('logo_jai.png') }}" alt="PT Jatim Autocomp Indonesia" class="h-16 object-contain">
+            <img src="{{ asset('logo_jai.png') }}" alt="PT Jatim Autocomp Indonesia" class="h-24 object-contain">
         </div>
 
         {{-- Login Card --}}
