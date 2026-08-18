@@ -130,10 +130,10 @@
         </div>
 
         {{-- Logout --}}
-        <div class="p-3 border-t border-white/20">
+        <div class="p-3 pb-6 border-t border-white/20">
             <form method="POST" action="{{ url('audit/logout') }}">
                 @csrf
-                <button type="submit" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-semibold text-white/90 hover:bg-white/10 hover:text-white transition-all">
+                <button type="submit" class="w-full flex items-center space-x-3 px-3 py-3 rounded-lg text-sm font-semibold text-white/90 hover:bg-white/10 hover:text-white transition-all" style="min-height: 48px;">
                     <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
                     </svg>
