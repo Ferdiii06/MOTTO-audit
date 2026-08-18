@@ -11,14 +11,9 @@
 
     <div class="w-full max-w-md flex flex-col items-center">
 
-        {{-- YAZAKI Logo Placeholder --}}
-        <div class="flex items-center space-x-2 mb-8">
-            {{-- Red chevron icon as logo placeholder --}}
-            <svg class="w-10 h-10 text-yazaki-red" viewBox="0 0 40 40" fill="currentColor">
-                <path d="M8 8 L20 20 L8 32 L14 32 L26 20 L14 8 Z"/>
-                <path d="M16 8 L28 20 L16 32 L22 32 L34 20 L22 8 Z"/>
-            </svg>
-            <span class="text-3xl font-extrabold text-yazaki-red tracking-tight">YAZAKI</span>
+        {{-- JAI Logo --}}
+        <div class="mb-8">
+            <img src="{{ asset('logo_jai.png') }}" alt="PT Jatim Autocomp Indonesia" class="h-16 object-contain">
         </div>
 
         {{-- Login Card --}}
