@@ -60,7 +60,6 @@
             <h3 class="font-bold text-gray-900">Tambah Area</h3>
             <input name="name" required placeholder="Nama area" class="w-full px-3 py-2 rounded-lg border border-gray-300 text-sm">
             <textarea name="description" placeholder="Deskripsi" rows="2" class="w-full px-3 py-2 rounded-lg border border-gray-300 text-sm"></textarea>
-            <input name="icon_svg" placeholder="SVG path (opsional)" class="w-full px-3 py-2 rounded-lg border border-gray-300 text-sm">
             <div class="flex justify-end gap-2"><button type="button" onclick="this.closest('form').classList.add('hidden')" class="px-3 py-2 bg-gray-100 rounded-lg text-sm">Batal</button><button class="px-3 py-2 bg-yazaki-red text-white rounded-lg text-sm">Simpan Area</button></div>
         </form>
 
@@ -79,7 +78,6 @@
                             @csrf @method('PUT')
                             <input name="name" value="{{ $area->name }}" required class="w-full px-3 py-2 rounded-lg border border-gray-300 text-sm">
                             <textarea name="description" rows="2" class="w-full px-3 py-2 rounded-lg border border-gray-300 text-sm">{{ $area->description }}</textarea>
-                            <input name="icon_svg" value="{{ $area->icon_svg }}" class="w-full px-3 py-2 rounded-lg border border-gray-300 text-sm">
                             <button class="px-3 py-2 rounded-lg bg-yazaki-red text-white text-xs font-semibold">Simpan Area</button>
                         </form>
                         <div class="flex justify-between items-center"><h4 class="font-semibold text-gray-800">Daftar Proses</h4><button type="button" onclick="document.getElementById('add-process-{{ $area->id }}').classList.toggle('hidden')" class="text-xs font-semibold text-yazaki-red">+ Tambah Proses</button></div>
