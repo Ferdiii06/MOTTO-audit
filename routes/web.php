@@ -65,6 +65,7 @@ Route::middleware('audit.auth')->group(function () {
     Route::get('/audit/admin/jadwal', [AuditScheduleController::class, 'index'])->name('admin.jadwal.index');
     Route::get('/audit/admin/jadwal/create', [AuditScheduleController::class, 'create'])->name('admin.jadwal.create');
     Route::post('/audit/admin/jadwal', [AuditScheduleController::class, 'store'])->name('admin.jadwal.store');
+    Route::post('/audit/admin/jadwal/bulk-delete', [AuditScheduleController::class, 'bulkDestroy'])->name('admin.jadwal.bulk-destroy');
     Route::get('/audit/admin/jadwal/{id}/edit', [AuditScheduleController::class, 'edit'])->name('admin.jadwal.edit');
     Route::put('/audit/admin/jadwal/{id}', [AuditScheduleController::class, 'update'])->name('admin.jadwal.update');
     Route::delete('/audit/admin/jadwal/{id}', [AuditScheduleController::class, 'destroy'])->name('admin.jadwal.destroy');

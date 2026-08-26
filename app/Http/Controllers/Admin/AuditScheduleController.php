@@ -234,6 +234,20 @@ class AuditScheduleController extends Controller
         return redirect()->route('admin.jadwal.index')->with('success', 'Jadwal audit berhasil diperbarui.');
     }
 
+    public function bulkDestroy(Request $request)
+    {
+        $this->checkAdmin();
+
+        $request->validate([
+            'ids' => 'required|array|min:1',
+            'ids.*' => 'exists:audit_schedules,id',
+        ]);
+
+        $count = AuditSchedule::whereIn('id', $request->input('ids'))->delete();
+
+        return redirect()->route('admin.jadwal.index')->with('success', "{$count} jadwal audit berhasil dihapus.");
+    }
+
     public function destroy($id)
     {
         $this->checkAdmin();

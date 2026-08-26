@@ -92,12 +92,36 @@
         @endif
     </div>
 
+    {{-- Bulk Delete Form (external, agar tidak nested dengan form delete per-row) --}}
+    <form id="bulkDeleteForm" method="POST" action="{{ route('admin.jadwal.bulk-destroy') }}" onsubmit="return confirm('Apakah Anda yakin ingin menghapus ' + document.querySelectorAll('.schedule-checkbox:checked').length + ' jadwal terpilih?')">
+        @csrf
+    </form>
+
     {{-- Data Table --}}
     <div class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+        {{-- Bulk Action Toolbar --}}
+        <div class="flex items-center justify-between px-6 py-3 bg-gray-50 border-b border-gray-200">
+            <span id="selected_count_badge" class="px-2.5 py-1 rounded-full bg-yazaki-red text-white font-bold text-xs shadow-sm">
+                0 jadwal dipilih
+            </span>
+            <button type="submit" 
+                    form="bulkDeleteForm" 
+                    id="bulkDeleteBtn" 
+                    disabled 
+                    class="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-rose-700 bg-rose-50 hover:bg-rose-100 border border-rose-200 transition-colors opacity-50 cursor-not-allowed">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                </svg>
+                <span>Hapus Terpilih</span>
+            </button>
+        </div>
         <div class="overflow-x-auto">
             <table class="w-full text-left border-collapse">
                 <thead>
                     <tr class="bg-gray-50 border-b border-gray-200 text-xs font-bold text-gray-500 uppercase tracking-wider">
+                        <th class="py-3.5 px-4 w-12 text-center">
+                            <input type="checkbox" id="checkAll" onchange="toggleAllSchedules(this)" class="rounded border-gray-300 text-yazaki-red focus:ring-yazaki-red">
+                        </th>
                         <th class="py-3.5 px-6 w-16 text-center">No</th>
                         <th class="py-3.5 px-6">Auditor</th>
                         <th class="py-3.5 px-6">Target Audit</th>
@@ -110,6 +134,9 @@
                 <tbody class="divide-y divide-gray-100 text-sm">
                     @forelse($schedules as $index => $s)
                         <tr class="hover:bg-gray-50/50 transition-colors">
+                            <td class="py-4 px-4 text-center">
+                                <input type="checkbox" name="ids[]" value="{{ $s->id }}" form="bulkDeleteForm" class="schedule-checkbox rounded border-gray-300 text-yazaki-red focus:ring-yazaki-red" onchange="updateSelectedCount()">
+                            </td>
                             <td class="py-4 px-6 text-center text-gray-500 font-medium">{{ $index + 1 }}</td>
                             <td class="py-4 px-6 font-semibold text-gray-900">
                                 {{ optional($s->auditor)->name ?? '-' }}
@@ -173,7 +200,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="7" class="py-8 text-center text-gray-500 text-sm">
+                            <td colspan="8" class="py-8 text-center text-gray-500 text-sm">
                                 Belum ada jadwal audit yang dibuat.
                             </td>
                         </tr>
@@ -183,4 +210,34 @@
         </div>
     </div>
 </div>
+
+<script>
+    function toggleAllSchedules(masterCheckbox) {
+        document.querySelectorAll('.schedule-checkbox').forEach(cb => cb.checked = masterCheckbox.checked);
+        updateSelectedCount();
+    }
+
+    function updateSelectedCount() {
+        const count = document.querySelectorAll('.schedule-checkbox:checked').length;
+        const badge = document.getElementById('selected_count_badge');
+        const btn = document.getElementById('bulkDeleteBtn');
+        const checkAll = document.getElementById('checkAll');
+
+        if (badge) badge.textContent = count + ' jadwal dipilih';
+
+        if (btn) {
+            if (count > 0) {
+                btn.disabled = false;
+                btn.classList.remove('opacity-50', 'cursor-not-allowed');
+            } else {
+                btn.disabled = true;
+                btn.classList.add('opacity-50', 'cursor-not-allowed');
+            }
+        }
+
+        // Sync select-all checkbox
+        const total = document.querySelectorAll('.schedule-checkbox').length;
+        if (checkAll) checkAll.checked = total > 0 && count === total;
+    }
+</script>
 @endsection
