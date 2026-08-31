@@ -6,7 +6,7 @@
     <title>@yield('title', 'Moto Audit System')</title>
     @vite(['resources/css/audit.css', 'resources/js/audit.js'])
 </head>
-<body class="bg-gray-50 text-gray-800 min-h-screen flex flex-col md:flex-row overflow-x-hidden md:overflow-hidden">
+<body class="bg-gray-50 text-gray-800 h-dvh md:h-[100dvh] flex flex-col md:flex-row overflow-x-hidden overflow-y-hidden md:overflow-hidden">
 
     {{-- Mobile Top Navbar (Visible only on < 768px) --}}
     <header class="md:hidden bg-yazaki-red text-white px-4 py-3 flex items-center justify-between shadow-md shrink-0 z-20">
