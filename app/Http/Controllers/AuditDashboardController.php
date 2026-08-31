@@ -328,25 +328,25 @@ class AuditDashboardController extends Controller
         $sheet->setTitle('Riwayat Audit');
 
         // Column letters map
-        $columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'];
+        $columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K'];
 
         // Header row
-        $headers = ['No', 'Tanggal', 'Auditor', 'Kategori', 'Area', 'Proses', 'Kondisi', 'Catatan', 'Foto Temuan'];
+        $headers = ['No', 'Tanggal', 'Auditor', 'Kategori', 'Area', 'Proses', 'Checkpoint', 'Kriteria Judgement', 'Kondisi', 'Catatan', 'Foto Temuan'];
         foreach ($headers as $colIdx => $header) {
             $sheet->setCellValue($columns[$colIdx] . '1', $header);
         }
 
         // Style header
-        $sheet->getStyle('A1:I1')->applyFromArray([
+        $sheet->getStyle('A1:K1')->applyFromArray([
             'font' => ['bold' => true, 'color' => ['rgb' => 'FFFFFF'], 'size' => 11],
             'fill' => ['fillType' => Fill::FILL_SOLID, 'startColor' => ['rgb' => 'C8102E']],
             'alignment' => ['horizontal' => Alignment::HORIZONTAL_CENTER, 'vertical' => Alignment::VERTICAL_CENTER],
             'borders' => ['allBorders' => ['borderStyle' => Border::BORDER_THIN]],
         ]);
-        $sheet->getRowDimension(1)->setRowHeight(30);
+        $sheet->getRowDimension(1)->setRowHeight(28);
 
         // Column widths
-        $widths = [6, 22, 20, 18, 22, 28, 10, 35, 20];
+        $widths = [6, 18, 18, 16, 20, 24, 42, 42, 10, 32, 20];
         foreach ($widths as $i => $w) {
             $sheet->getColumnDimension($columns[$i])->setWidth($w);
         }
@@ -364,6 +364,9 @@ class AuditDashboardController extends Controller
             }
             $kondisi = ($record->judgement === 'OK' || $record->score >= 90) ? 'OK' : 'NG';
             $dateStr = is_string($record->audit_date) ? $record->audit_date : $record->audit_date->format('Y-m-d');
+            $checkpointText = $record->process ? ($record->process->checkpoint ?? '-') : '-';
+            $kriteriaText = $record->process ? ($record->process->kriteria_judgement ?? '-') : '-';
+            $catatanText = $record->catatan ?? '-';
 
             $sheet->setCellValue("A{$row}", $idx + 1);
             $sheet->setCellValue("B{$row}", $dateStr);
@@ -371,24 +374,40 @@ class AuditDashboardController extends Controller
             $sheet->setCellValue("D{$row}", $categoryLabel);
             $sheet->setCellValue("E{$row}", $record->area_name);
             $sheet->setCellValue("F{$row}", $record->process ? $record->process->name : '-');
-            $sheet->setCellValue("G{$row}", $kondisi);
-            $sheet->setCellValue("H{$row}", $record->catatan ?? '-');
+            $sheet->setCellValue("G{$row}", $checkpointText);
+            $sheet->setCellValue("H{$row}", $kriteriaText);
+            $sheet->setCellValue("I{$row}", $kondisi);
+            $sheet->setCellValue("J{$row}", $catatanText);
+
+            // Style data row borders + alignment (Vertical TOP for clean look)
+            $sheet->getStyle("A{$row}:K{$row}")->applyFromArray([
+                'borders' => ['allBorders' => ['borderStyle' => Border::BORDER_THIN, 'color' => ['rgb' => 'D1D5DB']]],
+                'alignment' => ['vertical' => Alignment::VERTICAL_TOP, 'wrapText' => true],
+            ]);
+            $sheet->getStyle("A{$row}")->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+            $sheet->getStyle("I{$row}")->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
 
             // Style kondisi cell color
             if ($kondisi === 'NG') {
-                $sheet->getStyle("G{$row}")->applyFromArray([
+                $sheet->getStyle("I{$row}")->applyFromArray([
                     'font' => ['bold' => true, 'color' => ['rgb' => 'FFFFFF']],
                     'fill' => ['fillType' => Fill::FILL_SOLID, 'startColor' => ['rgb' => 'DC2626']],
                 ]);
             } else {
-                $sheet->getStyle("G{$row}")->applyFromArray([
+                $sheet->getStyle("I{$row}")->applyFromArray([
                     'font' => ['bold' => true, 'color' => ['rgb' => '065F46']],
                     'fill' => ['fillType' => Fill::FILL_SOLID, 'startColor' => ['rgb' => 'D1FAE5']],
                 ]);
             }
 
+            // Estimate dynamic row height based on longest wrapped text
+            $linesG = max(1, (int) ceil(strlen($checkpointText) / 40));
+            $linesH = max(1, (int) ceil(strlen($kriteriaText) / 40));
+            $linesJ = max(1, (int) ceil(strlen($catatanText) / 30));
+            $maxLines = max($linesG, $linesH, $linesJ);
+            $estimatedHeight = min(120, max(22, $maxLines * 16));
+
             // Embed foto_ng image
-            $rowHeight = 20;
             if ($record->foto_ng) {
                 $imagePath = storage_path('app/public/' . $record->foto_ng);
                 if (file_exists($imagePath)) {
@@ -397,23 +416,16 @@ class AuditDashboardController extends Controller
                     $drawing->setDescription('Foto Temuan');
                     $drawing->setPath($imagePath);
                     $drawing->setHeight(90);
-                    $drawing->setCoordinates("I{$row}");
+                    $drawing->setCoordinates("K{$row}");
                     $drawing->setOffsetX(5);
                     $drawing->setOffsetY(5);
                     $drawing->setWorksheet($sheet);
-                    $rowHeight = 75;
-                    $sheet->getColumnDimension('I')->setWidth(18);
+                    $estimatedHeight = max($estimatedHeight, 75);
+                    $sheet->getColumnDimension('K')->setWidth(18);
                 }
             }
-            $sheet->getRowDimension($row)->setRowHeight($rowHeight);
 
-            // Style data row borders + alignment
-            $sheet->getStyle("A{$row}:I{$row}")->applyFromArray([
-                'borders' => ['allBorders' => ['borderStyle' => Border::BORDER_THIN, 'color' => ['rgb' => 'D1D5DB']]],
-                'alignment' => ['vertical' => Alignment::VERTICAL_CENTER, 'wrapText' => true],
-            ]);
-            $sheet->getStyle("A{$row}")->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
-            $sheet->getStyle("G{$row}")->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+            $sheet->getRowDimension($row)->setRowHeight($estimatedHeight);
 
             $row++;
         }
