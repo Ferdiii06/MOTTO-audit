@@ -81,20 +81,35 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    const homeToggleBtnDesktop = document.getElementById('home-toggle-btn-desktop');
+    const homeSubmenuDesktop = document.getElementById('home-submenu-desktop');
+    const homeChevronIconDesktop = document.getElementById('home-chevron-icon-desktop');
+
+    if (homeToggleBtnDesktop && homeSubmenuDesktop) {
+        homeToggleBtnDesktop.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            homeSubmenuDesktop.classList.toggle('hidden');
+            if (homeChevronIconDesktop) {
+                homeChevronIconDesktop.classList.toggle('rotate-180');
+            }
+        });
+    }
+
     // Mobile Sidebar Drawer Logic
     const mobileMenuBtn = document.getElementById('mobile-menu-btn');
     const mobileCloseBtn = document.getElementById('mobile-sidebar-close-btn');
-    const sidebarMenu = document.getElementById('sidebar-menu');
+    const mobileSidebarMenu = document.getElementById('mobile-sidebar-menu');
     const backdrop = document.getElementById('mobile-sidebar-backdrop');
 
     const openSidebar = () => {
-        sidebarMenu?.classList.remove('-translate-x-full');
+        mobileSidebarMenu?.classList.remove('-translate-x-full');
         backdrop?.classList.remove('hidden');
         document.body.classList.add('overflow-hidden');
     };
 
     const closeSidebar = () => {
-        sidebarMenu?.classList.add('-translate-x-full');
+        mobileSidebarMenu?.classList.add('-translate-x-full');
         backdrop?.classList.add('hidden');
         document.body.classList.remove('overflow-hidden');
     };
@@ -104,7 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
     backdrop?.addEventListener('click', closeSidebar);
 
     window.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && sidebarMenu && !sidebarMenu.classList.contains('-translate-x-full')) {
+        if (e.key === 'Escape' && mobileSidebarMenu && !mobileSidebarMenu.classList.contains('-translate-x-full')) {
             closeSidebar();
         }
     });
