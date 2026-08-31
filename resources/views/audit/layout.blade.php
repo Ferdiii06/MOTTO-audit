@@ -6,19 +6,47 @@
     <title>@yield('title', 'Moto Audit System')</title>
     @vite(['resources/css/audit.css', 'resources/js/audit.js'])
 </head>
-<body class="bg-gray-50 text-gray-800 h-screen overflow-hidden flex">
+<body class="bg-gray-50 text-gray-800 min-h-screen lg:h-screen flex flex-col lg:flex-row overflow-x-hidden lg:overflow-hidden">
+
+    {{-- Mobile Top Navbar --}}
+    <header class="lg:hidden bg-yazaki-red text-white px-4 py-3 flex items-center justify-between shadow-md shrink-0 z-20">
+        <div class="flex items-center space-x-3">
+            <button type="button" id="mobile-menu-btn" class="p-1.5 rounded-lg hover:bg-white/10 text-white focus:outline-none focus:ring-2 focus:ring-white/30" aria-label="Open Navigation Menu">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                </svg>
+            </button>
+            <div>
+                <h1 class="text-base font-extrabold tracking-tight">Audit System</h1>
+                <p class="text-[10px] text-white/70 font-medium">PT Jatim Autocomp</p>
+            </div>
+        </div>
+        <div class="flex items-center space-x-2">
+            <span class="text-xs bg-white/10 px-2.5 py-1 rounded-full font-semibold">{{ session('audit_user_role', 'auditor') }}</span>
+        </div>
+    </header>
+
+    {{-- Mobile Sidebar Backdrop --}}
+    <div id="mobile-sidebar-backdrop" class="fixed inset-0 bg-black/50 backdrop-blur-xs z-30 hidden transition-opacity duration-300 lg:hidden" aria-hidden="true"></div>
 
     {{-- Sidebar --}}
-    <aside class="w-52 bg-yazaki-red flex flex-col justify-between shrink-0">
-        <div>
+    <aside id="sidebar-menu" class="fixed inset-y-0 left-0 z-40 w-64 bg-yazaki-red flex flex-col justify-between transform -translate-x-full transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:w-52 shrink-0">
+        <div class="flex flex-col h-full overflow-y-auto">
             {{-- Sidebar Header --}}
-            <div class="px-5 py-5 border-b border-white/20">
-                <h2 class="text-white font-extrabold text-base tracking-tight">Audit System</h2>
-                <p class="text-white/60 text-xs mt-0.5">PT Jatim Autocomp</p>
+            <div class="px-5 py-5 border-b border-white/20 flex items-center justify-between shrink-0">
+                <div>
+                    <h2 class="text-white font-extrabold text-base tracking-tight">Audit System</h2>
+                    <p class="text-white/60 text-xs mt-0.5">PT Jatim Autocomp</p>
+                </div>
+                <button type="button" id="mobile-sidebar-close-btn" class="lg:hidden text-white/80 hover:text-white p-1 rounded-lg focus:outline-none" aria-label="Close Navigation Menu">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
             </div>
 
             {{-- Navigation --}}
-            <nav class="p-3 space-y-1">
+            <nav class="p-3 space-y-1 flex-1 overflow-y-auto">
                 @php
                     $homeGroup = ['audit/dashboard', 'audit/5s-standard*', 'audit/change-point-management*', 'audit/license-system*'];
                     $isHomeGroupActive = request()->is($homeGroup);
@@ -78,7 +106,7 @@
                 {{-- Riwayat --}}
                 <a href="{{ url('audit/riwayat') }}"
                     class="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-semibold transition-all
-                    {{ request()->is('audit/riwayat') ? 'bg-white text-yazaki-red shadow-sm font-bold' : 'text-white/90 hover:bg-white/10 hover:text-white' }}">
+                    {{ request()->is('audit/riwayat*') ? 'bg-white text-yazaki-red shadow-sm font-bold' : 'text-white/90 hover:bg-white/10 hover:text-white' }}">
                     <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
                     </svg>
@@ -88,7 +116,7 @@
                 {{-- Pedoman --}}
                 <a href="{{ url('audit/pedoman') }}"
                     class="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-semibold transition-all
-                    {{ request()->is('audit/pedoman') ? 'bg-white text-yazaki-red shadow-sm font-bold' : 'text-white/90 hover:bg-white/10 hover:text-white' }}">
+                    {{ request()->is('audit/pedoman*') ? 'bg-white text-yazaki-red shadow-sm font-bold' : 'text-white/90 hover:bg-white/10 hover:text-white' }}">
                     <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
                     </svg>
@@ -127,24 +155,24 @@
                     </a>
                 @endif
             </nav>
-        </div>
 
-        {{-- Logout --}}
-        <div class="p-3 pb-6 border-t border-white/20">
-            <form method="POST" action="{{ url('audit/logout') }}">
-                @csrf
-                <button type="submit" class="w-full flex items-center space-x-3 px-3 py-3 rounded-lg text-sm font-semibold text-white/90 hover:bg-white/10 hover:text-white transition-all" style="min-height: 48px;">
-                    <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
-                    </svg>
-                    <span>Logout</span>
-                </button>
-            </form>
+            {{-- Logout --}}
+            <div class="p-3 pb-6 border-t border-white/20 shrink-0">
+                <form method="POST" action="{{ url('audit/logout') }}">
+                    @csrf
+                    <button type="submit" class="w-full flex items-center space-x-3 px-3 py-3 rounded-lg text-sm font-semibold text-white/90 hover:bg-white/10 hover:text-white transition-all cursor-pointer" style="min-height: 48px;">
+                        <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+                        </svg>
+                        <span>Logout</span>
+                    </button>
+                </form>
+            </div>
         </div>
     </aside>
 
     {{-- Main Content --}}
-    <main class="flex-1 overflow-y-auto px-8 py-6">
+    <main class="flex-1 overflow-y-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 w-full">
         @yield('content')
     </main>
 

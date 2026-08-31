@@ -116,7 +116,7 @@
             </button>
         </div>
         <div class="overflow-x-auto">
-            <table class="w-full text-left border-collapse">
+            <table class="w-full text-left border-collapse min-w-[800px]">
                 <thead>
                     <tr class="bg-gray-50 border-b border-gray-200 text-xs font-bold text-gray-500 uppercase tracking-wider">
                         <th class="py-3.5 px-4 w-12 text-center">

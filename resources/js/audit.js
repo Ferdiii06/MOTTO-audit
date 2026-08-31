@@ -80,4 +80,33 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
+    // Mobile Sidebar Drawer Logic
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileCloseBtn = document.getElementById('mobile-sidebar-close-btn');
+    const sidebarMenu = document.getElementById('sidebar-menu');
+    const backdrop = document.getElementById('mobile-sidebar-backdrop');
+
+    const openSidebar = () => {
+        sidebarMenu?.classList.remove('-translate-x-full');
+        backdrop?.classList.remove('hidden');
+        document.body.classList.add('overflow-hidden');
+    };
+
+    const closeSidebar = () => {
+        sidebarMenu?.classList.add('-translate-x-full');
+        backdrop?.classList.add('hidden');
+        document.body.classList.remove('overflow-hidden');
+    };
+
+    mobileMenuBtn?.addEventListener('click', openSidebar);
+    mobileCloseBtn?.addEventListener('click', closeSidebar);
+    backdrop?.addEventListener('click', closeSidebar);
+
+    window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && sidebarMenu && !sidebarMenu.classList.contains('-translate-x-full')) {
+            closeSidebar();
+        }
+    });
 });
+

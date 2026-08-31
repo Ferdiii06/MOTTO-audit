@@ -39,16 +39,16 @@
 
     {{-- Filters & Export Action Bar --}}
     <form method="GET" action="{{ route('riwayat') }}" id="filter-form" 
-          class="bg-white rounded-xl border border-gray-200 p-4 shadow-sm flex flex-wrap items-center justify-between gap-3 relative z-30">
+          class="bg-white rounded-xl border border-gray-200 p-4 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-3 relative z-30">
         
         {{-- Hidden Inputs for Dropdown Filters --}}
         <input type="hidden" name="kategori" id="input-kategori" value="{{ request('kategori') }}">
         <input type="hidden" name="area" id="input-area" value="{{ request('area') }}">
         <input type="hidden" name="kondisi" id="input-kondisi" value="{{ request('kondisi') }}">
 
-        <div class="flex flex-wrap items-center gap-3">
+        <div class="flex flex-wrap items-center gap-2.5 sm:gap-3">
             {{-- Date Range Filter --}}
-            <div class="flex items-center space-x-2 bg-gray-50 border border-gray-200 rounded-lg px-3 py-1.5 text-xs text-gray-700">
+            <div class="flex items-center space-x-2 bg-gray-50 border border-gray-200 rounded-lg px-3 py-1.5 text-xs text-gray-700 w-full sm:w-auto justify-between sm:justify-start">
                 <svg class="w-4 h-4 text-gray-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                 </svg>
@@ -71,9 +71,9 @@
                 ];
                 $selectedKategoriLabel = $kategoriMap[request('kategori', '')] ?? 'Semua Kategori';
             @endphp
-            <div class="relative inline-block text-left">
+            <div class="relative inline-block text-left w-full sm:w-auto">
                 <button type="button" id="kategori-filter-btn" 
-                        class="inline-flex items-center justify-between min-w-[130px] px-3 py-2 border border-gray-200 rounded-lg text-xs font-medium text-gray-700 bg-gray-50 hover:bg-white focus:outline-none focus:ring-1 focus:ring-yazaki-red cursor-pointer">
+                        class="w-full sm:w-auto inline-flex items-center justify-between min-w-[130px] px-3 py-2 border border-gray-200 rounded-lg text-xs font-medium text-gray-700 bg-gray-50 hover:bg-white focus:outline-none focus:ring-1 focus:ring-yazaki-red cursor-pointer">
                     <span id="selected-kategori-text">{{ $selectedKategoriLabel }}</span>
                     <svg class="w-4 h-4 ml-2 text-gray-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
@@ -98,9 +98,9 @@
                     }
                 }
             @endphp
-            <div class="relative inline-block text-left">
+            <div class="relative inline-block text-left w-full sm:w-auto">
                 <button type="button" id="area-filter-btn" 
-                        class="inline-flex items-center justify-between min-w-[160px] max-w-[220px] px-3 py-2 border border-gray-200 rounded-lg text-xs font-medium text-gray-700 bg-gray-50 hover:bg-white focus:outline-none focus:ring-1 focus:ring-yazaki-red cursor-pointer">
+                        class="w-full sm:w-auto inline-flex items-center justify-between min-w-[160px] sm:max-w-[220px] px-3 py-2 border border-gray-200 rounded-lg text-xs font-medium text-gray-700 bg-gray-50 hover:bg-white focus:outline-none focus:ring-1 focus:ring-yazaki-red cursor-pointer">
                     <span id="selected-area-text" class="truncate">{{ $selectedAreaLabel }}</span>
                     <svg class="w-4 h-4 ml-2 text-gray-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
@@ -126,9 +126,9 @@
                 ];
                 $selectedKondisiLabel = $kondisiMap[request('kondisi', '')] ?? 'Semua Kondisi';
             @endphp
-            <div class="relative inline-block text-left">
+            <div class="relative inline-block text-left w-full sm:w-auto">
                 <button type="button" id="kondisi-filter-btn" 
-                        class="inline-flex items-center justify-between min-w-[120px] px-3 py-2 border border-gray-200 rounded-lg text-xs font-medium text-gray-700 bg-gray-50 hover:bg-white focus:outline-none focus:ring-1 focus:ring-yazaki-red cursor-pointer">
+                        class="w-full sm:w-auto inline-flex items-center justify-between min-w-[120px] px-3 py-2 border border-gray-200 rounded-lg text-xs font-medium text-gray-700 bg-gray-50 hover:bg-white focus:outline-none focus:ring-1 focus:ring-yazaki-red cursor-pointer">
                     <span id="selected-kondisi-text">{{ $selectedKondisiLabel }}</span>
                     <svg class="w-4 h-4 ml-2 text-gray-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
@@ -151,7 +151,7 @@
         </div>
 
         {{-- Export Button --}}
-        <a href="#" id="export-btn" class="inline-flex items-center space-x-2 px-4 py-2 rounded-lg text-xs font-semibold text-white bg-yazaki-red hover:bg-yazaki-red-dark transition-colors shadow-sm cursor-pointer no-underline">
+        <a href="#" id="export-btn" class="w-full sm:w-auto inline-flex items-center justify-center space-x-2 px-4 py-2 rounded-lg text-xs font-semibold text-white bg-yazaki-red hover:bg-yazaki-red-dark transition-colors shadow-sm cursor-pointer no-underline">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
             </svg>
@@ -162,7 +162,7 @@
     {{-- Data Table --}}
     <div class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
         <div class="overflow-x-auto">
-            <table class="w-full text-left text-sm text-gray-600">
+            <table class="w-full text-left text-sm text-gray-600 min-w-[700px]">
                 <thead class="bg-gray-50 text-[11px] font-bold text-gray-400 uppercase tracking-wider border-b border-gray-100">
                     <tr>
                         <th scope="col" class="px-5 py-4">WAKTU</th>
