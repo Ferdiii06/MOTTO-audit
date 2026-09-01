@@ -84,23 +84,15 @@ class AuditDashboardController extends Controller
         }
 
         $totalAudit = (clone $baseQuery)->count();
-        if ($totalAudit == 0 && ! $isAuditor) {
-            // Mock default stats for admin if DB empty
-            $totalAudit = 124;
-            $lulusOk = 112;
-            $temuanNg = 12;
-            $kepatuhan = '90%';
-        } else {
-            $lulusOk = (clone $baseQuery)->where(function ($q) {
-                $q->where('score', '>=', 90)->orWhere('judgement', 'OK');
-            })->count();
+        $lulusOk = (clone $baseQuery)->where(function ($q) {
+            $q->where('score', '>=', 90)->orWhere('judgement', 'OK');
+        })->count();
 
-            $temuanNg = (clone $baseQuery)->where(function ($q) {
-                $q->where('score', '<', 90)->orWhere('judgement', 'NG');
-            })->count();
+        $temuanNg = (clone $baseQuery)->where(function ($q) {
+            $q->where('score', '<', 90)->orWhere('judgement', 'NG');
+        })->count();
 
-            $kepatuhan = number_format(($lulusOk / max(1, $totalAudit)) * 100, 0) . '%';
-        }
+        $kepatuhan = $totalAudit > 0 ? number_format(($lulusOk / $totalAudit) * 100, 0) . '%' : '0%';
 
         $stats = [
             'total_audit' => $totalAudit,
@@ -152,130 +144,36 @@ class AuditDashboardController extends Controller
 
         $paginator = $query->orderBy('audit_date', 'desc')->orderBy('id', 'desc')->paginate(10)->withQueryString();
 
-        $realCount = $isAuditor ? AuditRecord::where('audit_user_id', $userId)->count() : AuditRecord::count();
+        $records = collect($paginator->items())->map(function ($record, $index) use ($paginator) {
+            $formattedDate = is_string($record->audit_date) ? $record->audit_date . ' 16:45:21' : $record->audit_date->format('d F Y H:i:s');
 
-        if ($realCount > 0) {
-            $records = collect($paginator->items())->map(function ($record, $index) use ($paginator) {
-                $formattedDate = is_string($record->audit_date) ? $record->audit_date . ' 16:45:21' : $record->audit_date->format('d F Y H:i:s');
-
-                $categoryLabel = '5S Standard';
-                if ($record->area) {
-                    if ($record->area->category === 'change_point') {
-                        $categoryLabel = 'Change Point';
-                    } elseif ($record->area->category === 'license_system') {
-                        $categoryLabel = 'License System';
-                    }
+            $categoryLabel = '5S Standard';
+            if ($record->area) {
+                if ($record->area->category === 'change_point') {
+                    $categoryLabel = 'Change Point';
+                } elseif ($record->area->category === 'license_system') {
+                    $categoryLabel = 'License System';
                 }
-
-                return [
-                    'id' => $record->id,
-                    'waktu' => $formattedDate,
-                    'user' => $record->auditor_name,
-                    'kategori' => $categoryLabel,
-                    'area' => $record->area_name,
-                    'process' => $record->process ? $record->process->name : 'Penyimpanan Terminal 1',
-                    'no' => ($paginator->currentPage() - 1) * $paginator->perPage() + $index + 1,
-                    'kondisi' => ($record->judgement === 'OK' || $record->score >= 90) ? 'OK' : 'NG',
-                ];
-            });
-        } else {
-            // Mock records filterable if DB is empty for admin
-            $mockData = collect([
-                [
-                    'id' => 1,
-                    'waktu' => '26 Juni 2026 16:45:21',
-                    'user' => 'Budi Santoso',
-                    'kategori' => '5S Standard',
-                    'kategori_code' => '5s_standard',
-                    'area' => 'Warehouse',
-                    'area_slug' => 'warehouse',
-                    'process' => 'Penyimpanan Terminal 1',
-                    'no' => 1,
-                    'kondisi' => 'NG',
-                ],
-                [
-                    'id' => 2,
-                    'waktu' => '26 Juni 2026 16:30:10',
-                    'user' => 'Siti Nurhaliza',
-                    'kategori' => 'Change Point',
-                    'kategori_code' => 'change_point',
-                    'area' => 'Change Point Management',
-                    'area_slug' => 'change-point-management',
-                    'process' => 'Cutting & Crimping 1',
-                    'no' => 2,
-                    'kondisi' => 'OK',
-                ],
-                [
-                    'id' => 3,
-                    'waktu' => '26 Juni 2026 16:15:32',
-                    'user' => 'Ahmad Fauzi',
-                    'kategori' => 'License System',
-                    'kategori_code' => 'license_system',
-                    'area' => 'License System',
-                    'area_slug' => 'license-system',
-                    'process' => 'All Process 1',
-                    'no' => 3,
-                    'kondisi' => 'OK',
-                ],
-                [
-                    'id' => 4,
-                    'waktu' => '26 Juni 2026 16:05:11',
-                    'user' => 'Dewi Lestari',
-                    'kategori' => '5S Standard',
-                    'kategori_code' => '5s_standard',
-                    'area' => 'Jalur Jalan',
-                    'area_slug' => 'jalur-jalan',
-                    'process' => 'Jalur Jalan 1',
-                    'no' => 4,
-                    'kondisi' => 'NG',
-                ],
-            ]);
-
-            if ($request->filled('kategori')) {
-                $mockData = $mockData->where('kategori_code', $request->input('kategori'));
-            }
-            if ($request->filled('area')) {
-                $mockData = $mockData->where('area_slug', $request->input('area'));
-            }
-            if ($request->filled('kondisi')) {
-                $mockData = $mockData->where('kondisi', $request->input('kondisi'));
             }
 
-            $records = $isAuditor ? collect() : $mockData->values();
-            $paginator = null;
-        }
+            return [
+                'id' => $record->id,
+                'waktu' => $formattedDate,
+                'user' => $record->auditor_name,
+                'kategori' => $categoryLabel,
+                'area' => $record->area_name,
+                'process' => $record->process ? $record->process->name : 'Penyimpanan Terminal 1',
+                'no' => ($paginator->currentPage() - 1) * $paginator->perPage() + $index + 1,
+                'kondisi' => ($record->judgement === 'OK' || $record->score >= 90) ? 'OK' : 'NG',
+            ];
+        });
 
         return view('audit.riwayat', compact('stats', 'areas', 'records', 'paginator'));
     }
 
     public function riwayatDetail($id)
     {
-        $record = AuditRecord::with(['area', 'process', 'user'])->find($id);
-
-        if (! $record) {
-            // Fallback object jika id mock diklik saat DB masih kosong
-            $record = new AuditRecord([
-                'id' => $id,
-                'audit_date' => now()->toDateString(),
-                'area_name' => 'Warehouse',
-                'auditor_name' => session('audit_user_name', 'Budi Santoso'),
-                'score' => 0.00,
-                'status' => 'Selesai',
-                'judgement' => 'NG',
-                'foto_ng' => null,
-                'catatan' => 'Ditemukan part terminal yang tidak menggunakan cover tahan debu pada rak layer 2.',
-                'created_at' => now(),
-            ]);
-
-            $process = new \App\Models\AuditProcess([
-                'name' => 'Penyimpanan Terminal 1',
-                'description' => 'Pemeriksaan kerapian dan penyimpanan terminal 1',
-                'checkpoint' => 'Cover tahan debu terpasang pada rak penyimpanan terminal dan tertutup rapat.',
-                'kriteria_judgement' => 'Evaluasi "OK" apabila terminal tersimpan rapi dalam kardus/tutup. Evaluasi "NG" apabila terkelupas dan exposed.',
-            ]);
-
-            $record->setRelation('process', $process);
-        }
+        $record = AuditRecord::with(['area', 'process', 'user'])->findOrFail($id);
 
         return view('audit.detail', compact('record'));
     }
