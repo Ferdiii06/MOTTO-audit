@@ -38,13 +38,11 @@ class AuditSchedule extends Model
         });
     }
 
-    public function scopeOverlapping($query, $tanggalMulai, $tanggalSelesai, $tipeAuditor, $processId = null, $areaId = null, $excludeId = null)
+    public function scopeOverlapping($query, $tanggalMulai, $tanggalSelesai, $auditUserId, $processId = null, $areaId = null, $excludeId = null)
     {
         $query->where('tanggal_mulai', '<=', $tanggalSelesai)
             ->where('tanggal_selesai', '>=', $tanggalMulai)
-            ->whereHas('auditor', function ($q) use ($tipeAuditor) {
-                $q->where('tipe_auditor', $tipeAuditor);
-            });
+            ->where('audit_user_id', $auditUserId);
 
         if ($processId) {
             $query->where('audit_process_id', $processId);

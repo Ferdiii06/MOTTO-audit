@@ -30,6 +30,7 @@ class AuditProcessController extends Controller
             'description' => 'nullable|string',
             'checkpoint' => 'nullable|string',
             'kriteria_judgement' => 'nullable|string',
+            'audit_intention' => 'nullable|string',
         ]);
 
         $data['audit_area_id'] = $area->id;
@@ -51,6 +52,7 @@ class AuditProcessController extends Controller
             'description' => 'nullable|string',
             'checkpoint' => 'nullable|string',
             'kriteria_judgement' => 'nullable|string',
+            'audit_intention' => 'nullable|string',
         ]);
 
         $process->update($data);

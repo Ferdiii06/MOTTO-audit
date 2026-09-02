@@ -177,7 +177,7 @@
                            accept="image/*"
                            onchange="previewImage(event)"
                            class="block w-full text-xs text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-yazaki-red file:text-white hover:file:bg-yazaki-red-dark cursor-pointer border border-gray-200 rounded-lg bg-white p-1">
-                    <p class="text-[11px] text-gray-400">Format: JPG, PNG, WEBP. Maksimal ukuran file: 2 MB.</p>
+                    <p class="text-[11px] text-gray-400">Format: JPG, PNG, WEBP. Maksimal ukuran file: 10 MB.</p>
                     
                     {{-- Image Preview Container --}}
                     <div id="preview_container" class="hidden mt-3">

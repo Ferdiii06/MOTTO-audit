@@ -381,7 +381,7 @@ class AuditDashboardController extends Controller
         $rules = [
             'judgement' => 'required|in:OK,NG',
             'status' => 'required|in:Selesai,Pending',
-            'foto_ng' => $fotoRequired ? 'required|image|mimes:jpeg,png,jpg,gif,webp|max:2048' : 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'foto_ng' => $fotoRequired ? 'required|image|mimes:jpeg,png,jpg,gif,webp|max:10240' : 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:10240',
             'catatan' => $isNg ? 'required|string' : 'nullable|string',
         ];
 
@@ -390,7 +390,7 @@ class AuditDashboardController extends Controller
             'status.required' => 'Status audit wajib dipilih.',
             'foto_ng.required' => 'Foto temuan wajib diunggah jika penilaian NG.',
             'foto_ng.image' => 'File yang diunggah harus berupa gambar (JPG, PNG, WEBP).',
-            'foto_ng.max' => 'Ukuran file foto maksimal 2 MB.',
+            'foto_ng.max' => 'Ukuran file foto maksimal 10 MB.',
             'catatan.required' => 'Catatan temuan wajib diisi jika penilaian NG.',
         ]);
 

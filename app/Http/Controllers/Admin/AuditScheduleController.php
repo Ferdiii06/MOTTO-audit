@@ -106,7 +106,7 @@ class AuditScheduleController extends Controller
             $overlap = AuditSchedule::overlapping(
                 $tanggalMulai,
                 $tanggalSelesai,
-                $auditor->tipe_auditor,
+                $auditor->id,
                 $processId,
                 $areaId
             )->first();
@@ -121,7 +121,7 @@ class AuditScheduleController extends Controller
 
                 $failed[] = [
                     'name' => $targetName,
-                    'reason' => "Bentrok dengan auditor {$existingAuditor} (tipe '{$auditor->tipe_auditor}') pada {$existingTarget} ({$startDate} s/d {$endDate})",
+                    'reason' => "Bentrok dengan jadwal auditor {$existingAuditor} pada {$existingTarget} ({$startDate} s/d {$endDate})",
                 ];
                 continue;
             }
@@ -201,7 +201,7 @@ class AuditScheduleController extends Controller
         $overlap = AuditSchedule::overlapping(
             $request->input('tanggal_mulai'),
             $request->input('tanggal_selesai'),
-            $auditor->tipe_auditor,
+            $auditor->id,
             $processId,
             $areaId,
             $schedule->id
@@ -213,7 +213,7 @@ class AuditScheduleController extends Controller
                 : 'area ' . optional($overlap->area)->name;
 
             return redirect()->back()->withInput()->withErrors([
-                'tanggal_mulai' => "Jadwal bentrok! Sudah ada jadwal untuk tipe auditor '{$auditor->tipe_auditor}' pada {$targetName} dalam periode tanggal tersebut.",
+                'tanggal_mulai' => "Jadwal bentrok! Auditor ini sudah memiliki jadwal pada {$targetName} dalam periode tanggal tersebut.",
             ]);
         }
 
