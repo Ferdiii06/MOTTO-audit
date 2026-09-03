@@ -68,7 +68,7 @@
                 <details class="bg-white border border-gray-200 rounded-xl shadow-sm" id="area-{{ $area->id }}">
                     <summary class="cursor-pointer list-none px-5 py-4 flex items-center justify-between gap-3">
                         <div><h3 class="font-bold text-gray-900">{{ $area->name }}</h3><p class="text-xs text-gray-500">{{ $area->processes->count() }} proses</p></div>
-                        <div class="flex gap-2" onclick="event.stopPropagation()">
+                        <div class="flex gap-2" onclick="event.stopPropagation(); event.preventDefault()">
                             <button type="button" onclick="document.getElementById('edit-area-{{ $area->id }}').classList.toggle('hidden')" class="px-3 py-1.5 rounded-lg bg-gray-100 text-xs font-semibold">Edit</button>
                             <form action="{{ route('admin.area.destroy', $area->id) }}" method="POST" onsubmit="return confirm('Hapus area {{ addslashes($area->name) }}? Semua proses dan schedule terkait bisa ikut terhapus.')">@csrf @method('DELETE')<button class="px-3 py-1.5 rounded-lg bg-rose-50 text-rose-700 text-xs font-semibold">Hapus</button></form>
                         </div>
