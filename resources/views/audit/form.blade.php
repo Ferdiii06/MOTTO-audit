@@ -74,9 +74,18 @@
                 <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                 </svg>
-                <span>Tanggal Audit: <strong class="text-gray-900 font-bold">{{ $auditDate }}</strong></span>
+                <span>Waktu Audit: <strong id="realtime_clock" class="text-gray-900 font-bold">{{ $auditDate }}</strong></span>
             </div>
         </div>
+
+        <script>
+            // Real-time clock for audit form
+            setInterval(() => {
+                const now = new Date();
+                const options = { day: '2-digit', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' };
+                document.getElementById('realtime_clock').innerText = now.toLocaleDateString('id-ID', options).replace(/\./g, ':');
+            }, 1000);
+        </script>
 
         {{-- Checkpoint & Audit Judgement Guidance --}}
         <div class="p-6 space-y-5">

@@ -179,7 +179,7 @@
                     <input type="date" 
                            name="tanggal_mulai" 
                            id="tanggal_mulai" 
-                           value="{{ old('tanggal_mulai') }}"
+                           value="{{ old('tanggal_mulai', date('Y-m-d')) }}"
                            required
                            class="w-full px-4 py-2.5 rounded-xl border border-gray-300 text-sm focus:ring-2 focus:ring-yazaki-red focus:border-yazaki-red outline-none transition-all">
                 </div>
@@ -191,7 +191,7 @@
                     <input type="date" 
                            name="tanggal_selesai" 
                            id="tanggal_selesai" 
-                           value="{{ old('tanggal_selesai') }}"
+                           value="{{ old('tanggal_selesai', date('Y-m-d')) }}"
                            required
                            class="w-full px-4 py-2.5 rounded-xl border border-gray-300 text-sm focus:ring-2 focus:ring-yazaki-red focus:border-yazaki-red outline-none transition-all">
                 </div>
