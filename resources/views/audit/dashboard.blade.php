@@ -17,11 +17,8 @@
             <div>
                 <p class="text-xs font-semibold uppercase tracking-wider text-gray-500">Total Audit Bulan Ini</p>
                 <p class="text-2xl sm:text-3xl font-extrabold text-gray-900 mt-2">{{ $stats['total_audit'] }}</p>
-                <div class="flex items-center space-x-1 text-xs text-emerald-600 mt-1 font-medium">
-                    <svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
-                    </svg>
-                    <span>+12% dibanding bln lalu</span>
+                <div class="flex items-center space-x-1 text-xs text-gray-500 mt-1 font-medium">
+                    <span>Update real-time</span>
                 </div>
             </div>
             <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-red-50 text-yazaki-red flex items-center justify-center shrink-0">
@@ -37,7 +34,7 @@
                 <p class="text-xs font-semibold uppercase tracking-wider text-gray-500">Audit Selesai</p>
                 <p class="text-2xl sm:text-3xl font-extrabold text-emerald-600 mt-2">{{ $stats['completed_audit'] }}</p>
                 <div class="flex items-center space-x-1 text-xs text-gray-500 mt-1">
-                    <span>75% tingkat penyelesaian</span>
+                    <span>{{ $stats['completion_rate'] }} tingkat penyelesaian</span>
                 </div>
             </div>
             <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">

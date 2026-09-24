@@ -47,6 +47,7 @@ class AuditDashboardController extends Controller
             'total_audit' => $totalAudit,
             'completed_audit' => $completedAudit,
             'pending_audit' => $pendingAudit,
+            'completion_rate' => $totalAudit > 0 ? round(($completedAudit / $totalAudit) * 100) . '%' : '0%',
             'avg_score' => $avgScoreValue ? number_format($avgScoreValue, 1) . '%' : '0%',
         ];
 
